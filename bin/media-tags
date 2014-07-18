@@ -1,0 +1,9 @@
+#!/usr/bin/env php
+<?php
+/**
+ * This file is part of the media tags package
+ *
+ * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
+ */
+
+require __DIR__ . '/media-tags.php';
