@@ -81,6 +81,16 @@ class Id3v1 extends AbstractTag
     }
 
     /**
+     * Remove tag
+     *
+     * @return $this
+     */
+    public function remove()
+    {
+        return $this->write('id3v1');
+    }
+
+    /**
      * Set title
      *
      * @param string $title
