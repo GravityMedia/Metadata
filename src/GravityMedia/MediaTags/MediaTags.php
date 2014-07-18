@@ -20,7 +20,7 @@ use Zend\Stdlib\Hydrator\ClassMethods;
 /**
  * Media tags object
  *
- * @package GravityMedia\MediaTag
+ * @package GravityMedia\MediaTags
  */
 class MediaTags
 {

@@ -10,7 +10,7 @@ namespace GravityMedia\MediaTags;
 /**
  * Media tags aware file info object
  *
- * @package GravityMedia\MediaTag
+ * @package GravityMedia\MediaTags
  */
 class SplFileInfo extends \SplFileInfo
 {
