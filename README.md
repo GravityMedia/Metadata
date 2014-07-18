@@ -1,4 +1,4 @@
-#Ghostscript
+#MediaTags
 [![Project Status](http://stillmaintained.com/GravityMedia/MediaTags.png)](http://stillmaintained.com/GravityMedia/MediaTags)
 [![Build Status](https://travis-ci.org/GravityMedia/MediaTags.svg?branch=master)](https://travis-ci.org/GravityMedia/MediaTags)
 
