@@ -12,15 +12,15 @@
          bootstrap="tests/bootstrap.php">
     <testsuites>
         <testsuite name="Media tags test suite">
-            <directory>./tests/unit/GravityMedia/MediaTags/</directory>
+            <directory>./tests/unit/</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
-            <directory>./src/GravityMedia/MediaTags/</directory>
+            <directory>./src/</directory>
             <!--
             <exclude>
-                <directory>./tests/unit/GravityMedia/MediaTags/Fixtures/</directory>
+                <directory>./tests/unit/Fixtures/</directory>
             </exclude>
             -->
         </whitelist>

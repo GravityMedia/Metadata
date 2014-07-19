@@ -33,7 +33,6 @@ class Id3v2 extends AbstractTag
         'TCOM',
         'TOPE',
         'TPOS',
-        'TBPM',
         'APIC'
     );
 
