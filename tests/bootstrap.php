@@ -6,4 +6,4 @@
  */
 
 $loader = require __DIR__ . '/../vendor/autoload.php';
-$loader->addPsr4('GravityMedia\\MediaTags\\Test\\', __DIR__ . '/unit');
+$loader->addPsr4('GravityMedia\\MediaTags\\', __DIR__ . '/unit');

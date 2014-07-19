@@ -1,5 +1,4 @@
 #MediaTags
-[![Project Status](http://stillmaintained.com/GravityMedia/MediaTags.png)](http://stillmaintained.com/GravityMedia/MediaTags)
 [![Build Status](https://travis-ci.org/GravityMedia/MediaTags.svg?branch=master)](https://travis-ci.org/GravityMedia/MediaTags)
 
 Media tags library for PHP
@@ -36,7 +35,11 @@ php composer.phar install
 
 ##Usage##
 
-Currently reading and writing of ID3 (V1 and V2) tags is supported. The support for more tags will be available soon.
+Currently reading and writing of ID3 (V1 and V2) tag is supported. The support for more tag formats will be available soon.
+
+###CLI###
+
+This library contains a useful CLI script. You may read and write the tag to/from YAML data files.
 
 ###ID3V1###
 
