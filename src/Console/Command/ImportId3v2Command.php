@@ -7,6 +7,7 @@
 
 namespace GravityMedia\MediaTags\Console\Command;
 
+use GravityMedia\MediaTags\Meta\Picture;
 use GravityMedia\MediaTags\SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,40 +18,51 @@ use Symfony\Component\Yaml\Yaml;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
 /**
- * Write ID3 V1 command
+ * Import ID3 V2 command
  *
  * @package GravityMedia\MediaTags\Console\Command
  */
-class WriteId3v1Command extends Command
+class ImportId3v2Command extends Command
 {
     protected function configure()
     {
         $this
-            ->setName('write:id3v1')
-            ->setDescription('Write ID3 V1 media tags')
+            ->setName('import:id3v2')
+            ->setDescription('Import ID3 V2 media tag')
             ->addArgument(
                 'filename',
                 InputArgument::REQUIRED,
                 'The name of the file'
             )
             ->addArgument(
-                'tags',
+                'import',
                 InputArgument::REQUIRED,
-                'The name of the file with the tags'
+                'The name of the import file'
             );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $file = new SplFileInfo($input->getArgument('filename'));
-        $data = Yaml::parse($input->getArgument('tags'));
+        $data = Yaml::parse($input->getArgument('import'));
+        foreach (array_keys($data) as $name) {
+            if (null === $data[$name] || 'audio_properties' === $name) {
+                unset($data[$name]);
+            }
+        }
 
         $mediaTags = $file->getMediaTags();
-        $tag = $mediaTags->getId3v1();
+        $tag = $mediaTags->getId3v2();
 
         $hydrator = new ClassMethods();
+        if (isset($data['picture'])) {
+            if (null !== $data['picture']['data']) {
+                $data['picture']['data'] = base64_decode($data['picture']['data']);
+            }
+            $data['picture'] = $hydrator->hydrate($data['picture'], new Picture());
+        }
         $hydrator->hydrate($data, $tag)->save();
 
-        $output->writeln('<info>' . Yaml::dump($data) . '</info>');
+        $output->writeln('<info>Tag import successful.</info>');
     }
 }

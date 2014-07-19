@@ -16,8 +16,8 @@ while (!file_exists('vendor/autoload.php')) {
 require 'vendor/autoload.php';
 
 $application = new \Symfony\Component\Console\Application();
-$application->add(new \GravityMedia\MediaTags\Console\Command\ReadId3v1Command());
-$application->add(new \GravityMedia\MediaTags\Console\Command\ReadId3v2Command());
-$application->add(new \GravityMedia\MediaTags\Console\Command\WriteId3v1Command());
-$application->add(new \GravityMedia\MediaTags\Console\Command\WriteId3v2Command());
+$application->add(new \GravityMedia\MediaTags\Console\Command\ExportId3v1Command());
+$application->add(new \GravityMedia\MediaTags\Console\Command\ExportId3v2Command());
+$application->add(new \GravityMedia\MediaTags\Console\Command\ImportId3v1Command());
+$application->add(new \GravityMedia\MediaTags\Console\Command\ImportId3v2Command());
 $application->run();
