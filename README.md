@@ -36,32 +36,40 @@ php composer.phar install
 
 ##Usage##
 
+Currently reading and writing of ID3 (V1 and V2) tags is supported. The support for more tags will be available soon.
+
 ###ID3V1###
 
 ```php
 require 'vendor/autoload.php';
 
 use GravityMedia\MediaTags\SplFileInfo;
-use Zend\Stdlib\Hydrator\ClassMethods;
 
+// create new media tags aware file info object
 $file = new SplFileInfo('/path/to/input/file.mp3');
 
+// get ID3 V1 media tag
 $mediaTags = $file->getMediaTags();
 $tag = $mediaTags->getId3v1();
 
+// dump tag info
 var_dump($tag);
 
-$hydrator = new ClassMethods();
-$hydrator->hydrate(array(
-    'title'   => 'Title'
-    'artist'  => 'Artist'
-    'album'   => 'Album'
-    'year'    => 2014
-    'comment' => 'Comment'
-    'track'   => 1
-), $tag)->save();
+// update ID3 V1 media tag
+$tag
+    ->setTitle('New title')
+    ->setArtist('An other artist')
+    ->setAlbum('The album title')
+    ->setYear(2014)
+    ->setComment('This tag was written by media tags library')
+    ->setTrack(1)
+    ->save();
 
+// dump updated tag info
 var_dump($mediaTags->getId3v1());
+
+// remove ID3 V1 media tag
+$tag->remove();
 ```
 
 ###ID3V2###
@@ -70,24 +78,30 @@ var_dump($mediaTags->getId3v1());
 require 'vendor/autoload.php';
 
 use GravityMedia\MediaTags\SplFileInfo;
-use Zend\Stdlib\Hydrator\ClassMethods;
 
+// create new media tags aware file info object
 $file = new SplFileInfo('/path/to/input/file.mp3');
 
+// get ID3 V2 media tag
 $mediaTags = $file->getMediaTags();
 $tag = $mediaTags->getId3v2();
 
+// dump tag info
 var_dump($tag);
 
-$hydrator = new ClassMethods();
-$hydrator->hydrate(array(
-    'title'   => 'Title'
-    'artist'  => 'Artist'
-    'album'   => 'Album'
-    'year'    => 2014
-    'comment' => 'Comment'
-    'track'   => 1
-), $tag)->save();
+// update ID3 V2 media tag
+$tag
+    ->setTitle('New title')
+    ->setArtist('An other artist')
+    ->setAlbum('The album title')
+    ->setYear(2014)
+    ->setComment('This tag was written by media tags library')
+    ->setTrack(1)
+    ->save();
 
+// dump updated tag info
 var_dump($mediaTags->getId3v2());
+
+// remove ID3 V2 media tag
+$tag->remove();
 ```
