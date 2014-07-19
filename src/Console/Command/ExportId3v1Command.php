@@ -1,13 +1,13 @@
 <?php
 /**
- * This file is part of the media tags package
+ * This file is part of the metadata package
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\MediaTags\Console\Command;
+namespace GravityMedia\Metadata\Console\Command;
 
-use GravityMedia\MediaTags\SplFileInfo;
+use GravityMedia\Metadata\SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,9 +17,9 @@ use Symfony\Component\Yaml\Yaml;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
 /**
- * Export ID3 V1 command
+ * Export ID3 v1 command object
  *
- * @package GravityMedia\MediaTags\Console\Command
+ * @package GravityMedia\Metadata\Console\Command
  */
 class ExportId3v1Command extends Command
 {
@@ -29,7 +29,7 @@ class ExportId3v1Command extends Command
     {
         $this
             ->setName('export:id3v1')
-            ->setDescription('Export ID3 V1 media tag')
+            ->setDescription('Export ID3 v1 metadata')
             ->addArgument(
                 'input',
                 InputArgument::REQUIRED,
@@ -53,8 +53,8 @@ class ExportId3v1Command extends Command
     {
         $inputFile = new SplFileInfo($input->getArgument('input'));
 
-        $mediaTags = $inputFile->getMediaTags();
-        $tag = $mediaTags->getId3v1();
+        $metadata = $inputFile->getMetadata();
+        $tag = $metadata->getId3v1();
 
         $hydrator = new ClassMethods();
         $data = $hydrator->extract($tag);
@@ -83,10 +83,10 @@ class ExportId3v1Command extends Command
         }
 
         if (file_put_contents($outputFilename, $data)) {
-            $output->writeln(sprintf('<info>Tag file \'%s\' successfully exported.</info>', $outputFilename));
+            $output->writeln(sprintf('<info>Metadata file \'%s\' successfully exported.</info>', $outputFilename));
             return;
         }
 
-        $output->writeln(sprintf('<error>Unable to write tag export file \'%s\'.</error>', $outputFilename));
+        $output->writeln(sprintf('<error>Unable to write metadata file \'%s\'.</error>', $outputFilename));
     }
 }

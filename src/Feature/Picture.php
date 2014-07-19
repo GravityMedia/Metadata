@@ -1,18 +1,18 @@
 <?php
 /**
- * This file is part of the media tags package
+ * This file is part of the metadata package
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\MediaTags\Meta;
+namespace GravityMedia\Metadata\Feature;
 
 use GetId3\Module\Tag\Id3v2 as Id3v2Processor;
 
 /**
- * Audio properties
+ * Picture object
  *
- * @package GravityMedia\MediaTags\Meta
+ * @package GravityMedia\Metadata\Meta
  */
 class Picture
 {

@@ -1,19 +1,19 @@
 <?php
 /**
- * This file is part of the media tags package
+ * This file is part of the metadata package
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\MediaTags\Tag;
+namespace GravityMedia\Metadata\Tag;
 
 use GetId3\Module\Tag\Id3v1 as Id3v1Processor;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
 /**
- * ID3 V1 tag
+ * ID3 v1 tag object
  *
- * @package GravityMedia\MediaTags\Tag
+ * @package GravityMedia\Metadata\Tag
  */
 class Id3v1 extends AbstractTag
 {

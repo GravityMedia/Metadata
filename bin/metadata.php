@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the media tags package
+ * This file is part of the metadata package
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
@@ -16,8 +16,8 @@ while (!file_exists('vendor/autoload.php')) {
 require 'vendor/autoload.php';
 
 $application = new \Symfony\Component\Console\Application();
-$application->add(new \GravityMedia\MediaTags\Console\Command\ExportId3v1Command());
-$application->add(new \GravityMedia\MediaTags\Console\Command\ExportId3v2Command());
-$application->add(new \GravityMedia\MediaTags\Console\Command\ImportId3v1Command());
-$application->add(new \GravityMedia\MediaTags\Console\Command\ImportId3v2Command());
+$application->add(new \GravityMedia\Metadata\Console\Command\ExportId3v1Command());
+$application->add(new \GravityMedia\Metadata\Console\Command\ExportId3v2Command());
+$application->add(new \GravityMedia\Metadata\Console\Command\ImportId3v1Command());
+$application->add(new \GravityMedia\Metadata\Console\Command\ImportId3v2Command());
 $application->run();

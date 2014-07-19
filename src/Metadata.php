@@ -1,28 +1,28 @@
 <?php
 /**
- * This file is part of the media tags package
+ * This file is part of the metadata package
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\MediaTags;
+namespace GravityMedia\Metadata;
 
 use GetId3\GetId3Core;
 use GetId3\Handler\BaseHandler as Processor;
 use GetId3\Module\Tag\Id3v1 as Id3v1Processor;
 use GetId3\Module\Tag\Id3v2 as Id3v2Processor;
-use GravityMedia\MediaTags\Meta\AudioProperties;
-use GravityMedia\MediaTags\Meta\Picture;
-use GravityMedia\MediaTags\Tag\Id3v1 as Id3v1Tag;
-use GravityMedia\MediaTags\Tag\Id3v2 as Id3v2Tag;
+use GravityMedia\Metadata\Feature\AudioProperties;
+use GravityMedia\Metadata\Feature\Picture;
+use GravityMedia\Metadata\Tag\Id3v1 as Id3v1Tag;
+use GravityMedia\Metadata\Tag\Id3v2 as Id3v2Tag;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
 /**
- * Media tags object
+ * Metadata object
  *
- * @package GravityMedia\MediaTags
+ * @package GravityMedia\Metadata
  */
-class MediaTags
+class Metadata
 {
     /**
      * @var \SplFileInfo
@@ -146,7 +146,7 @@ class MediaTags
      *
      * @throws \RuntimeException
      *
-     * @return \GravityMedia\MediaTags\Tag\Id3v1
+     * @return \GravityMedia\Metadata\Tag\Id3v1
      */
     public function getId3v1()
     {
@@ -169,13 +169,13 @@ class MediaTags
             }
         }
 
-        /** @var \GravityMedia\MediaTags\Tag\Id3v1 $tag */
+        /** @var \GravityMedia\Metadata\Tag\Id3v1 $tag */
         $tag = $hydrator->hydrate(
             $data,
             new Id3v1Tag($this->file, $this->getid3)
         );
 
-        /** @var \GravityMedia\MediaTags\Meta\AudioProperties $audioProperties */
+        /** @var \GravityMedia\Metadata\Feature\AudioProperties $audioProperties */
         $audioProperties = $hydrator->hydrate(
             $this->process($this->getFormatProcessor(), 'audio'),
             new AudioProperties()
@@ -192,7 +192,7 @@ class MediaTags
      *
      * @throws \RuntimeException
      *
-     * @return \GravityMedia\MediaTags\Tag\Id3v2
+     * @return \GravityMedia\Metadata\Tag\Id3v2
      */
     public function getId3v2()
     {
@@ -245,13 +245,13 @@ class MediaTags
             }
         }
 
-        /** @var \GravityMedia\MediaTags\Tag\Id3v2 $tag */
+        /** @var \GravityMedia\Metadata\Tag\Id3v2 $tag */
         $tag = $hydrator->hydrate(
             $data,
             new Id3v2Tag($this->file, $this->getid3)
         );
 
-        /** @var \GravityMedia\MediaTags\Meta\AudioProperties $audioProperties */
+        /** @var \GravityMedia\Metadata\Feature\AudioProperties $audioProperties */
         $audioProperties = $hydrator->hydrate(
             $this->process($this->getFormatProcessor(), 'audio'),
             new AudioProperties()

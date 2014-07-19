@@ -1,20 +1,20 @@
 <?php
 /**
- * This file is part of the media tags package
+ * This file is part of the metadata package
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\MediaTags\Tag;
+namespace GravityMedia\Metadata\Tag;
 
 use GetId3\GetId3Core;
 use GetId3\Write\Tags as TagWriter;
-use GravityMedia\MediaTags\Meta\AudioProperties as AudioProperties;
+use GravityMedia\Metadata\Feature\AudioProperties as AudioProperties;
 
 /**
- * Abstract tag
+ * Abstract tag object
  *
- * @package GravityMedia\MediaTags\Tag
+ * @package GravityMedia\Metadata\Tag
  */
 abstract class AbstractTag
 {
@@ -29,7 +29,7 @@ abstract class AbstractTag
     protected $getid3;
 
     /**
-     * @var \GravityMedia\MediaTags\Meta\AudioProperties
+     * @var \GravityMedia\Metadata\Feature\AudioProperties
      */
     protected $audioProperties;
 
@@ -88,7 +88,7 @@ abstract class AbstractTag
     /**
      * Set audio properties
      *
-     * @param \GravityMedia\MediaTags\Meta\AudioProperties $audioProperties
+     * @param \GravityMedia\Metadata\Feature\AudioProperties $audioProperties
      *
      * @return $this
      */
@@ -101,7 +101,7 @@ abstract class AbstractTag
     /**
      * Get audio properties
      *
-     * @return \GravityMedia\MediaTags\Meta\AudioProperties
+     * @return \GravityMedia\Metadata\Feature\AudioProperties
      */
     public function getAudioProperties()
     {

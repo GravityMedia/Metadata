@@ -1,16 +1,16 @@
 <?php
 /**
- * This file is part of the media tags package
+ * This file is part of the metadata package
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\MediaTags\Meta;
+namespace GravityMedia\Metadata\Feature;
 
 /**
- * Audio properties
+ * Audio properties object
  *
- * @package GravityMedia\MediaTags\Meta
+ * @package GravityMedia\Metadata\Meta
  */
 class AudioProperties
 {

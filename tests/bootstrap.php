@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the media tags package
+ * This file is part of the metadata package
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
 $loader = require __DIR__ . '/../vendor/autoload.php';
-$loader->addPsr4('GravityMedia\\MediaTags\\', __DIR__ . '/unit');
+$loader->addPsr4('GravityMedia\\Metadata\\', __DIR__ . '/unit');

@@ -1,18 +1,18 @@
 <?php
 /**
- * This file is part of the media tags package
+ * This file is part of the metadata package
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\MediaTags\Test;
+namespace GravityMedia\Metadata\Test;
 
 /**
  * Test case
  *
- * @package GravityMedia\MediaTags\Test
+ * @package GravityMedia\Metadata\Test
  */
-class MediaTagsTestCase extends \PHPUnit_Framework_TestCase
+class MetadataTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * Generate random string

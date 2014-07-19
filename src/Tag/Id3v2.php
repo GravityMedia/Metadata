@@ -1,19 +1,19 @@
 <?php
 /**
- * This file is part of the media tags package
+ * This file is part of the metadata package
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\MediaTags\Tag;
+namespace GravityMedia\Metadata\Tag;
 
-use GravityMedia\MediaTags\Meta\Picture;
+use GravityMedia\Metadata\Feature\Picture;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
 /**
- * ID3 V2 tag
+ * ID3 v2 tag object
  *
- * @package GravityMedia\MediaTags\Tag
+ * @package GravityMedia\Metadata\Tag
  */
 class Id3v2 extends AbstractTag
 {
@@ -107,7 +107,7 @@ class Id3v2 extends AbstractTag
     protected $discCount;
 
     /**
-     * @var \GravityMedia\MediaTags\Meta\Picture
+     * @var \GravityMedia\Metadata\Feature\Picture
      */
     protected $picture;
 
@@ -144,7 +144,7 @@ class Id3v2 extends AbstractTag
                         $data['part_of_a_set'] = array($value);
                         break;
                     case 'picture':
-                        /** @var \GravityMedia\MediaTags\Meta\Picture $value */
+                        /** @var \GravityMedia\Metadata\Feature\Picture $value */
                         $data['attached_picture'] = array(array(
                             'data' => $value->getData(),
                             'mime' => $value->getMime(),
@@ -507,7 +507,7 @@ class Id3v2 extends AbstractTag
     /**
      * Set picture
      *
-     * @param \GravityMedia\MediaTags\Meta\Picture $picture
+     * @param \GravityMedia\Metadata\Feature\Picture $picture
      *
      * @return $this
      */
@@ -520,7 +520,7 @@ class Id3v2 extends AbstractTag
     /**
      * Get picture
      *
-     * @return \GravityMedia\MediaTags\Meta\Picture
+     * @return \GravityMedia\Metadata\Feature\Picture
      */
     public function getPicture()
     {

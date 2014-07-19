@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the media tags package
+ * This file is part of the metadata package
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
@@ -15,7 +15,7 @@ $iterator = Finder::create()
 
 return new Sami($iterator, array(
     'theme' => 'enhanced',
-    'title' => 'Media tags API',
+    'title' => 'Metadata API',
     'build_dir' => __DIR__ . '/docs',
     'cache_dir' => __DIR__ . '/cache',
     'default_opened_level' => 2,

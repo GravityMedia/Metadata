@@ -1,26 +1,26 @@
 <?php
 /**
- * This file is part of the media tags package
+ * This file is part of the metadata package
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\MediaTags;
+namespace GravityMedia\Metadata;
 
 /**
- * Media tags aware file info object
+ * Metadata aware file info object
  *
- * @package GravityMedia\MediaTags
+ * @package GravityMedia\Metadata
  */
 class SplFileInfo extends \SplFileInfo
 {
     /**
-     * Get media tags
+     * Get metadata
      *
-     * @return \GravityMedia\MediaTags\MediaTags
+     * @return \GravityMedia\Metadata\Metadata
      */
-    public function getMediaTags()
+    public function getMetadata()
     {
-        return new MediaTags($this);
+        return new Metadata($this);
     }
 }

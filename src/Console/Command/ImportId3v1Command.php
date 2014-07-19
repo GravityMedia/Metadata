@@ -1,13 +1,13 @@
 <?php
 /**
- * This file is part of the media tags package
+ * This file is part of the metadata package
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\MediaTags\Console\Command;
+namespace GravityMedia\Metadata\Console\Command;
 
-use GravityMedia\MediaTags\SplFileInfo;
+use GravityMedia\Metadata\SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,9 +17,9 @@ use Symfony\Component\Yaml\Yaml;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
 /**
- * Import ID3 V1 command
+ * Import ID3 v1 command object
  *
- * @package GravityMedia\MediaTags\Console\Command
+ * @package GravityMedia\Metadata\Console\Command
  */
 class ImportId3v1Command extends Command
 {
@@ -27,7 +27,7 @@ class ImportId3v1Command extends Command
     {
         $this
             ->setName('import:id3v1')
-            ->setDescription('Import ID3 V1 media tag')
+            ->setDescription('Import ID3 v1 metadata')
             ->addArgument(
                 'filename',
                 InputArgument::REQUIRED,
@@ -50,12 +50,12 @@ class ImportId3v1Command extends Command
             }
         }
 
-        $mediaTags = $file->getMediaTags();
-        $tag = $mediaTags->getId3v1();
+        $metadata = $file->getMetadata();
+        $tag = $metadata->getId3v1();
 
         $hydrator = new ClassMethods();
         $hydrator->hydrate($data, $tag)->save();
 
-        $output->writeln('<info>Tag import successful.</info>');
+        $output->writeln('<info>Metadata import successful.</info>');
     }
 }

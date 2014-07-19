@@ -1,6 +1,6 @@
 {
-    "name": "gravitymedia/media-tags",
-    "description": "Media tags library for PHP",
+    "name": "gravitymedia/metadata",
+    "description": "Metadata library for PHP",
     "license": "MIT",
     "authors": [
         {
@@ -20,11 +20,11 @@
     },
     "autoload": {
         "psr-4": {
-            "GravityMedia\\MediaTags\\": "src/"
+            "GravityMedia\\Metadata\\": "src/"
         }
     },
     "bin": [
-        "bin/media-tags"
+        "bin/metadata"
     ],
     "config": {
         "bin-dir": "bin"
