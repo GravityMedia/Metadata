@@ -10,7 +10,7 @@ namespace GravityMedia\Metadata\Feature;
 /**
  * Audio properties object
  *
- * @package GravityMedia\Metadata\Meta
+ * @package GravityMedia\Metadata\Feature
  */
 class AudioProperties
 {

@@ -64,19 +64,16 @@ abstract class AbstractTag
                 /** @var resource $fp */
                 $fp = $this->getid3->getFp();
                 fclose($fp);
-
                 $error = implode(PHP_EOL, $tagWriter->errors);
                 throw new \RuntimeException(sprintf('Error while deleting tags in "%s": %s.', $filename, $error));
             }
         } else {
             $tagWriter->tagformats = array($format);
             $tagWriter->tag_data = $data;
-
             if (!$tagWriter->WriteTags()) {
                 /** @var resource $fp */
                 $fp = $this->getid3->getFp();
                 fclose($fp);
-
                 $error = implode(PHP_EOL, $tagWriter->errors);
                 throw new \RuntimeException(sprintf('Error while writing tags to "%s": %s.', $filename, $error));
             }

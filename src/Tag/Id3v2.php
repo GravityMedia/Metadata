@@ -21,19 +21,19 @@ class Id3v2 extends AbstractTag
      * @var array
      */
     public static $FRAMENAMES = array(
-        'TIT2',
-        'TPE1',
-        'TALB',
-        'TYER',
-        'COMM',
-        'TRCK',
-        'TCON',
-        'TPE2',
-        'TIT1',
-        'TCOM',
-        'TOPE',
-        'TPOS',
-        'APIC'
+        'TIT2', // title/songname/content description
+        'TPE1', // artist(s)/lead performer(s)/soloist(s)
+        'TALB', // album/movie/show title
+        'TYER', // year
+        'COMM', // comments
+        'TRCK', // track number/position in set
+        'TCON', // genre/content type
+        'TPE2', // band/orchestra/accompaniment
+        'TIT1', // works/content group description
+        'TCOM', // composer(s)
+        'TOPE', // original artist(s)/performer(s)
+        'TPOS', // disc number/part of a set
+        'APIC'  // picture/attached picture
     );
 
     /**
@@ -126,36 +126,37 @@ class Id3v2 extends AbstractTag
 
         unset($properties['audio_properties']);
         foreach ($properties as $name => $value) {
-            if (null !== $value) {
-                switch ($name) {
-                    case 'track':
-                        if (null !== $properties['track_count']) {
-                            $value .= '/' . $properties['track_count'];
-                        }
-                        $data['track'] = array($value);
-                        break;
-                    case 'works':
-                        $data['content_group_description'] = array($value);
-                        break;
-                    case 'disc':
-                        if (null !== $properties['disc_count']) {
-                            $value .= '/' . $properties['disc_count'];
-                        }
-                        $data['part_of_a_set'] = array($value);
-                        break;
-                    case 'picture':
-                        /** @var \GravityMedia\Metadata\Feature\Picture $value */
-                        $data['attached_picture'] = array(array(
-                            'data' => $value->getData(),
-                            'mime' => $value->getMime(),
-                            'picturetypeid' => $value->getPictureTypeId(),
-                            'description' => $value->getDescription()
-                        ));
-                        break;
-                    default:
-                        $data[$name] = array($value);
-                        break;
-                }
+            if (null === $value) {
+                continue;
+            }
+            switch ($name) {
+                case 'track':
+                    if (null !== $properties['track_count']) {
+                        $value .= '/' . $properties['track_count'];
+                    }
+                    $data['track'] = array($value);
+                    break;
+                case 'works':
+                    $data['content_group_description'] = array($value);
+                    break;
+                case 'disc':
+                    if (null !== $properties['disc_count']) {
+                        $value .= '/' . $properties['disc_count'];
+                    }
+                    $data['part_of_a_set'] = array($value);
+                    break;
+                case 'picture':
+                    /** @var \GravityMedia\Metadata\Feature\Picture $value */
+                    $data['attached_picture'] = array(array(
+                        'data' => $value->getData(),
+                        'mime' => $value->getMime(),
+                        'picturetypeid' => $value->getPictureTypeId(),
+                        'description' => $value->getDescription()
+                    ));
+                    break;
+                default:
+                    $data[$name] = array($value);
+                    break;
             }
         }
 

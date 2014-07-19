@@ -155,7 +155,6 @@ class Metadata
         $hydrator = new ClassMethods();
         $data = array();
 
-        // map properties
         unset($properties['comments']);
         foreach ($properties as $name => $value) {
             $value = iconv('ISO-8859-1', 'UTF-8', $value);
@@ -201,7 +200,6 @@ class Metadata
         $hydrator = new ClassMethods();
         $data = array();
 
-        // map properties
         unset($properties['comments']);
         foreach ($properties as $framename => $values) {
             if (!in_array($framename, Id3v2Tag::$FRAMENAMES)) {

@@ -72,9 +72,10 @@ class Id3v1 extends AbstractTag
 
         unset($properties['audio_properties']);
         foreach ($properties as $name => $value) {
-            if (null !== $value) {
-                $data[$name] = array($value);
+            if (null === $value) {
+                continue;
             }
+            $data[$name] = array($value);
         }
 
         return $this->write('id3v1', $data);

@@ -12,7 +12,7 @@ use GetId3\Module\Tag\Id3v2 as Id3v2Processor;
 /**
  * Picture object
  *
- * @package GravityMedia\Metadata\Meta
+ * @package GravityMedia\Metadata\Feature
  */
 class Picture
 {
