@@ -8,6 +8,7 @@
 namespace GravityMedia\Metadata\Tag;
 
 use GravityMedia\Metadata\Feature\Picture;
+use GravityMedia\Metadata\GetId3;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
 /**
@@ -150,7 +151,7 @@ class Id3v2 extends AbstractTag
                     $data['attached_picture'] = array(array(
                         'data' => $value->getData(),
                         'mime' => $value->getMime(),
-                        'picturetypeid' => $value->getPictureTypeId(),
+                        'picturetypeid' => array_search($value->getPictureType(), GetId3::getId3v2PictureTypes()),
                         'description' => $value->getDescription()
                     ));
                     break;
@@ -160,7 +161,7 @@ class Id3v2 extends AbstractTag
             }
         }
 
-        return $this->write('id3v2.3', $data);
+        return $this->writer->write($data);
     }
 
     /**
@@ -170,7 +171,7 @@ class Id3v2 extends AbstractTag
      */
     public function remove()
     {
-        return $this->write('id3v2.3');
+        return $this->writer->write();
     }
 
     /**

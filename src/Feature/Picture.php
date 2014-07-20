@@ -7,7 +7,7 @@
 
 namespace GravityMedia\Metadata\Feature;
 
-use GetId3\Module\Tag\Id3v2 as Id3v2Processor;
+use GravityMedia\Metadata\GetId3;
 
 /**
  * Picture object
@@ -27,9 +27,9 @@ class Picture
     protected $mime;
 
     /**
-     * @var int
+     * @var string
      */
-    protected $pictureTypeId;
+    protected $pictureType;
 
     /**
      * @var string
@@ -39,7 +39,7 @@ class Picture
     /**
      * @var int[]
      */
-    private $availablePictureTypes;
+    protected $availablePictureTypes;
 
     /**
      * Set data
@@ -88,33 +88,34 @@ class Picture
     }
 
     /**
-     * Set picture type ID
+     * Set picture type
      *
-     * @param int $pictureTypeId
+     * @param string $pictureType
      *
      * @throws \BadMethodCallException
+     *
      * @return $this
      */
-    public function setPictureTypeId($pictureTypeId)
+    public function setPictureType($pictureType)
     {
         if (!is_array($this->availablePictureTypes)) {
-            $this->availablePictureTypes = array_keys(Id3v2Processor::APICPictureTypeLookup(null, true));
+            $this->availablePictureTypes = array_values(GetId3::getId3v2PictureTypes());
         }
-        if (in_array($pictureTypeId, $this->availablePictureTypes)) {
-            $this->pictureTypeId = $pictureTypeId;
+        if (in_array($pictureType, $this->availablePictureTypes)) {
+            $this->pictureType = $pictureType;
             return $this;
         }
-        throw new \BadMethodCallException(sprintf('The picture type ID "%s" is not available', $pictureTypeId));
+        throw new \BadMethodCallException(sprintf('The picture type "%s" is not available', $pictureType));
     }
 
     /**
-     * Get picture type ID
+     * Get picture type
      *
-     * @return int
+     * @return string
      */
-    public function getPictureTypeId()
+    public function getPictureType()
     {
-        return $this->pictureTypeId;
+        return $this->pictureType;
     }
 
     /**

@@ -52,9 +52,7 @@ class ExportId3v2Command extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $inputFile = new SplFileInfo($input->getArgument('input'));
-
-        $metadata = $inputFile->getMetadata();
-        $tag = $metadata->getId3v2();
+        $tag = $inputFile->getMetadata()->getId3v2Tag();
 
         $hydrator = new ClassMethods();
         $data = $hydrator->extract($tag);

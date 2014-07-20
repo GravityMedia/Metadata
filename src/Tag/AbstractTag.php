@@ -7,9 +7,8 @@
 
 namespace GravityMedia\Metadata\Tag;
 
-use GetId3\GetId3Core;
-use GetId3\Write\Tags as TagWriter;
-use GravityMedia\Metadata\Feature\AudioProperties as AudioProperties;
+use GravityMedia\Metadata\Feature\AudioProperties;
+use GravityMedia\Metadata\GetId3\Writer;
 
 /**
  * Abstract tag object
@@ -19,14 +18,9 @@ use GravityMedia\Metadata\Feature\AudioProperties as AudioProperties;
 abstract class AbstractTag
 {
     /**
-     * @var \SplFileInfo
+     * @var \GravityMedia\Metadata\GetId3\Writer
      */
-    protected $file;
-
-    /**
-     * @var \GetId3\GetId3Core
-     */
-    protected $getid3;
+    protected $writer;
 
     /**
      * @var \GravityMedia\Metadata\Feature\AudioProperties
@@ -36,50 +30,11 @@ abstract class AbstractTag
     /**
      * Constructor
      *
-     * @param \SplFileInfo $file
-     * @param \GetId3\GetId3Core $getid3
+     * @param \GravityMedia\Metadata\GetId3\Writer $writer
      */
-    function __construct(\SplFileInfo $file, GetId3Core $getid3)
+    function __construct(Writer $writer)
     {
-        $this->file = $file;
-        $this->getid3 = $getid3;
-    }
-
-    /**
-     * Write tag
-     *
-     * @param string $format
-     * @param array $data
-     *
-     * @return $this
-     */
-    protected function write($format, array $data = null)
-    {
-        $filename = $this->file->getRealPath();
-
-        $tagWriter = new TagWriter();
-        $tagWriter->filename = $filename;
-        if (null === $data) {
-            if (!$tagWriter->DeleteTags(array($format))) {
-                /** @var resource $fp */
-                $fp = $this->getid3->getFp();
-                fclose($fp);
-                $error = implode(PHP_EOL, $tagWriter->errors);
-                throw new \RuntimeException(sprintf('Error while deleting tags in "%s": %s.', $filename, $error));
-            }
-        } else {
-            $tagWriter->tagformats = array($format);
-            $tagWriter->tag_data = $data;
-            if (!$tagWriter->WriteTags()) {
-                /** @var resource $fp */
-                $fp = $this->getid3->getFp();
-                fclose($fp);
-                $error = implode(PHP_EOL, $tagWriter->errors);
-                throw new \RuntimeException(sprintf('Error while writing tags to "%s": %s.', $filename, $error));
-            }
-        }
-
-        return $this;
+        $this->writer = $writer;
     }
 
     /**

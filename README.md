@@ -54,7 +54,7 @@ $file = new SplFileInfo('/path/to/input/file.mp3');
 
 // get ID3 v1 metadata
 $metadata = $file->getMetadata();
-$tag = $metadata->getId3v1();
+$tag = $metadata->getId3v1Tag();
 
 // dump tag info
 var_dump($tag);
@@ -70,7 +70,7 @@ $tag
     ->save();
 
 // dump updated tag info
-var_dump($metadata->getId3v1());
+var_dump($metadata->getId3v1Tag());
 
 // remove ID3 v1 metadata
 $tag->remove();
@@ -88,7 +88,7 @@ $file = new SplFileInfo('/path/to/input/file.mp3');
 
 // get ID3 v2 metadata
 $metadata = $file->getMetadata();
-$tag = $metadata->getId3v2();
+$tag = $metadata->getId3v2Tag();
 
 // dump tag info
 var_dump($tag);
@@ -104,7 +104,7 @@ $tag
     ->save();
 
 // dump updated tag info
-var_dump($metadata->getId3v2());
+var_dump($metadata->getId3v2Tag());
 
 // remove ID3 v2 metadata
 $tag->remove();

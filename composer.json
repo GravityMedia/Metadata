@@ -10,7 +10,8 @@
     ],
     "require": {
         "php": ">=5.4",
-        "phansys/getid3": "2.1.*@dev",
+        "ext-iconv": "*",
+        "james-heinrich/getid3": "dev-master",
         "symfony/console": "2.5.*",
         "symfony/finder": "2.5.*",
         "symfony/yaml": "2.5.*",

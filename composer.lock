@@ -4,52 +4,43 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e97c4810e5436aa91e238c6612bdca2c",
+    "hash": "828499e7ded4ce0a69392e24c0962d3d",
     "packages": [
         {
-            "name": "phansys/getid3",
-            "version": "2.1.x-dev",
-            "target-dir": "GetId3",
+            "name": "james-heinrich/getid3",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/phansys/GetId3.git",
-                "reference": "46ad6bd9edaa75d08051bf056d5d2e92393eafa1"
+                "url": "https://github.com/JamesHeinrich/getID3.git",
+                "reference": "a99b19fdceb5c5d92648334757020445fb139b13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phansys/GetId3/zipball/46ad6bd9edaa75d08051bf056d5d2e92393eafa1",
-                "reference": "46ad6bd9edaa75d08051bf056d5d2e92393eafa1",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/a99b19fdceb5c5d92648334757020445fb139b13",
+                "reference": "a99b19fdceb5c5d92648334757020445fb139b13",
                 "shasum": ""
             },
-            "suggest": {
-                "ext-exif": "EXIF extension is required for graphic modules.",
-                "ext-rar": "RAR extension is required for RAR archive module."
+            "require": {
+                "php": ">=5.3.0"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "GetId3": ""
-                }
+                "classmap": [
+                    "getid3/getid3.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL"
             ],
-            "authors": [
-                {
-                    "name": "James Heinrich",
-                    "email": "info@getid3.org",
-                    "homepage": "http://www.getid3.org"
-                }
-            ],
-            "description": "This release of GetId3 library updates to PSR-0 CS, add namespaces and makes it Symfony 2.x installable by deps or composer mechanisms.",
-            "homepage": "http://www.getid3.org",
+            "description": "PHP script that extracts useful information from popular multimedia file formats",
+            "homepage": "http://www.getid3.org/",
             "keywords": [
-                "getid3",
-                "metadata",
+                "codecs",
+                "php",
                 "tags"
             ],
-            "time": "2013-05-23 00:47:00"
+            "time": "2014-07-18 12:21:31"
         },
         {
             "name": "symfony/console",
@@ -360,10 +351,11 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phansys/getid3": 20
+        "james-heinrich/getid3": 20
     },
     "platform": {
-        "php": ">=5.4"
+        "php": ">=5.4",
+        "ext-iconv": "*"
     },
     "platform-dev": []
 }

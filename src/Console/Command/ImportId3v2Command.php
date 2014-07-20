@@ -12,7 +12,6 @@ use GravityMedia\Metadata\SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Yaml;
 use Zend\Stdlib\Hydrator\ClassMethods;
@@ -52,7 +51,7 @@ class ImportId3v2Command extends Command
         }
 
         $metadata = $file->getMetadata();
-        $tag = $metadata->getId3v2();
+        $tag = $metadata->getId3v2Tag();
 
         $hydrator = new ClassMethods();
         if (isset($data['picture'])) {

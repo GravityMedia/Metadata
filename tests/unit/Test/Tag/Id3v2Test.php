@@ -44,9 +44,9 @@ class Id3v2Test extends MetadataTestCase
     public function testShouldWriteAndReadTitle()
     {
         $expected = $this->generateRandomString(250);
-        $this->file->getMetadata()->getId3v2()->setTitle($expected)->save();
+        $this->file->getMetadata()->getId3v2Tag()->setTitle($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2()->getTitle());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getTitle());
     }
 
     /**
@@ -55,9 +55,9 @@ class Id3v2Test extends MetadataTestCase
     public function testShouldWriteAndReadArtist()
     {
         $expected = $this->generateRandomString(250);
-        $this->file->getMetadata()->getId3v2()->setArtist($expected)->save();
+        $this->file->getMetadata()->getId3v2Tag()->setArtist($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2()->getArtist());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getArtist());
     }
 
     /**
@@ -66,9 +66,9 @@ class Id3v2Test extends MetadataTestCase
     public function testShouldWriteAndReadAlbum()
     {
         $expected = $this->generateRandomString(250);
-        $this->file->getMetadata()->getId3v2()->setAlbum($expected)->save();
+        $this->file->getMetadata()->getId3v2Tag()->setAlbum($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2()->getAlbum());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getAlbum());
     }
 
     /**
@@ -77,9 +77,9 @@ class Id3v2Test extends MetadataTestCase
     public function testShouldWriteAndReadYear()
     {
         $expected = mt_rand(1000, 9999);
-        $this->file->getMetadata()->getId3v2()->setYear($expected)->save();
+        $this->file->getMetadata()->getId3v2Tag()->setYear($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2()->getYear());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getYear());
     }
 
     /**
@@ -88,9 +88,9 @@ class Id3v2Test extends MetadataTestCase
     public function testShouldWriteAndReadComment()
     {
         $expected = $this->generateRandomString(250);
-        $this->file->getMetadata()->getId3v2()->setComment($expected)->save();
+        $this->file->getMetadata()->getId3v2Tag()->setComment($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2()->getComment());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getComment());
     }
 
     /**
@@ -99,9 +99,9 @@ class Id3v2Test extends MetadataTestCase
     public function testShouldWriteAndReadTrack()
     {
         $expected = mt_rand(1, 99);
-        $this->file->getMetadata()->getId3v2()->setTrack($expected)->save();
+        $this->file->getMetadata()->getId3v2Tag()->setTrack($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2()->getTrack());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getTrack());
     }
 
     /**
@@ -110,9 +110,9 @@ class Id3v2Test extends MetadataTestCase
     public function testShouldWriteAndReadTrackCount()
     {
         $expected = mt_rand(1, 99);
-        $this->file->getMetadata()->getId3v2()->setTrack(1)->setTrackCount($expected)->save();
+        $this->file->getMetadata()->getId3v2Tag()->setTrack(1)->setTrackCount($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2()->getTrackCount());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getTrackCount());
     }
 
     /**
@@ -121,9 +121,9 @@ class Id3v2Test extends MetadataTestCase
     public function testShouldWriteAndReadGenre()
     {
         $expected = $this->generateRandomString(250);
-        $this->file->getMetadata()->getId3v2()->setGenre($expected)->save();
+        $this->file->getMetadata()->getId3v2Tag()->setGenre($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2()->getGenre());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getGenre());
     }
 
     /**
@@ -132,9 +132,9 @@ class Id3v2Test extends MetadataTestCase
     public function testShouldWriteAndReadBand()
     {
         $expected = $this->generateRandomString(250);
-        $this->file->getMetadata()->getId3v2()->setBand($expected)->save();
+        $this->file->getMetadata()->getId3v2Tag()->setBand($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2()->getBand());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getBand());
     }
 
     /**
@@ -143,9 +143,9 @@ class Id3v2Test extends MetadataTestCase
     public function testShouldWriteAndReadWorks()
     {
         $expected = $this->generateRandomString(250);
-        $this->file->getMetadata()->getId3v2()->setWorks($expected)->save();
+        $this->file->getMetadata()->getId3v2Tag()->setWorks($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2()->getWorks());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getWorks());
     }
 
     /**
@@ -154,9 +154,9 @@ class Id3v2Test extends MetadataTestCase
     public function testShouldWriteAndReadComposer()
     {
         $expected = $this->generateRandomString(250);
-        $this->file->getMetadata()->getId3v2()->setComposer($expected)->save();
+        $this->file->getMetadata()->getId3v2Tag()->setComposer($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2()->getComposer());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getComposer());
     }
 
     /**
@@ -165,9 +165,9 @@ class Id3v2Test extends MetadataTestCase
     public function testShouldWriteAndReadOriginalArtist()
     {
         $expected = $this->generateRandomString(250);
-        $this->file->getMetadata()->getId3v2()->setOriginalArtist($expected)->save();
+        $this->file->getMetadata()->getId3v2Tag()->setOriginalArtist($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2()->getOriginalArtist());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getOriginalArtist());
     }
 
     /**
@@ -176,9 +176,9 @@ class Id3v2Test extends MetadataTestCase
     public function testShouldWriteAndReadDisc()
     {
         $expected = mt_rand(1, 99);
-        $this->file->getMetadata()->getId3v2()->setDisc($expected)->save();
+        $this->file->getMetadata()->getId3v2Tag()->setDisc($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2()->getDisc());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getDisc());
     }
 
     /**
@@ -187,9 +187,9 @@ class Id3v2Test extends MetadataTestCase
     public function testShouldWriteAndReadDiscCount()
     {
         $expected = mt_rand(1, 99);
-        $this->file->getMetadata()->getId3v2()->setDisc(1)->setDiscCount($expected)->save();
+        $this->file->getMetadata()->getId3v2Tag()->setDisc(1)->setDiscCount($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2()->getDiscCount());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getDiscCount());
     }
 
     /**
@@ -200,10 +200,10 @@ class Id3v2Test extends MetadataTestCase
         $expected = new Picture();
         $expected->setData(file_get_contents('tests/resource/image.png'));
         $expected->setMime('image/png');
-        $expected->setPictureTypeId(0x00);
+        $expected->setPictureType(0x00);
         $expected->setDescription('cover');
-        $this->file->getMetadata()->getId3v2()->setPicture($expected)->save();
+        $this->file->getMetadata()->getId3v2Tag()->setPicture($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2()->getPicture());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getPicture());
     }
 }

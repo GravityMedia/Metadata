@@ -7,10 +7,6 @@
 
 namespace GravityMedia\Metadata;
 
-use GetId3\GetId3Core;
-use GetId3\Handler\BaseHandler as Processor;
-use GetId3\Module\Tag\Id3v1 as Id3v1Processor;
-use GetId3\Module\Tag\Id3v2 as Id3v2Processor;
 use GravityMedia\Metadata\Feature\AudioProperties;
 use GravityMedia\Metadata\Feature\Picture;
 use GravityMedia\Metadata\Tag\Id3v1 as Id3v1Tag;
@@ -30,115 +26,13 @@ class Metadata
     protected $file;
 
     /**
-     * @var \GetId3\GetId3Core
-     */
-    protected $getid3;
-
-    /**
      * Constructor
-     *
-     * @throws \RuntimeException
      *
      * @param \SplFileInfo $file
      */
     function __construct(\SplFileInfo $file)
     {
         $this->file = $file;
-        try {
-            $this->getid3 = new GetId3Core();
-        } catch (\Exception $exception) {
-            throw new \RuntimeException($exception->getMessage());
-        }
-    }
-
-    /**
-     * Get processor for detected audio file format
-     *
-     * @throws \RuntimeException
-     *
-     * @return \GetId3\Handler\BaseHandler
-     */
-    protected function getFormatProcessor()
-    {
-        /** @var resource $fp */
-        $fp = $this->getid3->getFp();
-        $info = $this->getid3->getInfo();
-        $offset = $info['avdataoffset'];
-        $filename = $this->file->getRealPath();
-
-        // read 32 kb file data
-        fseek($fp, $offset, SEEK_SET);
-        $data = fread($fp, 32774);
-
-        // detect format
-        $format = $this->getid3->GetFileFormat($data, $filename);
-
-        // unable to detect format
-        if (!$format) {
-            fclose($fp);
-            throw new \RuntimeException(sprintf('Unable to determine file format of "%s".', $filename));
-        }
-
-        // check for illegal ID3 tags
-        if (isset($format['fail_id3'])
-            && (in_array('id3v1', $info['tags']) || in_array('id3v2', $info['tags']))
-            && 'ERROR' === $format['fail_id3']
-        ) {
-            fclose($fp);
-            throw new \RuntimeException('ID3 tags not allowed on this file type.');
-        }
-
-        // check for illegal APE tags
-        if (isset($format['fail_ape'])
-            && in_array('ape', $info['tags'])
-            && 'ERROR' === $format['fail_ape']
-        ) {
-            fclose($fp);
-            throw new \RuntimeException('APE tags not allowed on this file type.');
-        }
-
-        return new $format['class']($this->getid3);
-    }
-
-    /**
-     * Open media file
-     *
-     * @throws \RuntimeException
-     *
-     * @return \GetId3\GetId3Core
-     */
-    protected function open()
-    {
-        $filename = $this->file->getRealPath();
-        if (!$this->getid3->openfile($filename)) {
-            /** @var resource $fp */
-            $fp = $this->getid3->getFp();
-            fclose($fp);
-
-            $info = $this->getid3->getInfo();
-            $error = implode(PHP_EOL, $info['error']);
-            throw new \RuntimeException(sprintf('Error while reading tags from "%s": %s.', $filename, $error));
-        }
-        return $this->getid3;
-    }
-
-    /**
-     * Process media file
-     *
-     * @param \GetId3\Handler\BaseHandler $processor
-     * @param string $tagName
-     *
-     * @return array
-     */
-    protected function process(Processor $processor, $tagName)
-    {
-        $processor->analyze();
-        $info = $this->getid3->getInfo();
-        //$warnings = $info['warning'];
-        if (isset($info[$tagName])) {
-            return $info[$tagName];
-        }
-        return array();
     }
 
     /**
@@ -148,10 +42,10 @@ class Metadata
      *
      * @return \GravityMedia\Metadata\Tag\Id3v1
      */
-    public function getId3v1()
+    public function getId3v1Tag()
     {
-        $processor = new Id3v1Processor($this->open());
-        $properties = $this->process($processor, 'id3v1');
+        $factory = GetId3::getInstance()->open($this->file);
+        $properties = $factory->createId3v1TagReader()->read();
         $hydrator = new ClassMethods();
         $data = array();
 
@@ -168,22 +62,13 @@ class Metadata
             }
         }
 
-        /** @var \GravityMedia\Metadata\Tag\Id3v1 $tag */
-        $tag = $hydrator->hydrate(
-            $data,
-            new Id3v1Tag($this->file, $this->getid3)
-        );
-
-        /** @var \GravityMedia\Metadata\Feature\AudioProperties $audioProperties */
-        $audioProperties = $hydrator->hydrate(
-            $this->process($this->getFormatProcessor(), 'audio'),
+        // add audio properties
+        $data['audio_properties'] = $hydrator->hydrate(
+            $factory->createAudioFormatReader()->read(),
             new AudioProperties()
         );
 
-        $info = $this->getid3->getInfo();
-        $audioProperties->setPlaytime($info['playtime_seconds']);
-
-        return $tag->setAudioProperties($audioProperties);
+        return $hydrator->hydrate($data, new Id3v1Tag($factory->createId3v1TagWriter()));
     }
 
     /**
@@ -193,20 +78,20 @@ class Metadata
      *
      * @return \GravityMedia\Metadata\Tag\Id3v2
      */
-    public function getId3v2()
+    public function getId3v2Tag()
     {
-        $processor = new Id3v2Processor($this->open());
-        $properties = $this->process($processor, 'id3v2');
+        $factory = GetId3::getInstance()->open($this->file);
+        $properties = $factory->createId3v2TagReader()->read();
         $hydrator = new ClassMethods();
         $data = array();
 
         unset($properties['comments']);
-        foreach ($properties as $framename => $values) {
-            if (!in_array($framename, Id3v2Tag::$FRAMENAMES)) {
+        foreach ($properties as $frameName => $values) {
+            if (!in_array($frameName, Id3v2Tag::$FRAMENAMES)) {
                 continue;
             }
             /** @var string $name */
-            $name = $processor->FrameNameShortLookup($framename);
+            $name = GetId3::lookupId3v2FrameName($frameName);
             switch ($name) {
                 case 'attached_picture':
                     $data['picture'] = $hydrator->hydrate($values[0], new Picture());
@@ -243,21 +128,12 @@ class Metadata
             }
         }
 
-        /** @var \GravityMedia\Metadata\Tag\Id3v2 $tag */
-        $tag = $hydrator->hydrate(
-            $data,
-            new Id3v2Tag($this->file, $this->getid3)
-        );
-
-        /** @var \GravityMedia\Metadata\Feature\AudioProperties $audioProperties */
-        $audioProperties = $hydrator->hydrate(
-            $this->process($this->getFormatProcessor(), 'audio'),
+        // add audio properties
+        $data['audio_properties'] = $hydrator->hydrate(
+            $factory->createAudioFormatReader()->read(),
             new AudioProperties()
         );
 
-        $info = $this->getid3->getInfo();
-        $audioProperties->setPlaytime($info['playtime_seconds']);
-
-        return $tag->setAudioProperties($audioProperties);
+        return $hydrator->hydrate($data, new Id3v2Tag($factory->createId3v2TagWriter()));
     }
 }

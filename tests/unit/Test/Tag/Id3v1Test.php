@@ -7,7 +7,7 @@
 
 namespace GravityMedia\Metadata\Test\Tag;
 
-use GetId3\Module\Tag\Id3v1 as Id3v1Processor;
+use getid3_id3v1 as Id3v1Processor;
 use GravityMedia\Metadata\SplFileInfo;
 use GravityMedia\Metadata\Test\MetadataTestCase;
 
@@ -44,9 +44,9 @@ class Id3v1Test extends MetadataTestCase
     public function testShouldWriteAndReadTitle()
     {
         $expected = $this->generateRandomString(30);
-        $this->file->getMetadata()->getId3v1()->setTitle($expected)->save();
+        $this->file->getMetadata()->getId3v1Tag()->setTitle($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v1()->getTitle());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v1Tag()->getTitle());
     }
 
     /**
@@ -55,9 +55,9 @@ class Id3v1Test extends MetadataTestCase
     public function testShouldWriteAndReadArtist()
     {
         $expected = $this->generateRandomString(30);
-        $this->file->getMetadata()->getId3v1()->setArtist($expected)->save();
+        $this->file->getMetadata()->getId3v1Tag()->setArtist($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v1()->getArtist());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v1Tag()->getArtist());
     }
 
     /**
@@ -66,9 +66,9 @@ class Id3v1Test extends MetadataTestCase
     public function testShouldWriteAndReadAlbum()
     {
         $expected = $this->generateRandomString(30);
-        $this->file->getMetadata()->getId3v1()->setAlbum($expected)->save();
+        $this->file->getMetadata()->getId3v1Tag()->setAlbum($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v1()->getAlbum());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v1Tag()->getAlbum());
     }
 
     /**
@@ -77,9 +77,9 @@ class Id3v1Test extends MetadataTestCase
     public function testShouldWriteAndReadYear()
     {
         $expected = mt_rand(1000, 9999);
-        $this->file->getMetadata()->getId3v1()->setYear($expected)->save();
+        $this->file->getMetadata()->getId3v1Tag()->setYear($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v1()->getYear());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v1Tag()->getYear());
     }
 
     /**
@@ -88,9 +88,9 @@ class Id3v1Test extends MetadataTestCase
     public function testShouldWriteAndReadComment()
     {
         $expected = $this->generateRandomString(30);
-        $this->file->getMetadata()->getId3v1()->setComment($expected)->save();
+        $this->file->getMetadata()->getId3v1Tag()->setComment($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v1()->getComment());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v1Tag()->getComment());
     }
 
     /**
@@ -99,9 +99,9 @@ class Id3v1Test extends MetadataTestCase
     public function testShouldWriteAndReadTrack()
     {
         $expected = mt_rand(1, 99);
-        $this->file->getMetadata()->getId3v1()->setTrack($expected)->save();
+        $this->file->getMetadata()->getId3v1Tag()->setTrack($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v1()->getTrack());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v1Tag()->getTrack());
     }
 
     /**
@@ -111,8 +111,8 @@ class Id3v1Test extends MetadataTestCase
     {
         $availableGenres = array_values(Id3v1Processor::ArrayOfGenres());
         $expected = $availableGenres[array_rand($availableGenres)];
-        $this->file->getMetadata()->getId3v1()->setGenre($expected)->save();
+        $this->file->getMetadata()->getId3v1Tag()->setGenre($expected)->save();
 
-        $this->assertEquals($expected, $this->file->getMetadata()->getId3v1()->getGenre());
+        $this->assertEquals($expected, $this->file->getMetadata()->getId3v1Tag()->getGenre());
     }
 }

@@ -7,7 +7,7 @@
 
 namespace GravityMedia\Metadata\Tag;
 
-use GetId3\Module\Tag\Id3v1 as Id3v1Processor;
+use GravityMedia\Metadata\GetId3;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
 /**
@@ -78,7 +78,7 @@ class Id3v1 extends AbstractTag
             $data[$name] = array($value);
         }
 
-        return $this->write('id3v1', $data);
+        return $this->writer->write($data);
     }
 
     /**
@@ -88,7 +88,7 @@ class Id3v1 extends AbstractTag
      */
     public function remove()
     {
-        return $this->write('id3v1');
+        return $this->writer->write();
     }
 
     /**
@@ -262,7 +262,7 @@ class Id3v1 extends AbstractTag
     public function setGenre($genre)
     {
         if (!is_array($this->availableGenres)) {
-            $this->availableGenres = array_values(Id3v1Processor::ArrayOfGenres());
+            $this->availableGenres = array_values(GetId3::getId3v1Genres());
         }
         if (in_array($genre, $this->availableGenres)) {
             $this->genre = $genre;
