@@ -42,7 +42,7 @@ Currently reading and writing of ID3 (v1 and v2) metadata is supported. The supp
 
 This library contains a useful CLI script. You may export and import the metadata to/from YAML files. More export/import formats will be available soon.
 
-###ID3v1###
+###ID3 v1###
 
 ```php
 require 'vendor/autoload.php';
@@ -76,7 +76,7 @@ var_dump($metadata->getId3v1Tag());
 $tag->remove();
 ```
 
-###ID3v2###
+###ID3 v2###
 
 ```php
 require 'vendor/autoload.php';

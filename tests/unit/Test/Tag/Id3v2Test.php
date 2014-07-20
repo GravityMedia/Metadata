@@ -200,8 +200,8 @@ class Id3v2Test extends MetadataTestCase
         $expected = new Picture();
         $expected->setData(file_get_contents('tests/resource/image.png'));
         $expected->setMime('image/png');
-        $expected->setPictureType(0x00);
-        $expected->setDescription('cover');
+        $expected->setPictureType('Other');
+        $expected->setDescription('Cover');
         $this->file->getMetadata()->getId3v2Tag()->setPicture($expected)->save();
 
         $this->assertEquals($expected, $this->file->getMetadata()->getId3v2Tag()->getPicture());
