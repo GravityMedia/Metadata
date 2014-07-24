@@ -353,6 +353,7 @@
     "stability-flags": {
         "james-heinrich/getid3": 20
     },
+    "prefer-stable": false,
     "platform": {
         "php": ">=5.4",
         "ext-iconv": "*"

@@ -1,6 +1,8 @@
 #Metadata
 [![Project Status](http://stillmaintained.com/GravityMedia/Metadata.png)](http://stillmaintained.com/GravityMedia/Metadata)
 [![Build Status](https://travis-ci.org/GravityMedia/Metadata.svg?branch=master)](https://travis-ci.org/GravityMedia/Metadata)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GravityMedia/Metadata/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/GravityMedia/Metadata/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/GravityMedia/Metadata/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/GravityMedia/Metadata/?branch=master)
 
 Metadata library for PHP
 

@@ -5,8 +5,9 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\Console\Command;
+namespace GravityMedia\Metadata\Command;
 
+use GravityMedia\Metadata\Feature\Picture;
 use GravityMedia\Metadata\SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,17 +17,17 @@ use Symfony\Component\Yaml\Yaml;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
 /**
- * Import ID3 v1 command object
+ * Import ID3 v2 command object
  *
- * @package GravityMedia\Metadata\Console\Command
+ * @package GravityMedia\Metadata\Command
  */
-class ImportId3v1Command extends Command
+class ImportId3v2Command extends Command
 {
     protected function configure()
     {
         $this
-            ->setName('import:id3v1')
-            ->setDescription('Import ID3 v1 metadata')
+            ->setName('import:id3v2')
+            ->setDescription('Import ID3 v2 metadata')
             ->addArgument(
                 'filename',
                 InputArgument::REQUIRED,
@@ -50,9 +51,15 @@ class ImportId3v1Command extends Command
         }
 
         $metadata = $file->getMetadata();
-        $tag = $metadata->getId3v1Tag();
+        $tag = $metadata->getId3v2Tag();
 
         $hydrator = new ClassMethods();
+        if (isset($data['picture'])) {
+            if (null !== $data['picture']['data']) {
+                $data['picture']['data'] = base64_decode($data['picture']['data']);
+            }
+            $data['picture'] = $hydrator->hydrate($data['picture'], new Picture());
+        }
         $hydrator->hydrate($data, $tag)->save();
 
         $output->writeln('<info>Metadata import successful.</info>');

@@ -2,6 +2,6 @@
 bin/sami.php
 cache/
 docs/
-reports/
 vendor/
 composer.phar
+coverage.clover

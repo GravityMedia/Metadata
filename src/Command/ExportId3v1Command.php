@@ -5,7 +5,7 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\Console\Command;
+namespace GravityMedia\Metadata\Command;
 
 use GravityMedia\Metadata\SplFileInfo;
 use Symfony\Component\Console\Command\Command;
@@ -17,19 +17,19 @@ use Symfony\Component\Yaml\Yaml;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
 /**
- * Export ID3 v2 command object
+ * Export ID3 v1 command object
  *
- * @package GravityMedia\Metadata\Console\Command
+ * @package GravityMedia\Metadata\Command
  */
-class ExportId3v2Command extends Command
+class ExportId3v1Command extends Command
 {
     const FORMAT_YAML = 'yaml';
 
     protected function configure()
     {
         $this
-            ->setName('export:id3v2')
-            ->setDescription('Export ID3 v2 metadata')
+            ->setName('export:id3v1')
+            ->setDescription('Export ID3 v1 metadata')
             ->addArgument(
                 'input',
                 InputArgument::REQUIRED,
@@ -52,22 +52,16 @@ class ExportId3v2Command extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $inputFile = new SplFileInfo($input->getArgument('input'));
-        $tag = $inputFile->getMetadata()->getId3v2Tag();
+        $tag = $inputFile->getMetadata()->getId3v1Tag();
 
         $hydrator = new ClassMethods();
         $data = $hydrator->extract($tag);
+        $data['audio_properties'] = $hydrator->extract($data['audio_properties']);
         foreach (array_keys($data) as $name) {
             if (null === $data[$name]) {
                 unset($data[$name]);
             }
         }
-        if (null !== $data['picture']) {
-            $data['picture'] = $hydrator->extract($data['picture']);
-            if (null !== $data['picture']['data']) {
-                $data['picture']['data'] = base64_encode($data['picture']['data']);
-            }
-        }
-        $data['audio_properties'] = $hydrator->extract($data['audio_properties']);
 
         $format = $input->getOption('format');
         if (!in_array($format, array(self::FORMAT_YAML))) {
