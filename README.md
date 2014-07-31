@@ -1,5 +1,9 @@
 #Metadata
 [![Project Status](http://stillmaintained.com/GravityMedia/Metadata.png)](http://stillmaintained.com/GravityMedia/Metadata)
+[![Latest Stable Version](https://poser.pugx.org/gravitymedia/metadata/v/stable.svg)](https://packagist.org/packages/gravitymedia/metadata)
+[![Total Downloads](https://poser.pugx.org/gravitymedia/metadata/downloads.svg)](https://packagist.org/packages/gravitymedia/metadata)
+[![Latest Unstable Version](https://poser.pugx.org/gravitymedia/metadata/v/unstable.svg)](https://packagist.org/packages/gravitymedia/metadata)
+[![License](https://poser.pugx.org/gravitymedia/metadata/license.svg)](https://packagist.org/packages/gravitymedia/metadata)
 [![Build Status](https://travis-ci.org/GravityMedia/Metadata.svg?branch=master)](https://travis-ci.org/GravityMedia/Metadata)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GravityMedia/Metadata/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/GravityMedia/Metadata/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/GravityMedia/Metadata/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/GravityMedia/Metadata/?branch=master)
