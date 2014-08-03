@@ -1,5 +1,4 @@
 #Metadata
-[![Project Status](http://stillmaintained.com/GravityMedia/Metadata.png)](http://stillmaintained.com/GravityMedia/Metadata)
 [![Latest Stable Version](https://poser.pugx.org/gravitymedia/metadata/v/stable.svg)](https://packagist.org/packages/gravitymedia/metadata)
 [![Total Downloads](https://poser.pugx.org/gravitymedia/metadata/downloads.svg)](https://packagist.org/packages/gravitymedia/metadata)
 [![Latest Unstable Version](https://poser.pugx.org/gravitymedia/metadata/v/unstable.svg)](https://packagist.org/packages/gravitymedia/metadata)
