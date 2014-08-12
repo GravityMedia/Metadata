@@ -106,7 +106,7 @@ class Factory
         $format = GetId3::getInstance()->getGetId3()->GetFileFormat($data, $this->filename);
 
         // unable to detect format
-        if (!$format) {
+        if (false === $format) {
             GetId3::getInstance()->close();
             throw new \RuntimeException(sprintf('Unable to determine file format of "%s".', $this->filename));
         }
