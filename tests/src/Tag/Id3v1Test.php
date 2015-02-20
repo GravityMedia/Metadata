@@ -5,18 +5,17 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\Test\Tag;
+namespace GravityMedia\MetadataTest\Tag;
 
 use getid3_id3v1 as Id3v1Processor;
 use GravityMedia\Metadata\SplFileInfo;
-use GravityMedia\Metadata\Test\MetadataTestCase;
 
 /**
  * ID3 v1 tag test
  *
- * @package GravityMedia\Metadata\Test\Tag
+ * @package GravityMedia\MetadataTest\Tag
  */
-class Id3v1Test extends MetadataTestCase
+class Id3v1Test extends TagTestCase
 {
     /**
      * @var \GravityMedia\Metadata\SplFileInfo
@@ -25,7 +24,7 @@ class Id3v1Test extends MetadataTestCase
 
     protected function setUp()
     {
-        $source = 'tests/resource/notags.mp3';
+        $source = 'tests/resource/tag/notags.mp3';
         $target = tempnam(sys_get_temp_dir(), 'php');
         if (!copy($source, $target)) {
             throw new \RuntimeException(sprintf('Unable to create temporary file `%s` from `%s`', $source, $target));

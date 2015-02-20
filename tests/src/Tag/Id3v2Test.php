@@ -5,18 +5,17 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\Test\Tag;
+namespace GravityMedia\MetadataTest\Tag;
 
 use GravityMedia\Metadata\Feature\Picture;
 use GravityMedia\Metadata\SplFileInfo;
-use GravityMedia\Metadata\Test\MetadataTestCase;
 
 /**
  * ID3 v2 tag test
  *
- * @package GravityMedia\Metadata\Test\Tag
+ * @package GravityMedia\MetadataTest\Tag
  */
-class Id3v2Test extends MetadataTestCase
+class Id3v2Test extends TagTestCase
 {
     /**
      * @var \GravityMedia\Metadata\SplFileInfo
@@ -25,7 +24,7 @@ class Id3v2Test extends MetadataTestCase
 
     protected function setUp()
     {
-        $source = 'tests/resource/notags.mp3';
+        $source = 'tests/resource/tag/notags.mp3';
         $target = tempnam(sys_get_temp_dir(), 'php');
         if (!copy($source, $target)) {
             throw new \RuntimeException(sprintf('Unable to create temporary file `%s` from `%s`', $source, $target));
@@ -198,7 +197,7 @@ class Id3v2Test extends MetadataTestCase
     public function testShouldWriteAndReadPicture()
     {
         $expected = new Picture();
-        $expected->setData(file_get_contents('tests/resource/image.png'));
+        $expected->setData(file_get_contents('tests/resource/tag/image.png'));
         $expected->setMime('image/png');
         $expected->setPictureType('Other');
         $expected->setDescription('Cover');
