@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/.gitignore" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/composer.json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/phpunit.xml.dist" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tests/src/Tag/Id3v1Test.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tests/src/Tag/Id3v2Test.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tests/src/Tag/TagTestCase.php" charset="UTF-8" />
+  </component>
+</project>
