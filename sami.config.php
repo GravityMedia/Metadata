@@ -14,7 +14,7 @@ $iterator = Finder::create()
     ->in(__DIR__ . '/src');
 
 return new Sami($iterator, array(
-    'theme' => 'enhanced',
+    'theme' => 'default',
     'title' => 'Metadata API',
     'build_dir' => __DIR__ . '/docs',
     'cache_dir' => __DIR__ . '/cache',
