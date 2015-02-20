@@ -1,13 +1,14 @@
 #Metadata
-[![Latest Stable Version](https://poser.pugx.org/gravitymedia/metadata/v/stable.svg)](https://packagist.org/packages/gravitymedia/metadata)
-[![Total Downloads](https://poser.pugx.org/gravitymedia/metadata/downloads.svg)](https://packagist.org/packages/gravitymedia/metadata)
-[![Latest Unstable Version](https://poser.pugx.org/gravitymedia/metadata/v/unstable.svg)](https://packagist.org/packages/gravitymedia/metadata)
-[![License](https://poser.pugx.org/gravitymedia/metadata/license.svg)](https://packagist.org/packages/gravitymedia/metadata)
-[![Build Status](https://travis-ci.org/GravityMedia/Metadata.svg?branch=master)](https://travis-ci.org/GravityMedia/Metadata)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GravityMedia/Metadata/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/GravityMedia/Metadata/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/GravityMedia/Metadata/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/GravityMedia/Metadata/?branch=master)
 
 Metadata library for PHP
+
+[![Packagist](https://img.shields.io/packagist/v/gravitymedia/metadata.svg)](https://packagist.org/packages/gravitymedia/metadata)
+[![Downloads](https://img.shields.io/packagist/dt/gravitymedia/metadata.svg)](https://packagist.org/packages/gravitymedia/metadata)
+[![License](https://img.shields.io/packagist/l/gravitymedia/metadata.svg)](https://packagist.org/packages/gravitymedia/metadata)
+[![Build](https://img.shields.io/travis/GravityMedia/Metadata.svg)](https://travis-ci.org/GravityMedia/Metadata)
+[![Code Quality](https://img.shields.io/scrutinizer/g/GravityMedia/Metadata.svg)](https://scrutinizer-ci.com/g/GravityMedia/Metadata/?branch=master)
+[![Coverage](https://img.shields.io/scrutinizer/coverage/g/GravityMedia/Metadata.svg)](https://scrutinizer-ci.com/g/GravityMedia/Metadata/?branch=master)
+[![PHP Dependencies](https://www.versioneye.com/user/projects/54a6c39d27b014005400004b/badge.svg)](https://www.versioneye.com/user/projects/54a6c39d27b014005400004b)
 
 ##Requirements##
 
@@ -20,7 +21,7 @@ This library has the following requirements:
 Install composer in your project:
 
 ```bash
-curl -s https://getcomposer.org/installer | php
+$ curl -s https://getcomposer.org/installer | php
 ```
 
 Create a `composer.json` file in your project root:
@@ -36,7 +37,7 @@ Create a `composer.json` file in your project root:
 Install via composer:
 
 ```bash
-php composer.phar install
+$ php composer.phar install
 ```
 
 ##Usage##
