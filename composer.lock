@@ -4,8 +4,48 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "41315fc029e504f6a49519e0f9675a88",
+    "hash": "8f4798d3b94698b9829cc31b837a84d0",
     "packages": [
+        {
+            "name": "gravitymedia/stream",
+            "version": "v0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GravityMedia/Stream.git",
+                "reference": "552917f368c997916e63257cfb78ddfe2c12e1c7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GravityMedia/Stream/zipball/552917f368c997916e63257cfb78ddfe2c12e1c7",
+                "reference": "552917f368c997916e63257cfb78ddfe2c12e1c7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.5",
+                "sami/sami": "~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GravityMedia\\Stream\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Schröder",
+                    "email": "daniel.schroeder@gravitymedia.de"
+                }
+            ],
+            "description": "Object oriented stream library for PHP",
+            "time": "2015-02-27 19:48:32"
+        },
         {
             "name": "james-heinrich/getid3",
             "version": "v1.9.9",

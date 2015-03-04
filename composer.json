@@ -11,6 +11,7 @@
     "require": {
         "php": ">=5.4",
         "ext-iconv": "*",
+        "gravitymedia/stream": "~0.2",
         "james-heinrich/getid3": "~1.9",
         "symfony/console": "~2.6",
         "symfony/finder": "~2.6",
