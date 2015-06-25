@@ -1,56 +1,43 @@
-#Metadata
+# Metadata
+
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/gravitymedia/metadata.svg)](https://packagist.org/packages/gravitymedia/metadata)
+[![Software License](https://img.shields.io/packagist/l/gravitymedia/metadata.svg)](LICENSE.md)
+[![Build Status](https://img.shields.io/travis/GravityMedia/Metadata.svg)](https://travis-ci.org/GravityMedia/Metadata)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/GravityMedia/Metadata.svg)](https://scrutinizer-ci.com/g/GravityMedia/Metadata/code-structure)
+[![Quality Score](https://img.shields.io/scrutinizer/g/GravityMedia/Metadata.svg)](https://scrutinizer-ci.com/g/GravityMedia/Metadata)
+[![Total Downloads](https://img.shields.io/packagist/dt/gravitymedia/metadata.svg)](https://packagist.org/packages/gravitymedia/metadata)
+[![Dependency Status](https://img.shields.io/versioneye/d/php/gravitymedia:metadata.svg)](https://www.versioneye.com/user/projects/54a6c39d27b014005400004b)
 
 Metadata library for PHP
 
-[![Packagist](https://img.shields.io/packagist/v/gravitymedia/metadata.svg)](https://packagist.org/packages/gravitymedia/metadata)
-[![Downloads](https://img.shields.io/packagist/dt/gravitymedia/metadata.svg)](https://packagist.org/packages/gravitymedia/metadata)
-[![License](https://img.shields.io/packagist/l/gravitymedia/metadata.svg)](https://packagist.org/packages/gravitymedia/metadata)
-[![Build](https://img.shields.io/travis/GravityMedia/Metadata.svg)](https://travis-ci.org/GravityMedia/Metadata)
-[![Code Quality](https://img.shields.io/scrutinizer/g/GravityMedia/Metadata.svg)](https://scrutinizer-ci.com/g/GravityMedia/Metadata/?branch=master)
-[![Coverage](https://img.shields.io/scrutinizer/coverage/g/GravityMedia/Metadata.svg)](https://scrutinizer-ci.com/g/GravityMedia/Metadata/?branch=master)
-[![PHP Dependencies](https://www.versioneye.com/user/projects/54a6c39d27b014005400004b/badge.svg)](https://www.versioneye.com/user/projects/54a6c39d27b014005400004b)
-
-##Requirements##
+## Requirements
 
 This library has the following requirements:
 
- - PHP 5.4+
+- PHP 5.4+ or HHVM
 
-##Installation##
+## Installation
 
 Install composer in your project:
 
-```bash
+``` bash
 $ curl -s https://getcomposer.org/installer | php
 ```
 
-Create a `composer.json` file in your project root:
+Require the package via Composer:
 
-```json
-{
-    "require": {
-        "gravitymedia/metadata": "dev-master"
-    }
-}
+``` bash
+$ php composer.phar require gravitymedia/metadata
 ```
 
-Install via composer:
+## Usage
 
-```bash
-$ php composer.phar install
-```
+Currently reading and writing of ID3 (v1 and v2) metadata is supported. The support for more metadata formats will be
+available soon.
 
-##Usage##
+### ID3 v1
 
-Currently reading and writing of ID3 (v1 and v2) metadata is supported. The support for more metadata formats will be available soon.
-
-###CLI###
-
-This library contains a useful CLI script. You may export and import the metadata to/from YAML files. More export/import formats will be available soon.
-
-###ID3 v1###
-
-```php
+``` php
 require 'vendor/autoload.php';
 
 use GravityMedia\Metadata\SplFileInfo;
@@ -82,9 +69,9 @@ var_dump($metadata->getId3v1Tag());
 $tag->remove();
 ```
 
-###ID3 v2###
+### ID3 v2
 
-```php
+``` php
 require 'vendor/autoload.php';
 
 use GravityMedia\Metadata\SplFileInfo;
@@ -115,3 +102,22 @@ var_dump($metadata->getId3v2Tag());
 // remove ID3 v2 metadata
 $tag->remove();
 ```
+
+## Testing
+
+``` bash
+$ php composer.phar test
+```
+
+## Contributing
+
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+
+## Credits
+
+- [Daniel Schröder](https://github.com/pCoLaSD)
+- [All Contributors](../../contributors)
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

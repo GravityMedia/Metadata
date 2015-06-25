@@ -18,6 +18,13 @@ use GravityMedia\Stream\OutputStream;
 class Metadata
 {
     /**
+     * File
+     *
+     * @var \SplFileInfo
+     */
+    protected $file;
+
+    /**
      * Input stream
      *
      * @var InputStream
@@ -34,12 +41,11 @@ class Metadata
     /**
      * Create metadata
      *
-     * @param resource $resource
+     * @param \SplFileInfo $file
      */
-    public function __construct($resource)
+    public function __construct(\SplFileInfo $file)
     {
-        $this->inputStream = new InputStream($resource);
-        $this->outputStream = new OutputStream($resource);
+        $this->file = $file;
     }
 
     /**
@@ -203,17 +209,5 @@ class Metadata
         $stream->write($data);
 
         return $this;
-    }
-
-    /**
-     * Create instance from file
-     *
-     * @param string $file
-     *
-     * @return Metadata
-     */
-    public static function fromFile($file)
-    {
-        return new static(fopen($file, 'wb+'));
     }
 }
