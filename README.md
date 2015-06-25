@@ -6,7 +6,7 @@
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/GravityMedia/Metadata.svg)](https://scrutinizer-ci.com/g/GravityMedia/Metadata/code-structure)
 [![Quality Score](https://img.shields.io/scrutinizer/g/GravityMedia/Metadata.svg)](https://scrutinizer-ci.com/g/GravityMedia/Metadata)
 [![Total Downloads](https://img.shields.io/packagist/dt/gravitymedia/metadata.svg)](https://packagist.org/packages/gravitymedia/metadata)
-[![Dependency Status](https://img.shields.io/versioneye/d/php/gravitymedia:metadata.svg)](https://www.versioneye.com/user/projects/54a6c39d27b014005400004b)
+[![Dependency Status](https://img.shields.io/versioneye/d/php/gravitymedia:metadata.svg)](https://www.versioneye.com/user/projects/54a6c41927b014005400009c)
 
 Metadata library for PHP
 
