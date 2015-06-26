@@ -7,22 +7,25 @@
 
 namespace GravityMedia\Metadata\ID3v1;
 
+use GravityMedia\Metadata\Exception;
+use GravityMedia\Metadata\TagInterface;
+
 /**
  * ID3v1 tag
  *
- * @package GravityMedia\Metadata\ID3v1
+ * @package GravityMedia\Metadata
  */
-class Tag
+class Tag implements TagInterface
 {
     /**
      * Tag version 1.0
      */
-    const VERSION_10 = 10;
+    const VERSION_10 = 0;
 
     /**
      * Tag version 1.1
      */
-    const VERSION_11 = 11;
+    const VERSION_11 = 1;
 
     /**
      * Supported genres
@@ -73,7 +76,7 @@ class Tag
     );
 
     /**
-     * @var string
+     * @var int
      */
     protected $version;
 
@@ -113,24 +116,25 @@ class Tag
     protected $genre;
 
     /**
-     * Create ID3v1 tag
+     * Create ID3v1 tag object
      *
-     * @param string $version
+     * @param int $version The version (default is 1: v1.1)
      *
-     * @throws \InvalidArgumentException
+     * @throws Exception\InvalidArgumentException An exception is thrown on invalid version arguments
      */
     public function __construct($version = self::VERSION_11)
     {
         if (!in_array($version, array(self::VERSION_10, self::VERSION_11))) {
-            throw new \InvalidArgumentException('Invalid version');
+            throw new Exception\InvalidArgumentException('Invalid version argument');
         }
+
         $this->version = $version;
     }
 
     /**
      * Get version
      *
-     * @return string
+     * @return int
      */
     public function getVersion()
     {
@@ -140,18 +144,20 @@ class Tag
     /**
      * Set title
      *
-     * @param string $title
+     * @param string $title The title
      *
-     * @throws \InvalidArgumentException
+     * @throws Exception\InvalidArgumentException An exception is thrown when the title exceeds 30 characters
      *
      * @return $this
      */
     public function setTitle($title)
     {
         if (strlen($title) > 30) {
-            throw new \InvalidArgumentException('The title string must not be longer than 30 characters');
+            throw new Exception\InvalidArgumentException('Title argument exceeds maximum number of characters');
         }
+
         $this->title = $title;
+
         return $this;
     }
 
@@ -168,18 +174,20 @@ class Tag
     /**
      * Set artist
      *
-     * @param string $artist
+     * @param string $artist The artist
      *
-     * @throws \InvalidArgumentException
+     * @throws Exception\InvalidArgumentException An exception is thrown when the artist exceeds 30 characters
      *
      * @return $this
      */
     public function setArtist($artist)
     {
         if (strlen($artist) > 30) {
-            throw new \InvalidArgumentException('The artist string must not be longer than 30 characters');
+            throw new Exception\InvalidArgumentException('Artist argument exceeds maximum number of characters');
         }
+
         $this->artist = $artist;
+
         return $this;
     }
 
@@ -196,18 +204,20 @@ class Tag
     /**
      * Set album
      *
-     * @param string $album
+     * @param string $album The album
      *
-     * @throws \InvalidArgumentException
+     * @throws Exception\InvalidArgumentException An exception is thrown when the album exceeds 30 characters
      *
      * @return $this
      */
     public function setAlbum($album)
     {
-        if (strlen($album) < 31) {
-            throw new \InvalidArgumentException('The album string must not be longer than 30 characters');
+        if (strlen($album) > 30) {
+            throw new Exception\InvalidArgumentException('Album argument exceeds maximum number of characters');
         }
+
         $this->album = $album;
+
         return $this;
     }
 
@@ -222,18 +232,20 @@ class Tag
     /**
      * Set year
      *
-     * @param int $year
+     * @param int $year The year
      *
-     * @throws \InvalidArgumentException
+     * @throws Exception\InvalidArgumentException An exception is thrown when the year does not have exactly 4 digits
      *
      * @return $this
      */
     public function setYear($year)
     {
-        if (preg_match('/^\d{4}$/', strval($year)) < 0) {
-            throw new \InvalidArgumentException('The year must have exactly 4 digits');
+        if (preg_match('/^\d{4}$/', $year) < 1) {
+            throw new Exception\InvalidArgumentException('Year argument must have exactly 4 digits');
         }
+
         $this->year = $year;
+
         return $this;
     }
 
@@ -250,22 +262,22 @@ class Tag
     /**
      * Set comment
      *
-     * @param string $comment
+     * @param string $comment The comment
      *
-     * @throws \InvalidArgumentException
+     * @throws Exception\InvalidArgumentException An exception is thrown when the comment exceeds 28 characters
+     *                                            (ID3 v1.1) or 30 characters (ID3 v1.0)
      *
      * @return $this
      */
     public function setComment($comment)
     {
-        if (self::VERSION_11 === $this->version) {
-            if (strlen($comment) > 28) {
-                throw new \InvalidArgumentException('The comment string must not be longer than 28 characters');
-            }
-        } elseif (strlen($comment) > 30) {
-            throw new \InvalidArgumentException('The comment string must not be longer than 30 characters');
+        $max = self::VERSION_11 === $this->version ? 28 : 30;
+        if (strlen($comment) > $max) {
+            throw new Exception\InvalidArgumentException('Comment argument exceeds maximum number of characters');
         }
+
         $this->comment = $comment;
+
         return $this;
     }
 
@@ -282,22 +294,25 @@ class Tag
     /**
      * Set track number
      *
-     * @param int $track
+     * @param int $track The track number
      *
-     * @throws \BadMethodCallException
-     * @throws \InvalidArgumentException
+     * @throws Exception\BadMethodCallException An exception is thrown on ID3 v1.0 tag
+     * @throws Exception\InvalidArgumentException An exception is thrown when the year does not have exactly 2 digits
      *
      * @return $this
      */
     public function setTrack($track)
     {
         if (self::VERSION_10 === $this->version) {
-            throw new \BadMethodCallException('Track is not supported in this version');
+            throw new Exception\BadMethodCallException('Track is not supported in this version');
         }
-        if (preg_match('/^\d{1,2}$/', strval($track)) < 0) {
-            throw new \InvalidArgumentException('The track must not have more than 2 digits');
+
+        if (preg_match('/^\d{1,2}$/', $track) < 1) {
+            throw new Exception\InvalidArgumentException('Track argument exceeds 2 digits');
         }
+
         $this->track = $track;
+
         return $this;
     }
 
@@ -314,18 +329,20 @@ class Tag
     /**
      * Set genre
      *
-     * @param string $genre
+     * @param string $genre The genre
      *
-     * @throws \InvalidArgumentException
+     * @throws Exception\InvalidArgumentException An exception is thrown on invalid genre arguments
      *
      * @return $this
      */
     public function setGenre($genre)
     {
         if (!in_array($genre, array_values(self::$genres))) {
-            throw new \InvalidArgumentException('Invalid genre');
+            throw new Exception\InvalidArgumentException('Invalid genre argument');
         }
+
         $this->genre = $genre;
+
         return $this;
     }
 
