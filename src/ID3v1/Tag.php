@@ -76,6 +76,13 @@ class Tag implements TagInterface
     );
 
     /**
+     * Valid versions
+     *
+     * @var array
+     */
+    protected static $validVersions = array(self::VERSION_10, self::VERSION_11);
+
+    /**
      * @var int
      */
     protected $version;
@@ -124,7 +131,7 @@ class Tag implements TagInterface
      */
     public function __construct($version = self::VERSION_11)
     {
-        if (!in_array($version, array(self::VERSION_10, self::VERSION_11))) {
+        if (!in_array($version, self::$validVersions)) {
             throw new Exception\InvalidArgumentException('Invalid version argument');
         }
 
