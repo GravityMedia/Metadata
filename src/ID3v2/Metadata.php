@@ -91,11 +91,8 @@ class Metadata implements MetadataInterface
         }
 
         $stream->seek(0);
-        if ('ID3' === $stream->getReader()->read(3)) {
-            return true;
-        }
 
-        return false;
+        return 'ID3' === $stream->getReader()->read(3);
     }
 
     /**

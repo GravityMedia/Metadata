@@ -68,11 +68,8 @@ class Metadata implements MetadataInterface
         }
 
         $stream->seek(-128, SEEK_END);
-        if ('TAG' === $stream->getReader()->read(3)) {
-            return true;
-        }
 
-        return false;
+        return 'TAG' === $stream->getReader()->read(3);
     }
 
     /**
