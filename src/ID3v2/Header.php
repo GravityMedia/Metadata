@@ -5,12 +5,12 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v2\Tag;
+namespace GravityMedia\Metadata\ID3v2;
 
 use GravityMedia\Metadata\Exception;
 
 /**
- * ID3v2 tag header
+ * ID3v2 header
  *
  * @package GravityMedia\Metadata
  */
@@ -19,17 +19,17 @@ class Header
     /**
      * Tag version 2.2
      */
-    const VERSION_22 = 0;
+    const VERSION_22 = 2;
 
     /**
      * Tag version 2.3
      */
-    const VERSION_23 = 1;
+    const VERSION_23 = 3;
 
     /**
      * Tag version 2.4
      */
-    const VERSION_24 = 2;
+    const VERSION_24 = 4;
 
     /**
      * Unsynchronisation flag
@@ -103,9 +103,29 @@ class Header
     protected $revision;
 
     /**
-     * @var array
+     * @var bool
      */
-    protected $flags;
+    protected $unsynchronisation;
+
+    /**
+     * @var bool
+     */
+    protected $compression;
+
+    /**
+     * @var bool
+     */
+    protected $extendedHeader;
+
+    /**
+     * @var bool
+     */
+    protected $experimentalIndicator;
+
+    /**
+     * @var bool
+     */
+    protected $footerPresent;
 
     /**
      * @var int
@@ -115,12 +135,17 @@ class Header
     /**
      * @var int
      */
-    protected $extendedSize;
+    protected $tagSize;
 
     /**
-     * Create ID3v2 tag header object
+     * @var int
+     */
+    protected $completeTagSize;
+
+    /**
+     * Create ID3v2 header object
      *
-     * @param int $version The version (default is 2: v2.4)
+     * @param int $version The version (default is 4: v2.4)
      *
      * @throws Exception\InvalidArgumentException An exception is thrown on invalid version arguments
      */
@@ -167,63 +192,122 @@ class Header
     }
 
     /**
-     * Set flags
+     * Set unsynchronisation flag
      *
-     * @param array $flags
-     *
-     * @throws Exception\InvalidArgumentException An exception is thrown if flags argument contains invalid flag
+     * @param boolean $unsynchronisation
      *
      * @return $this
      */
-    public function setFlags(array $flags)
+    public function setUnsynchronisation($unsynchronisation)
     {
-        foreach ($flags as $flag => $value) {
-            $this->setFlag($flag, $value);
-        }
-
+        $this->unsynchronisation = $unsynchronisation;
         return $this;
     }
 
     /**
-     * Set flag
+     * Is unsynchronisation flag set
      *
-     * @param int  $flag
-     * @param bool $value
+     * @return boolean
+     */
+    public function isUnsynchronisation()
+    {
+        return $this->unsynchronisation;
+    }
+
+    /**
+     * Set compression flas
      *
-     * @throws Exception\InvalidArgumentException An exception is thrown if flags argument contains invalid flag
+     * @param boolean $compression
      *
      * @return $this
      */
-    public function setFlag($flag, $value = true)
+    public function setCompression($compression)
     {
-        $version = $this->getVersion();
-        if (!in_array($flag, self::$validFlags[$version])) {
-            throw new Exception\InvalidArgumentException('Invalid flag argument');
-        }
-
-        $this->flags[$flag] = $value;
+        $this->compression = $compression;
         return $this;
     }
 
     /**
-     * Get flag
+     * Is compression flag set
      *
-     * @param int  $flag
-     * @param bool $default
-     *
-     * @return bool
+     * @return boolean
      */
-    public function getFlag($flag, $default = false)
+    public function isCompression()
     {
-        if (!isset($this->flags[$flag])) {
-            return $default;
-        }
-
-        return $this->flags[$flag];
+        return $this->compression;
     }
 
     /**
-     * Set size
+     * Set extended header flag
+     *
+     * @param boolean $extendedHeader
+     *
+     * @return $this
+     */
+    public function setExtendedHeader($extendedHeader)
+    {
+        $this->extendedHeader = $extendedHeader;
+        return $this;
+    }
+
+    /**
+     * Is extended header flag set
+     *
+     * @return boolean
+     */
+    public function isExtendedHeader()
+    {
+        return $this->extendedHeader;
+    }
+
+    /**
+     * Set experimental indicator flag
+     *
+     * @param boolean $experimentalIndicator
+     *
+     * @return $this
+     */
+    public function setExperimentalIndicator($experimentalIndicator)
+    {
+        $this->experimentalIndicator = $experimentalIndicator;
+        return $this;
+    }
+
+    /**
+     * Is experimental indicator flag set
+     *
+     * @return boolean
+     */
+    public function isExperimentalIndicator()
+    {
+        return $this->experimentalIndicator;
+    }
+
+    /**
+     * Set footer present flag
+     *
+     * @param boolean $footerPresent
+     *
+     * @return $this
+     */
+    public function setFooterPresent($footerPresent)
+    {
+        $this->footerPresent = $footerPresent;
+        return $this;
+    }
+
+    /**
+     * Is footer present flag set
+     *
+     * @return boolean
+     */
+    public function isFooterPresent()
+    {
+        return $this->footerPresent;
+    }
+
+    /**
+     * Set size in bytes
      *
      * @param int $size
      *
@@ -236,7 +320,7 @@ class Header
     }
 
     /**
-     * Get size
+     * Get size in bytes
      *
      * @return int
      */
@@ -246,25 +330,48 @@ class Header
     }
 
     /**
-     * Set extended size
+     * Get tag size in bytes
      *
-     * @param int $extendedSize
+     * @return int
+     */
+    public function getTagSize()
+    {
+        return $this->tagSize;
+    }
+
+    /**
+     * Set tag size in bytes
+     *
+     * @param int $tagSize
      *
      * @return $this
      */
-    public function setExtendedSize($extendedSize)
+    public function setTagSize($tagSize)
     {
-        $this->extendedSize = $extendedSize;
+        $this->tagSize = $tagSize;
         return $this;
     }
 
     /**
-     * Get extended size
+     * Get complete tag size in bytes
      *
      * @return int
      */
-    public function getExtendedSize()
+    public function getCompleteTagSize()
     {
-        return $this->extendedSize;
+        return $this->completeTagSize;
+    }
+
+    /**
+     * Set complete tag size in bytes
+     *
+     * @param int $completeTagSize
+     *
+     * @return $this
+     */
+    public function setCompleteTagSize($completeTagSize)
+    {
+        $this->completeTagSize = $completeTagSize;
+        return $this;
     }
 }

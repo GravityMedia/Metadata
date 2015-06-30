@@ -8,10 +8,8 @@
 namespace GravityMedia\Metadata\ID3v2;
 
 use GravityMedia\Metadata\Exception;
-use GravityMedia\Metadata\ID3v2\Tag\Header;
-use GravityMedia\Metadata\ID3v2\Tag\HeaderFactory;
-use GravityMedia\Metadata\MetadataInterface;
-use GravityMedia\Metadata\TagInterface;
+use GravityMedia\Metadata\Metadata\MetadataInterface;
+use GravityMedia\Metadata\Metadata\TagInterface;
 use GravityMedia\Stream\Stream;
 use PhpBinaryReader\BinaryReader;
 use PhpBinaryReader\Endian;
@@ -111,8 +109,12 @@ class Metadata implements MetadataInterface
             return null;
         }
 
-        $header = $this->extractHeader();
-        $tag = new Tag($header);
+        $stream = $this->getStream();
+        $reader = $stream->getReader();
+
+        $stream->seek(0);
+
+        $tag = new Tag($this->getHeaderFactory()->createHeader($reader->read(10)));
 
         return $tag;
     }

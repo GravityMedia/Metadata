@@ -5,10 +5,10 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v2\Tag;
+namespace GravityMedia\Metadata\ID3v2;
 
 /**
- * ID3v2 tag footer
+ * ID3v2 footer
  *
  * @package GravityMedia\Metadata
  */

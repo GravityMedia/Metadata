@@ -5,7 +5,9 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata;
+namespace GravityMedia\Metadata\Metadata;
+
+use GravityMedia\Metadata\Exception;
 
 /**
  * Metadata interface

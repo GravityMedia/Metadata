@@ -154,7 +154,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
     /**
      * Test that setting comment throws an exception on invalid comment arguments
      *
-     * @dataProvider invalidCommentDataProvider
+     * @dataProvider             invalidCommentDataProvider
      *
      * @param $version
      * @param $comment
@@ -239,6 +239,8 @@ class TagTest extends \PHPUnit_Framework_TestCase
     /**
      * Test that setting genre throws an exception on invalid genre arguments
      *
+     * @uses                     GravityMedia\Metadata\ID3v1\Genres
+     *
      * @expectedException \GravityMedia\Metadata\Exception\InvalidArgumentException
      * @expectedExceptionMessage Invalid genre argument
      */
@@ -251,6 +253,8 @@ class TagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test that setting a valid genre can be retrieved afterwards
+     *
+     * @uses GravityMedia\Metadata\ID3v1\Genres
      */
     public function testSettingValidGenre()
     {
@@ -259,5 +263,43 @@ class TagTest extends \PHPUnit_Framework_TestCase
         $tag->setGenre($genre);
 
         $this->assertEquals($genre, $tag->getGenre());
+    }
+
+    /**
+     * Test rendering ID3 v1.0 Tag
+     *
+     * @uses GravityMedia\Metadata\ID3v1\Genres
+     */
+    public function testRenderingID3v10Tag()
+    {
+        $tag = new Tag(Tag::VERSION_10);
+        $data = <<<EOT
+TAG\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
+\x00\x00\x00\x00\x00\xff
+EOT;
+
+        $this->assertEquals(str_replace(PHP_EOL, '', $data), $tag->render());
+    }
+
+    /**
+     * Test rendering ID3 v1.1 Tag
+     *
+     * @uses GravityMedia\Metadata\ID3v1\Genres
+     */
+    public function testRenderingID3v11Tag()
+    {
+        $tag = new Tag(Tag::VERSION_11);
+        $data = <<<EOT
+TAG\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
+\x00\x00\x00\x00\x00\xff
+EOT;
+
+        $this->assertEquals(str_replace(PHP_EOL, '', $data), $tag->render());
     }
 }

@@ -43,6 +43,17 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test that metadata object returns tag factory
+     */
+    public function testMetadataObjectReturnsTagFactory()
+    {
+        $file = new \SplFileInfo(__DIR__ . '/../../resources/notags.mp3');
+        $metadata = new Metadata($file);
+
+        $this->assertInstanceOf('GravityMedia\Metadata\ID3v1\TagFactory', $metadata->getTagFactory());
+    }
+
+    /**
      * Test that non-existent metadata is detected on empty file
      */
     public function testNonExistentMetadataDetectionOnEmptyFile()
@@ -117,14 +128,18 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
     /**
      * Test reading existing ID3 v1.0 metadata tag
      *
+     * @uses GravityMedia\Metadata\ID3v1\TagFactory
      * @uses GravityMedia\Metadata\ID3v1\Tag
+     * @uses GravityMedia\Metadata\ID3v1\Genres
      */
     public function testReadingExistentID3v10MetadataTag()
     {
         $file = new \SplFileInfo(__DIR__ . '/../../resources/id3v10.mp3');
         $metadata = new Metadata($file);
 
+        /** @var \GravityMedia\Metadata\ID3v1\Tag $tag */
         $tag = $metadata->read();
+
         $this->assertNotNull($tag);
         $this->assertEquals(Tag::VERSION_10, $tag->getVersion());
         $this->assertEquals('Title', $tag->getTitle());
@@ -138,14 +153,18 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
     /**
      * Test reading existing ID3 v1.1 metadata tag
      *
+     * @uses GravityMedia\Metadata\ID3v1\TagFactory
      * @uses GravityMedia\Metadata\ID3v1\Tag
+     * @uses GravityMedia\Metadata\ID3v1\Genres
      */
     public function testReadingExistentID3v11MetadataTag()
     {
         $file = new \SplFileInfo(__DIR__ . '/../../resources/id3v11.mp3');
         $metadata = new Metadata($file);
 
+        /** @var \GravityMedia\Metadata\ID3v1\Tag $tag */
         $tag = $metadata->read();
+
         $this->assertNotNull($tag);
         $this->assertEquals(Tag::VERSION_11, $tag->getVersion());
         $this->assertEquals('Title', $tag->getTitle());
@@ -168,13 +187,15 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
         $file = new \SplFileInfo(tempnam(sys_get_temp_dir(), 'php'));
         $metadata = new Metadata($file);
 
-        $metadata->write($this->getMock('GravityMedia\Metadata\TagInterface'));
+        $metadata->write($this->getMock('GravityMedia\Metadata\Metadata\TagInterface'));
     }
 
     /**
      * Test overwriting existing metadata
      *
+     * @uses GravityMedia\Metadata\ID3v1\TagFactory
      * @uses GravityMedia\Metadata\ID3v1\Tag
+     * @uses GravityMedia\Metadata\ID3v1\Genres
      */
     public function testOverwritingExistentMetadata()
     {
@@ -191,6 +212,7 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      * Test writing ID3 v1.0 metadata
      *
      * @uses GravityMedia\Metadata\ID3v1\Tag
+     * @uses GravityMedia\Metadata\ID3v1\Genres
      */
     public function testWritingID3v10Metadata()
     {
@@ -214,6 +236,7 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      * Test writing ID3 v1.1 metadata
      *
      * @uses GravityMedia\Metadata\ID3v1\Tag
+     * @uses GravityMedia\Metadata\ID3v1\Genres
      */
     public function testWritingID3v11Metadata()
     {

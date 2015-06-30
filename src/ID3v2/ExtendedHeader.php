@@ -5,13 +5,13 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata;
+namespace GravityMedia\Metadata\ID3v2;
 
 /**
- * Tag interface
+ * ID3v2 extended header
  *
  * @package GravityMedia\Metadata
  */
-interface TagInterface
+class ExtendedHeader
 {
 }

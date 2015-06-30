@@ -5,58 +5,74 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v2\Tag;
+namespace GravityMedia\Metadata\ID3v2;
 
 use GravityMedia\Metadata\Exception;
+use GravityMedia\Stream\Stream;
+use PhpBinaryReader\BinaryReader;
+use PhpBinaryReader\Endian;
 
 /**
- * ID3v2 tag header factory
+ * ID3v2 header factory
  *
  * @package GravityMedia\Metadata
  */
 class HeaderFactory
 {
     /**
-     * Create Create ID3v2 tag header object
+     * Create ID3v2 header object
      *
-     * @param int $version
-     * @param int $revision
-     * @param int $flags
-     * @param int $size
+     * @param string $data The byte vector which represents the header
      *
      * @throws Exception\InvalidArgumentException An exception is thrown on invalid arguments
      *
      * @return Header
      */
-    public function createHeader($version, $revision, $flags, $size)
+    public function createHeader($data)
     {
+        $stream = new Stream('php://temp', 'w+b');
+        $reader = $stream->getReader();
+        $writer = $stream->getWriter();
+
+        $writer->write($data);
+        $stream->rewind();
+
+        if (10 !== $stream->getSize() || 'ID3' !== $reader->read(3)) {
+            throw new Exception\InvalidArgumentException('Invalid data argument');
+        }
+
+        $version = ord($reader->read(1));
+        $revision = ord($reader->read(1));
+        $flags = ord($reader->read(1));
+        $size = new BinaryReader($reader->read(4), Endian::ENDIAN_BIG);
+
         switch ($version) {
             case 2:
-                $header = $this->createHeaderVersion22($flags);
+                $header = $this->createHeaderVersion2($flags);
                 break;
             case 3:
-                $header = $this->createHeaderVersion23($flags);
+                $header = $this->createHeaderVersion3($flags);
                 break;
             case 4:
-                $header = $this->createHeaderVersion24($flags);
+                $header = $this->createHeaderVersion4($flags);
                 break;
             default:
-                throw new Exception\InvalidArgumentException('Invalid version');
+                throw new Exception\RuntimeException('Invalid version');
         }
 
         return $header
             ->setRevision($revision)
-            ->setSize($size);
+            ->setSize($size->readUInt32());
     }
 
     /**
-     * Create Create ID3 v2.2 metadata object
+     * Create ID3v2 version 2 header object
      *
      * @param int $flags
      *
      * @return Header
      */
-    protected function createHeaderVersion22($flags)
+    protected function createHeaderVersion2($flags)
     {
         $header = new Header(Header::VERSION_22);
 
@@ -67,13 +83,13 @@ class HeaderFactory
     }
 
     /**
-     * Create Create ID3 v2.3 metadata object
+     * Create ID3v2 version 3 header object
      *
      * @param int $flags
      *
      * @return Header
      */
-    protected function createHeaderVersion23($flags)
+    protected function createHeaderVersion3($flags)
     {
         $header = new Header(Header::VERSION_23);
 
@@ -85,13 +101,13 @@ class HeaderFactory
     }
 
     /**
-     * Create Create ID3 v2.4 metadata object
+     * Create ID3v2 version 4 header object
      *
      * @param int $flags
      *
      * @return Header
      */
-    protected function createHeaderVersion24($flags)
+    protected function createHeaderVersion4($flags)
     {
         $header = new Header(Header::VERSION_24);
 
