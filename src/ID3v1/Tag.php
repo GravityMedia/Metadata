@@ -1,13 +1,16 @@
 <?php
 /**
- * This file is part of the metadata package
+ * This file is part of the Metadata package.
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
 namespace GravityMedia\Metadata\ID3v1;
 
-use GravityMedia\Metadata\Exception;
+use GravityMedia\Metadata\Exception\BadMethodCallException;
+use GravityMedia\Metadata\Exception\InvalidArgumentException;
+use GravityMedia\Metadata\ID3v1\Enum\Genre;
+use GravityMedia\Metadata\ID3v1\Enum\Version;
 use GravityMedia\Metadata\Metadata\TagInterface;
 
 /**
@@ -17,23 +20,6 @@ use GravityMedia\Metadata\Metadata\TagInterface;
  */
 class Tag implements TagInterface
 {
-    /**
-     * Tag version 1.0
-     */
-    const VERSION_10 = 0;
-
-    /**
-     * Tag version 1.1
-     */
-    const VERSION_11 = 1;
-
-    /**
-     * Valid versions
-     *
-     * @var array
-     */
-    protected static $validVersions = array(self::VERSION_10, self::VERSION_11);
-
     /**
      * @var int
      */
@@ -70,35 +56,28 @@ class Tag implements TagInterface
     protected $track;
 
     /**
-     * @var Genres
-     */
-    protected $genres;
-
-    /**
-     * @var string
+     * @var int
      */
     protected $genre;
 
     /**
-     * Create ID3v1 tag object
+     * Create tag object.
      *
      * @param int $version The version (default is 1: v1.1)
      *
-     * @throws Exception\InvalidArgumentException An exception is thrown on invalid version arguments
+     * @throws InvalidArgumentException An exception is thrown on invalid version arguments
      */
-    public function __construct($version = self::VERSION_11)
+    public function __construct($version = Version::VERSION_11)
     {
-        if (!in_array($version, self::$validVersions)) {
-            throw new Exception\InvalidArgumentException('Invalid version argument');
+        if (!in_array($version, Version::values())) {
+            throw new InvalidArgumentException('Invalid version.');
         }
 
         $this->version = $version;
     }
 
     /**
-     * Get version
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getVersion()
     {
@@ -106,18 +85,26 @@ class Tag implements TagInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
      * Set title
      *
      * @param string $title The title
      *
-     * @throws Exception\InvalidArgumentException An exception is thrown when the title exceeds 30 characters
+     * @throws InvalidArgumentException An exception is thrown when the title exceeds 30 characters
      *
      * @return $this
      */
     public function setTitle($title)
     {
         if (strlen($title) > 30) {
-            throw new Exception\InvalidArgumentException('Title argument exceeds maximum number of characters');
+            throw new InvalidArgumentException('Title argument exceeds maximum number of characters.');
         }
 
         $this->title = $title;
@@ -126,13 +113,11 @@ class Tag implements TagInterface
     }
 
     /**
-     * Get title
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getTitle()
+    public function getArtist()
     {
-        return $this->title;
+        return $this->artist;
     }
 
     /**
@@ -140,14 +125,14 @@ class Tag implements TagInterface
      *
      * @param string $artist The artist
      *
-     * @throws Exception\InvalidArgumentException An exception is thrown when the artist exceeds 30 characters
+     * @throws InvalidArgumentException An exception is thrown when the artist exceeds 30 characters
      *
      * @return $this
      */
     public function setArtist($artist)
     {
         if (strlen($artist) > 30) {
-            throw new Exception\InvalidArgumentException('Artist argument exceeds maximum number of characters');
+            throw new InvalidArgumentException('Artist argument exceeds maximum number of characters.');
         }
 
         $this->artist = $artist;
@@ -156,13 +141,11 @@ class Tag implements TagInterface
     }
 
     /**
-     * Get artist
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getArtist()
+    public function getAlbum()
     {
-        return $this->artist;
+        return $this->album;
     }
 
     /**
@@ -170,14 +153,14 @@ class Tag implements TagInterface
      *
      * @param string $album The album
      *
-     * @throws Exception\InvalidArgumentException An exception is thrown when the album exceeds 30 characters
+     * @throws InvalidArgumentException An exception is thrown when the album exceeds 30 characters
      *
      * @return $this
      */
     public function setAlbum($album)
     {
         if (strlen($album) > 30) {
-            throw new Exception\InvalidArgumentException('Album argument exceeds maximum number of characters');
+            throw new InvalidArgumentException('Album argument exceeds maximum number of characters.');
         }
 
         $this->album = $album;
@@ -186,11 +169,11 @@ class Tag implements TagInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getAlbum()
+    public function getYear()
     {
-        return $this->album;
+        return $this->year;
     }
 
     /**
@@ -198,14 +181,14 @@ class Tag implements TagInterface
      *
      * @param int $year The year
      *
-     * @throws Exception\InvalidArgumentException An exception is thrown when the year does not have exactly 4 digits
+     * @throws InvalidArgumentException An exception is thrown when the year does not have exactly 4 digits
      *
      * @return $this
      */
     public function setYear($year)
     {
         if (preg_match('/^\d{4}$/', $year) < 1) {
-            throw new Exception\InvalidArgumentException('Year argument must have exactly 4 digits');
+            throw new InvalidArgumentException('Year argument must have exactly 4 digits.');
         }
 
         $this->year = $year;
@@ -214,13 +197,11 @@ class Tag implements TagInterface
     }
 
     /**
-     * Get year
-     *
-     * @return int
+     * {@inheritdoc}
      */
-    public function getYear()
+    public function getComment()
     {
-        return $this->year;
+        return $this->comment;
     }
 
     /**
@@ -228,16 +209,16 @@ class Tag implements TagInterface
      *
      * @param string $comment The comment
      *
-     * @throws Exception\InvalidArgumentException An exception is thrown when the comment exceeds 28 characters
+     * @throws InvalidArgumentException An exception is thrown when the comment exceeds 28 characters
      *                                            (ID3 v1.1) or 30 characters (ID3 v1.0)
      *
      * @return $this
      */
     public function setComment($comment)
     {
-        $max = self::VERSION_11 === $this->version ? 28 : 30;
+        $max = Version::VERSION_11 === $this->version ? 28 : 30;
         if (strlen($comment) > $max) {
-            throw new Exception\InvalidArgumentException('Comment argument exceeds maximum number of characters');
+            throw new InvalidArgumentException('Comment argument exceeds maximum number of characters.');
         }
 
         $this->comment = $comment;
@@ -246,33 +227,31 @@ class Tag implements TagInterface
     }
 
     /**
-     * Get comment
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getComment()
+    public function getTrack()
     {
-        return $this->comment;
+        return $this->track;
     }
 
     /**
-     * Set track number
+     * Set track
      *
      * @param int $track The track number
      *
-     * @throws Exception\BadMethodCallException An exception is thrown on ID3 v1.0 tag
-     * @throws Exception\InvalidArgumentException An exception is thrown when the year does not have exactly 2 digits
+     * @throws BadMethodCallException An exception is thrown on ID3 v1.0 tag
+     * @throws InvalidArgumentException An exception is thrown when the year does not have exactly 2 digits
      *
      * @return $this
      */
     public function setTrack($track)
     {
-        if (self::VERSION_10 === $this->version) {
-            throw new Exception\BadMethodCallException('Track is not supported in this version');
+        if (Version::VERSION_10 === $this->version) {
+            throw new BadMethodCallException('Track is not supported in this version.');
         }
 
         if (preg_match('/^\d{1,2}$/', $track) < 1) {
-            throw new Exception\InvalidArgumentException('Track argument exceeds 2 digits');
+            throw new InvalidArgumentException('Track argument exceeds 2 digits.');
         }
 
         $this->track = $track;
@@ -281,53 +260,7 @@ class Tag implements TagInterface
     }
 
     /**
-     * Get track number
-     *
-     * @return int
-     */
-    public function getTrack()
-    {
-        return $this->track;
-    }
-
-    /**
-     * Get genres
-     *
-     * @return Genres
-     */
-    public function getGenres()
-    {
-        if (null === $this->genres) {
-            $this->genres = new Genres();
-        }
-
-        return $this->genres;
-    }
-
-    /**
-     * Set genre
-     *
-     * @param string $genre The genre
-     *
-     * @throws Exception\InvalidArgumentException An exception is thrown on invalid genre arguments
-     *
-     * @return $this
-     */
-    public function setGenre($genre)
-    {
-        if (255 === $this->getGenres()->getIndexByName($genre)) {
-            throw new Exception\InvalidArgumentException('Invalid genre argument');
-        }
-
-        $this->genre = $genre;
-
-        return $this;
-    }
-
-    /**
-     * Get genre
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getGenre()
     {
@@ -335,40 +268,22 @@ class Tag implements TagInterface
     }
 
     /**
-     * @inheritdoc
+     * Set genre
+     *
+     * @param int $genre
+     *
+     * @throws InvalidArgumentException An exception is thrown on invalid genre arguments
+     *
+     * @return $this
      */
-    public function render()
+    public function setGenre($genre)
     {
-        $data = 'TAG';
-        $data .= $this->padData($this->getTitle(), 30, STR_PAD_RIGHT);
-        $data .= $this->padData($this->getArtist(), 30, STR_PAD_RIGHT);
-        $data .= $this->padData($this->getAlbum(), 30, STR_PAD_RIGHT);
-        $data .= $this->padData($this->getYear(), 4, STR_PAD_LEFT);
-
-        if (self::VERSION_11 === $this->getVersion()) {
-            $data .= $this->padData($this->getComment(), 28, STR_PAD_RIGHT);
-            $data .= "\x00";
-            $data .= chr($this->getTrack());
-        } else {
-            $data .= $this->padData($this->getComment(), 30, STR_PAD_RIGHT);
+        if (!in_array($genre, Genre::values())) {
+            throw new InvalidArgumentException('Invalid genre.');
         }
 
-        $data .= chr($this->getGenres()->getIndexByName($this->getGenre()));
+        $this->genre = $genre;
 
-        return $data;
-    }
-
-    /**
-     * Pad data
-     *
-     * @param string $data   The data to pad
-     * @param int    $length The final length
-     * @param int    $type   The type of padding
-     *
-     * @return string
-     */
-    protected function padData($data, $length, $type)
-    {
-        return str_pad(trim(substr($data, 0, $length)), $length, "\x00", $type);
+        return $this;
     }
 }

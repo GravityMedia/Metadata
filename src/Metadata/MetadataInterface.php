@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the metadata package
+ * This file is part of the Metadata package.
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
@@ -17,32 +17,30 @@ use GravityMedia\Metadata\Exception;
 interface MetadataInterface
 {
     /**
-     * Returns whether metadata exists
+     * Returns whether ID3 metadata exists.
      *
      * @return bool
      */
     public function exists();
 
     /**
-     * Strip metadata
+     * Strip ID3 metadata.
      *
      * @return $this
      */
     public function strip();
 
     /**
-     * Read metadata tag
+     * Read ID3 tag.
      *
-     * @return TagInterface|null
+     * @return null|TagInterface
      */
     public function read();
 
     /**
-     * Write metadata tag
+     * Write ID3 metadata tag.
      *
-     * @param TagInterface $tag The metadata tag to write
-     *
-     * @throws Exception\InvalidArgumentException An exception is thrown on invalid tag arguments
+     * @param TagInterface $tag The ID3 tag to write.
      *
      * @return $this
      */

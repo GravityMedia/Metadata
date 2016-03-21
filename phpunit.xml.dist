@@ -2,7 +2,7 @@
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-    bootstrap="vendor/autoload.php"
+    bootstrap="tests/bootstrap.php"
     backupGlobals="false"
     backupStaticAttributes="false"
     colors="true"
@@ -10,7 +10,7 @@
     convertErrorsToExceptions="true"
     forceCoversAnnotation="true"
     beStrictAboutTestsThatDoNotTestAnything="true"
-    checkForUnintentionallyCoveredCode="true"
+    beStrictAboutCoversAnnotation="true"
     beStrictAboutOutputDuringTests="true"
     beStrictAboutTestSize="true"
     beStrictAboutChangesToGlobalState="true"
@@ -41,7 +41,7 @@
     </php>
     <testsuites>
         <testsuite name="Metadata Test Suite">
-            <directory>tests</directory>
+            <directory>tests/src</directory>
         </testsuite>
     </testsuites>
     <filter>

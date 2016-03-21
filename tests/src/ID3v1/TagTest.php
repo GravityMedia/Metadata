@@ -1,12 +1,14 @@
 <?php
 /**
- * This file is part of the metadata package
+ * This file is part of the Metadata package.
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
 namespace GravityMedia\MetadataTest\ID3v1;
 
+use GravityMedia\Metadata\ID3v1\Enum\Genre;
+use GravityMedia\Metadata\ID3v1\Enum\Version;
 use GravityMedia\Metadata\ID3v1\Tag;
 
 /**
@@ -35,7 +37,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
     {
         $tag = new Tag();
 
-        $this->assertEquals(Tag::VERSION_11, $tag->getVersion());
+        $this->assertEquals(Version::VERSION_11, $tag->getVersion());
     }
 
     /**
@@ -146,8 +148,8 @@ class TagTest extends \PHPUnit_Framework_TestCase
     public function invalidCommentDataProvider()
     {
         return array(
-            array(Tag::VERSION_10, str_repeat('#', 31)),
-            array(Tag::VERSION_11, str_repeat('#', 29))
+            array(Version::VERSION_10, str_repeat('#', 31)),
+            array(Version::VERSION_11, str_repeat('#', 29))
         );
     }
 
@@ -177,8 +179,8 @@ class TagTest extends \PHPUnit_Framework_TestCase
     public function validCommentDataProvider()
     {
         return array(
-            array(Tag::VERSION_10, str_repeat('#', 30)),
-            array(Tag::VERSION_11, str_repeat('#', 28))
+            array(Version::VERSION_10, str_repeat('#', 30)),
+            array(Version::VERSION_11, str_repeat('#', 28))
         );
     }
 
@@ -206,7 +208,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
      */
     public function testSettingTrackThrowsExceptionOnID3v10Tag()
     {
-        $tag = new Tag(Tag::VERSION_10);
+        $tag = new Tag(Version::VERSION_10);
 
         $tag->setTrack(12);
     }
@@ -248,7 +250,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
     {
         $tag = new Tag();
 
-        $tag->setGenre('Foo-Bar');
+        $tag->setGenre(255);
     }
 
     /**
@@ -258,48 +260,10 @@ class TagTest extends \PHPUnit_Framework_TestCase
      */
     public function testSettingValidGenre()
     {
-        $genre = 'Hip-Hop';
+        $genre = Genre::GENRE_HIP_HOP;
         $tag = new Tag();
         $tag->setGenre($genre);
 
         $this->assertEquals($genre, $tag->getGenre());
-    }
-
-    /**
-     * Test rendering ID3 v1.0 Tag
-     *
-     * @uses GravityMedia\Metadata\ID3v1\Genres
-     */
-    public function testRenderingID3v10Tag()
-    {
-        $tag = new Tag(Tag::VERSION_10);
-        $data = <<<EOT
-TAG\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
-\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
-\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
-\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
-\x00\x00\x00\x00\x00\xff
-EOT;
-
-        $this->assertEquals(str_replace(PHP_EOL, '', $data), $tag->render());
-    }
-
-    /**
-     * Test rendering ID3 v1.1 Tag
-     *
-     * @uses GravityMedia\Metadata\ID3v1\Genres
-     */
-    public function testRenderingID3v11Tag()
-    {
-        $tag = new Tag(Tag::VERSION_11);
-        $data = <<<EOT
-TAG\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
-\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
-\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
-\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00
-\x00\x00\x00\x00\x00\xff
-EOT;
-
-        $this->assertEquals(str_replace(PHP_EOL, '', $data), $tag->render());
     }
 }
