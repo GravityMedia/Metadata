@@ -22,7 +22,7 @@ class Genre
      *
      * @var string[]
      */
-    protected static $strings = array(
+    protected static $strings = [
         GenreEnum::GENRE_BLUES => 'Blues',
         GenreEnum::GENRE_CLASSIC_ROCK => 'Classic Rock',
         GenreEnum::GENRE_COUNTRY => 'Country',
@@ -215,7 +215,7 @@ class Genre
         GenreEnum::GENRE_DUBSTEP => 'Dubstep',
         GenreEnum::GENRE_GARAGE_ROCK => 'Garage Rock',
         GenreEnum::GENRE_PSYBIENT => 'Psybient'
-    );
+    ];
 
     /**
      * @var int

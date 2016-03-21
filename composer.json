@@ -21,6 +21,7 @@
         "mdurrant/php-binary-reader": "^1.0"
     },
     "require-dev": {
+        "debach/zend-mp3": "@dev",
         "james-heinrich/getid3": "^1.9",
         "phpunit/phpunit": "^5.2",
         "scrutinizer/ocular": "^1.3"

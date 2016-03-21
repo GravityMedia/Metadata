@@ -69,4 +69,11 @@ interface TagInterface
      * @return int
      */
     public function getGenre();
+
+    /**
+     * Get frames
+     *
+     * @return \ArrayObject
+     */
+    public function getFrames();
 }

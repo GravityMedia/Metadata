@@ -7,12 +7,14 @@
 
 namespace GravityMedia\Metadata\ID3v2;
 
+use GravityMedia\Metadata\Exception\BadMethodCallException;
+use GravityMedia\Metadata\ID3v2\Enum\Version;
 use GravityMedia\Metadata\Metadata\TagInterface;
 
 /**
  * ID3v2 tag
  *
- * @package GravityMedia\Metadata
+ * @package GravityMedia\Metadata\ID3v2
  */
 class Tag implements TagInterface
 {
@@ -32,12 +34,7 @@ class Tag implements TagInterface
     protected $frames;
 
     /**
-     * @var Footer
-     */
-    protected $footer;
-
-    /**
-     * Create ID3v2 tag object
+     * Create tag object.
      *
      * @param Header $header
      */
@@ -48,76 +45,94 @@ class Tag implements TagInterface
     }
 
     /**
-     * Get header
-     *
-     * @return Header
-     */
-    public function getHeader()
-    {
-        return $this->header;
-    }
-
-    /**
      * Set extended header
      *
      * @param ExtendedHeader $extendedHeader
+     *
+     * @throws BadMethodCallException An exception is thrown on ID3 v2.2 tag
      *
      * @return $this
      */
     public function setExtendedHeader(ExtendedHeader $extendedHeader)
     {
+        if (!in_array($this->getVersion(), [Version::VERSION_23, Version::VERSION_24])) {
+            throw new BadMethodCallException('Extended header is not supported in this version.');
+        }
+
         $this->extendedHeader = $extendedHeader;
+
         return $this;
     }
 
     /**
-     * Get extendedHeader
-     *
-     * @return ExtendedHeader
+     * {@inheritdoc}
      */
-    public function getExtendedHeader()
+    public function getVersion()
     {
-        return $this->extendedHeader;
+        return $this->header->getVersion();
     }
 
     /**
-     * Get frames
-     *
-     * @return \ArrayObject
+     * {@inheritdoc}
+     */
+    public function getTitle()
+    {
+        // TODO: Implement getTitle() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getArtist()
+    {
+        // TODO: Implement getArtist() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlbum()
+    {
+        // TODO: Implement getAlbum() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getYear()
+    {
+        // TODO: Implement getYear() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getComment()
+    {
+        // TODO: Implement getComment() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTrack()
+    {
+        // TODO: Implement getTrack() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getGenre()
+    {
+        // TODO: Implement getGenre() method.
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getFrames()
     {
         return $this->frames;
-    }
-
-    /**
-     * Set footer
-     *
-     * @param Footer $footer
-     *
-     * @return $this
-     */
-    public function setFooter(Footer $footer)
-    {
-        $this->footer = $footer;
-        return $this;
-    }
-
-    /**
-     * Get footer
-     *
-     * @return Footer
-     */
-    public function getFooter()
-    {
-        return $this->footer;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function render()
-    {
-        // ToDo
     }
 }

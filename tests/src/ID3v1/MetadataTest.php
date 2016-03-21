@@ -7,6 +7,7 @@
 
 namespace GravityMedia\MetadataTest\ID3v1;
 
+use GravityMedia\Metadata\ID3v1\Enum\Genre;
 use GravityMedia\Metadata\ID3v1\Enum\Version;
 use GravityMedia\Metadata\ID3v1\Metadata;
 use GravityMedia\Metadata\ID3v1\Tag;
@@ -100,9 +101,9 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
     /**
      * Test reading existing ID3 v1.0 metadata tag
      *
-     * @uses GravityMedia\Metadata\ID3v1\TagFactory
      * @uses GravityMedia\Metadata\ID3v1\Tag
-     * @uses GravityMedia\Metadata\ID3v1\Genres
+     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
+     * @uses GravityMedia\Metadata\ID3v1\Enum\Genre
      */
     public function testReadingExistentID3v10MetadataTag()
     {
@@ -118,15 +119,15 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Album', $tag->getAlbum());
         $this->assertSame(2003, $tag->getYear());
         $this->assertSame('Comment', $tag->getComment());
-        $this->assertSame('Hip-Hop', $tag->getGenre());
+        $this->assertSame(Genre::GENRE_HIP_HOP, $tag->getGenre());
     }
 
     /**
      * Test reading existing ID3 v1.1 metadata tag
      *
-     * @uses GravityMedia\Metadata\ID3v1\TagFactory
      * @uses GravityMedia\Metadata\ID3v1\Tag
-     * @uses GravityMedia\Metadata\ID3v1\Genres
+     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
+     * @uses GravityMedia\Metadata\ID3v1\Enum\Genre
      */
     public function testReadingExistentID3v11MetadataTag()
     {
@@ -143,30 +144,15 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(2003, $tag->getYear());
         $this->assertSame('Comment', $tag->getComment());
         $this->assertSame(12, $tag->getTrack());
-        $this->assertSame('Hip-Hop', $tag->getGenre());
-    }
-
-    /**
-     * Test that writing an invalid metadata tag throws an exception
-     *
-     * @expectedException \GravityMedia\Metadata\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Invalid tag argument
-     */
-    public function testWritingInvalidMetadataTagThrowsException()
-    {
-        $resource = $this->createResourceFromEmptyFile();
-        $stream = Stream::fromResource($resource);
-        $metadata = new Metadata($stream);
-
-        $metadata->write($this->getMock('GravityMedia\Metadata\Metadata\TagInterface'));
+        $this->assertSame(Genre::GENRE_HIP_HOP, $tag->getGenre());
     }
 
     /**
      * Test overwriting existing metadata
      *
-     * @uses GravityMedia\Metadata\ID3v1\TagFactory
      * @uses GravityMedia\Metadata\ID3v1\Tag
-     * @uses GravityMedia\Metadata\ID3v1\Genres
+     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
+     * @uses GravityMedia\Metadata\ID3v1\Enum\Genre
      */
     public function testOverwritingExistentMetadata()
     {
@@ -183,7 +169,8 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      * Test writing ID3 v1.0 metadata
      *
      * @uses GravityMedia\Metadata\ID3v1\Tag
-     * @uses GravityMedia\Metadata\ID3v1\Genres
+     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
+     * @uses GravityMedia\Metadata\ID3v1\Enum\Genre
      */
     public function testWritingID3v10Metadata()
     {
@@ -197,7 +184,7 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
         $tag->setAlbum('Album');
         $tag->setYear(2003);
         $tag->setComment('Comment');
-        $tag->setGenre('Hip-Hop');
+        $tag->setGenre(Genre::GENRE_HIP_HOP);
 
         $this->assertInstanceOf('GravityMedia\Metadata\ID3v1\Metadata', $metadata->write($tag));
     }
@@ -206,7 +193,8 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      * Test writing ID3 v1.1 metadata
      *
      * @uses GravityMedia\Metadata\ID3v1\Tag
-     * @uses GravityMedia\Metadata\ID3v1\Genres
+     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
+     * @uses GravityMedia\Metadata\ID3v1\Enum\Genre
      */
     public function testWritingID3v11Metadata()
     {
@@ -221,7 +209,7 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
         $tag->setYear(2003);
         $tag->setComment('Comment');
         $tag->setTrack(12);
-        $tag->setGenre('Hip-Hop');
+        $tag->setGenre(Genre::GENRE_HIP_HOP);
 
         $this->assertInstanceOf('GravityMedia\Metadata\ID3v1\Metadata', $metadata->write($tag));
     }

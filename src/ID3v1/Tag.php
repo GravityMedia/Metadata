@@ -286,4 +286,12 @@ class Tag implements TagInterface
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFrames()
+    {
+        return new \ArrayObject();
+    }
 }

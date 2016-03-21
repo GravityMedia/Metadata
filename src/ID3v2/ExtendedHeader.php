@@ -10,7 +10,7 @@ namespace GravityMedia\Metadata\ID3v2;
 /**
  * ID3v2 extended header
  *
- * @package GravityMedia\Metadata
+ * @package GravityMedia\Metadata\ID3v2
  */
 class ExtendedHeader
 {

@@ -7,101 +7,86 @@
 
 namespace GravityMedia\Metadata\ID3v2;
 
-use GravityMedia\Metadata\Exception;
+use GravityMedia\Metadata\Exception\RuntimeException;
+use GravityMedia\Metadata\ID3v2\Enum\Flag;
+use GravityMedia\Metadata\ID3v2\Enum\Version;
 use GravityMedia\Metadata\Metadata\MetadataInterface;
 use GravityMedia\Metadata\Metadata\TagInterface;
-use GravityMedia\Stream\Stream;
+use GravityMedia\Stream\StreamInterface;
 use PhpBinaryReader\BinaryReader;
 use PhpBinaryReader\Endian;
 
 /**
  * ID3v2 metadata
  *
- * @package GravityMedia\Metadata
+ * @package GravityMedia\Metadata\ID3v2
  */
 class Metadata implements MetadataInterface
 {
     /**
-     * @var \SplFileInfo
-     */
-    protected $file;
-
-    /**
-     * @var \GravityMedia\Stream\StreamInterface
+     * @var StreamInterface
      */
     protected $stream;
 
     /**
-     * @var HeaderFactory
-     */
-    protected $headerFactory;
-
-    /**
-     * Create ID3v2 metadata object
+     * Create stream provider object from stream.
      *
-     * @param \SplFileInfo $file
+     * @param StreamInterface $stream
      */
-    public function __construct(\SplFileInfo $file)
+    public function __construct(StreamInterface $stream)
     {
-        $this->file = $file;
+        $this->stream = $stream;
     }
 
     /**
-     * Get stream
-     *
-     * @return \GravityMedia\Stream\StreamInterface
-     */
-    public function getStream()
-    {
-        if (null === $this->stream) {
-            if ($this->file->isFile()) {
-                $this->stream = new Stream($this->file, 'r+b');
-            } else {
-                $this->stream = new Stream($this->file, 'w+b');
-            }
-        }
-
-        return $this->stream;
-    }
-
-    /**
-     * Get header factory
-     *
-     * @return HeaderFactory
-     */
-    public function getHeaderFactory()
-    {
-        if (null === $this->headerFactory) {
-            $this->headerFactory = new HeaderFactory();
-        }
-
-        return $this->headerFactory;
-    }
-
-    /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function exists()
     {
-        $stream = $this->getStream();
-        if ($stream->getSize() < 10) {
+        if ($this->stream->getSize() < 10) {
             return false;
         }
 
-        $stream->seek(0);
+        $this->stream->seek(0);
 
-        return 'ID3' === $stream->getReader()->read(3);
+        return 'ID3' === $this->stream->read(3);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function strip()
     {
+        return $this;
     }
 
     /**
-     * @inheritdoc
+     * Decode the given 28-bit synchsafe integer to regular 32-bit integer.
+     *
+     * @param int $data
+     *
+     * @return int
+     */
+    protected function decodeSynchsafe32($data)
+    {
+        return ($data & 0x7f) | ($data & 0x7f00) >> 1 |
+        ($data & 0x7f0000) >> 2 | ($data & 0x7f000000) >> 3;
+    }
+
+    /**
+     * Decode unsynchronisation.
+     *
+     * @param string $data
+     *
+     * @return string
+     */
+    protected function decodeUnsynchronisation($data)
+    {
+        return preg_replace('/\xff\x00\x00/', "\xff\x00", preg_replace('/\xff\x00(?=[\xe0-\xff])/', "\xff", $data));
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function read()
     {
@@ -109,95 +94,91 @@ class Metadata implements MetadataInterface
             return null;
         }
 
-        $stream = $this->getStream();
-        $reader = $stream->getReader();
+        $this->stream->seek(3);
 
-        $stream->seek(0);
+        switch (ord($this->stream->read(1))) {
+            case 2:
+                $version = Version::VERSION_22;
+                break;
+            case 3:
+                $version = Version::VERSION_23;
+                break;
+            case 4:
+                $version = Version::VERSION_24;
+                break;
+            default:
+                throw new RuntimeException('Invalid version.');
+        }
 
-        $tag = new Tag($this->getHeaderFactory()->createHeader($reader->read(10)));
+        $header = new Header($version);
+        $header->setRevision(ord($this->stream->read(1)));
+
+        $flags = ord($this->stream->read(1));
+        switch ($version) {
+            case Version::VERSION_22:
+                $header->setFlags([
+                    Flag::FLAG_UNSYNCHRONISATION => (bool)($flags & 0x80),
+                    Flag::FLAG_COMPRESSION => (bool)($flags & 0x40)
+                ]);
+                break;
+            case Version::VERSION_23:
+                $header->setFlags([
+                    Flag::FLAG_UNSYNCHRONISATION => (bool)($flags & 0x80),
+                    Flag::FLAG_EXTENDED_HEADER => (bool)($flags & 0x40),
+                    Flag::FLAG_EXPERIMENTAL_INDICATOR => (bool)($flags & 0x20)
+                ]);
+                break;
+            case Version::VERSION_24:
+                $header->setFlags([
+                    Flag::FLAG_UNSYNCHRONISATION => (bool)($flags & 0x80),
+                    Flag::FLAG_EXTENDED_HEADER => (bool)($flags & 0x40),
+                    Flag::FLAG_EXPERIMENTAL_INDICATOR => (bool)($flags & 0x20),
+                    Flag::FLAG_FOOTER_PRESENT => (bool)($flags & 0x10)
+                ]);
+                break;
+        }
+
+        $size = new BinaryReader($this->stream->read(4), Endian::ENDIAN_BIG);
+        $header->setSize($this->decodeSynchsafe32($size->readUInt32()));
+
+        $tag = new Tag($header);
+
+        if ($header->isFlagEnabled(Flag::FLAG_EXTENDED_HEADER)) {
+            $extendedHeader = new ExtendedHeader();
+
+            // TODO: Read extended header.
+
+            $tag->setExtendedHeader($extendedHeader);
+        }
+
+        /*
+        $size = $header->getSize();
+        while ($size > 0) {
+            switch ($version) {
+                case Version::VERSION_22:
+                    $frameName = $this->stream->read(3);
+                    var_dump($frameName);
+
+                    $frameSize = new BinaryReader($this->stream->read(3), Endian::ENDIAN_BIG);
+                    var_dump($frameSize->readUInt32());
+
+                    exit;
+                    break;
+            }
+        }
+
+        $data = $this->stream->read($header->getSize());
+        var_dump($data);
+        */
 
         return $tag;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function write(TagInterface $tag)
     {
-        if (!$tag instanceof Tag) {
-            throw new Exception\InvalidArgumentException('Invalid tag argument');
-        }
-
-        $data = 'ID3';
-
-
-        $stream = $this->getStream();
-        if ($this->exists()) {
-            $stream->seek(-128, SEEK_END);
-        } else {
-            $stream->seek(0, SEEK_END);
-        }
-
-        $stream->getWriter()->write($data);
-
         return $this;
-    }
-
-    /**
-     * Extract header from stream
-     *
-     * @return Header
-     */
-    protected function extractHeader()
-    {
-        $stream = $this->getStream();
-        $reader = $stream->getReader();
-
-        // header
-        $stream->seek(3);
-        $version = ord($reader->read(1));
-        $revision = ord($reader->read(1));
-        $flags = ord($reader->read(1));
-        $sizeReader = new BinaryReader($reader->read(4), Endian::ENDIAN_BIG);
-
-        $header = $this->getHeaderFactory()
-            ->createHeader($version, $revision, $flags, $sizeReader->readUInt32());
-
-        // extended header
-        if (!$header->getFlag(Header::FLAG_EXTENDED_HEADER)) {
-            return $header;
-        }
-
-        $sizeReader = new BinaryReader($reader->read(4), Endian::ENDIAN_BIG);
-
-        if (Header::VERSION_23 === $header->getVersion()) {
-            $flagsReader = new BinaryReader($reader->read(2), Endian::ENDIAN_BIG);
-            $flags = $flagsReader->readUInt32();
-
-            return $header
-                ->setFlag(Header::FLAG_CRC_DATA_PRESENT, (bool)($flags & 0x8000))
-                ->setExtendedSize($sizeReader->readUInt32());
-        }
-
-        $flagsReader = new BinaryReader($reader->read(1), Endian::ENDIAN_BIG);
-        $flags = $flagsReader->readUInt32();
-
-        return $header
-            ->setFlag(Header::FLAG_TAG_IS_AN_UPDATE, (bool)($flags & 0x40))
-            ->setFlag(Header::FLAG_CRC_DATA_PRESENT, (bool)($flags & 0x20))
-            ->setFlag(Header::FLAG_TAG_RESTRICTIONS, (bool)($flags & 0x10))
-            ->setExtendedSize($sizeReader->readUInt32());
-    }
-
-    /**
-     * Deunsynchronise data
-     *
-     * @param string $data
-     *
-     * @return string
-     */
-    public function deunsynchroniseData($data)
-    {
-        return str_replace("\xFF\x00", "\xFF", $data);
     }
 }
