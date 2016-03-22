@@ -9,6 +9,8 @@ namespace GravityMedia\Metadata\ID3v2;
 
 use GravityMedia\Metadata\Exception\BadMethodCallException;
 use GravityMedia\Metadata\ID3v2\Enum\Version;
+use GravityMedia\Metadata\Metadata\ExtendedHeaderInterface;
+use GravityMedia\Metadata\Metadata\HeaderInterface;
 use GravityMedia\Metadata\Metadata\TagInterface;
 
 /**
@@ -19,7 +21,7 @@ use GravityMedia\Metadata\Metadata\TagInterface;
 class Tag implements TagInterface
 {
     /**
-     * @var Header
+     * @var HeaderInterface
      */
     protected $header;
 
@@ -36,9 +38,9 @@ class Tag implements TagInterface
     /**
      * Create tag object.
      *
-     * @param Header $header
+     * @param HeaderInterface $header
      */
-    public function __construct(Header $header)
+    public function __construct(HeaderInterface $header)
     {
         $this->header = $header;
         $this->frames = new \ArrayObject();
@@ -47,13 +49,13 @@ class Tag implements TagInterface
     /**
      * Set extended header
      *
-     * @param ExtendedHeader $extendedHeader
+     * @param ExtendedHeaderInterface $extendedHeader
      *
      * @throws BadMethodCallException An exception is thrown on ID3 v2.2 tag
      *
      * @return $this
      */
-    public function setExtendedHeader(ExtendedHeader $extendedHeader)
+    public function setExtendedHeader(ExtendedHeaderInterface $extendedHeader)
     {
         if (!in_array($this->getVersion(), [Version::VERSION_23, Version::VERSION_24])) {
             throw new BadMethodCallException('Extended header is not supported in this version.');

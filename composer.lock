@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "69dc94338d3248032337ff952d973b49",
-    "content-hash": "c1298fe52fc42279e4f5fb80b99239d7",
+    "hash": "0a2b5214fd2e11ce20fc3ee296801715",
+    "content-hash": "dc9025fb5703704106c70a6854be4655",
     "packages": [
         {
             "name": "gravitymedia/stream",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/GravityMedia/Stream.git",
-                "reference": "722094c40023d7a7145295cf614e2e74776c981f"
+                "reference": "4a5c6203b90823e80298c252826882e0f085a7fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityMedia/Stream/zipball/722094c40023d7a7145295cf614e2e74776c981f",
-                "reference": "722094c40023d7a7145295cf614e2e74776c981f",
+                "url": "https://api.github.com/repos/GravityMedia/Stream/zipball/4a5c6203b90823e80298c252826882e0f085a7fa",
+                "reference": "4a5c6203b90823e80298c252826882e0f085a7fa",
                 "shasum": ""
             },
             "require": {
@@ -60,55 +60,7 @@
                 "gravitymedia",
                 "stream"
             ],
-            "time": "2016-01-06 17:00:28"
-        },
-        {
-            "name": "mdurrant/php-binary-reader",
-            "version": "1.0.7.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mdurrant/php-binary-reader.git",
-                "reference": "55c1c2efc7113004c7ec3f0e5ee514febc51cfbe"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mdurrant/php-binary-reader/zipball/55c1c2efc7113004c7ec3f0e5ee514febc51cfbe",
-                "reference": "55c1c2efc7113004c7ec3f0e5ee514febc51cfbe",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~1.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PhpBinaryReader\\": [
-                        "src/",
-                        "test/"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Matt Durrant",
-                    "email": "mdurrant@gmail.com"
-                }
-            ],
-            "description": "Lightweight binary reader for PHP",
-            "time": "2016-03-16 15:26:17"
+            "time": "2016-03-22 13:19:42"
         }
     ],
     "packages-dev": [
@@ -611,6 +563,54 @@
                 "xml"
             ],
             "time": "2015-10-27 09:24:41"
+        },
+        {
+            "name": "mdurrant/php-binary-reader",
+            "version": "1.0.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mdurrant/php-binary-reader.git",
+                "reference": "55c1c2efc7113004c7ec3f0e5ee514febc51cfbe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mdurrant/php-binary-reader/zipball/55c1c2efc7113004c7ec3f0e5ee514febc51cfbe",
+                "reference": "55c1c2efc7113004c7ec3f0e5ee514febc51cfbe",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpBinaryReader\\": [
+                        "src/",
+                        "test/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Durrant",
+                    "email": "mdurrant@gmail.com"
+                }
+            ],
+            "description": "Lightweight binary reader for PHP",
+            "time": "2016-03-16 15:26:17"
         },
         {
             "name": "myclabs/deep-copy",

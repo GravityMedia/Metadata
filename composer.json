@@ -17,12 +17,12 @@
     ],
     "require": {
         "php": ">=5.6",
-        "gravitymedia/stream": "^1.0@dev",
-        "mdurrant/php-binary-reader": "^1.0"
+        "gravitymedia/stream": "^1.0@dev"
     },
     "require-dev": {
         "debach/zend-mp3": "@dev",
         "james-heinrich/getid3": "^1.9",
+        "mdurrant/php-binary-reader": "^1.0",
         "phpunit/phpunit": "^5.2",
         "scrutinizer/ocular": "^1.3"
     },

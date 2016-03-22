@@ -10,11 +10,16 @@ namespace GravityMedia\Metadata\ID3v2;
 use GravityMedia\Metadata\Exception\RuntimeException;
 use GravityMedia\Metadata\ID3v2\Enum\Flag;
 use GravityMedia\Metadata\ID3v2\Enum\Version;
+use GravityMedia\Metadata\Metadata\ExtendedHeaderInterface;
+use GravityMedia\Metadata\Metadata\HeaderInterface;
 use GravityMedia\Metadata\Metadata\MetadataInterface;
 use GravityMedia\Metadata\Metadata\TagInterface;
+use GravityMedia\Stream\Enum\ByteOrder;
+use GravityMedia\Stream\Reader\CharReader;
+use GravityMedia\Stream\Reader\LongReader;
+use GravityMedia\Stream\Reader\ShortReader;
+use GravityMedia\Stream\Stream;
 use GravityMedia\Stream\StreamInterface;
-use PhpBinaryReader\BinaryReader;
-use PhpBinaryReader\Endian;
 
 /**
  * ID3v2 metadata
@@ -86,17 +91,20 @@ class Metadata implements MetadataInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Read header from stream.
+     *
+     * @param StreamInterface $stream
+     *
+     * @return HeaderInterface
      */
-    public function read()
+    protected function readHeaderFromStream(StreamInterface $stream)
     {
-        if (!$this->exists()) {
-            return null;
-        }
+        $charReader = new CharReader($stream);
 
-        $this->stream->seek(3);
+        $longReader = new LongReader($stream);
+        $longReader->setByteOrder(ByteOrder::BIG_ENDIAN);
 
-        switch (ord($this->stream->read(1))) {
+        switch ($charReader->read()) {
             case 2:
                 $version = Version::VERSION_22;
                 break;
@@ -111,9 +119,9 @@ class Metadata implements MetadataInterface
         }
 
         $header = new Header($version);
-        $header->setRevision(ord($this->stream->read(1)));
+        $header->setRevision($charReader->read());
 
-        $flags = ord($this->stream->read(1));
+        $flags = $charReader->read();
         switch ($version) {
             case Version::VERSION_22:
                 $header->setFlags([
@@ -138,38 +146,149 @@ class Metadata implements MetadataInterface
                 break;
         }
 
-        $size = new BinaryReader($this->stream->read(4), Endian::ENDIAN_BIG);
-        $header->setSize($this->decodeSynchsafe32($size->readUInt32()));
+        $header->setSize($this->decodeSynchsafe32($longReader->read()));
 
+        return $header;
+    }
+
+    /**
+     * Read extended header from stream.
+     *
+     * @param StreamInterface $stream
+     * @param HeaderInterface $header
+     *
+     * @return ExtendedHeaderInterface
+     */
+    protected function readExtendedHeaderFromStream(StreamInterface $stream, HeaderInterface $header)
+    {
+        $charReader = new CharReader($stream);
+
+        $shortReader = new ShortReader($stream);
+        $shortReader->setByteOrder(ByteOrder::BIG_ENDIAN);
+
+        $longReader = new LongReader($stream);
+        $longReader->setByteOrder(ByteOrder::BIG_ENDIAN);
+
+        $extendedHeader = new ExtendedHeader();
+
+        switch ($header->getVersion()) {
+            case Version::VERSION_23:
+                $extendedHeader->setSize($longReader->read());
+
+                $flags = $shortReader->read();
+                $extendedHeader->setFlags([
+                    Flag::FLAG_CRC_DATA_PRESENT => (bool)($flags & 0x8000)
+                ]);
+
+                $extendedHeader->setPadding($longReader->read());
+
+                if ($extendedHeader->isFlagEnabled(Flag::FLAG_CRC_DATA_PRESENT)) {
+                    $extendedHeader->setCrc32($longReader->read());
+                }
+
+                break;
+            case Version::VERSION_24:
+                $extendedHeader->setSize($this->decodeSynchsafe32($longReader->read()));
+
+                $stream->seek(1, SEEK_CUR);
+                $flags = $charReader->read();
+                $extendedHeader->setFlags([
+                    Flag::FLAG_TAG_IS_AN_UPDATE => (bool)($flags & 0x40),
+                    Flag::FLAG_CRC_DATA_PRESENT => (bool)($flags & 0x20),
+                    Flag::FLAG_TAG_RESTRICTIONS => (bool)($flags & 0x10)
+                ]);
+
+                if ($extendedHeader->isFlagEnabled(Flag::FLAG_TAG_IS_AN_UPDATE)) {
+                    $stream->seek(1, SEEK_CUR);
+                }
+
+                if ($extendedHeader->isFlagEnabled(Flag::FLAG_CRC_DATA_PRESENT)) {
+                    $stream->seek(1, SEEK_CUR);
+                    $extendedHeader->setCrc32(
+                        $charReader->read() * (0xfffffff + 1) + $this->decodeSynchsafe32($longReader->read())
+                    );
+                }
+
+                if ($extendedHeader->isFlagEnabled(Flag::FLAG_TAG_RESTRICTIONS)) {
+                    $stream->seek(1, SEEK_CUR);
+                    $extendedHeader->setRestrictions($charReader->read());
+                }
+
+                break;
+        }
+
+        return $extendedHeader;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function read()
+    {
+        if (!$this->exists()) {
+            return null;
+        }
+
+        $this->stream->seek(3);
+
+        $header = $this->readHeaderFromStream($this->stream);
         $tag = new Tag($header);
 
-        if ($header->isFlagEnabled(Flag::FLAG_EXTENDED_HEADER)) {
-            $extendedHeader = new ExtendedHeader();
+        $this->stream->seek(10);
 
-            // TODO: Read extended header.
-
-            $tag->setExtendedHeader($extendedHeader);
-        }
-
-        /*
-        $size = $header->getSize();
-        while ($size > 0) {
-            switch ($version) {
-                case Version::VERSION_22:
-                    $frameName = $this->stream->read(3);
-                    var_dump($frameName);
-
-                    $frameSize = new BinaryReader($this->stream->read(3), Endian::ENDIAN_BIG);
-                    var_dump($frameSize->readUInt32());
-
-                    exit;
-                    break;
-            }
-        }
+        /**
+         * The ID3v2 tag size is the sum of the byte length of the extended
+         * header, the padding and the frames after unsynchronisation. If a
+         * footer is present this equals to ('total size' - 20) bytes, otherwise
+         * ('total size' - 10) bytes.
+         */
 
         $data = $this->stream->read($header->getSize());
-        var_dump($data);
-        */
+        if ($header->isFlagEnabled(Flag::FLAG_COMPRESSION)) {
+            $data = gzuncompress($data);
+        }
+
+        if ($header->isFlagEnabled(Flag::FLAG_UNSYNCHRONISATION)) {
+            $data = $this->decodeUnsynchronisation($data);
+        }
+
+        $resource = fopen('php://temp', 'r+b');
+        $stream = Stream::fromResource($resource);
+        $stream->write($data);
+        $stream->rewind();
+
+        $size = $stream->getSize();
+        if ($header->isFlagEnabled(Flag::FLAG_EXTENDED_HEADER)) {
+            $extendedHeader = $this->readExtendedHeaderFromStream($stream, $header);
+            $tag->setExtendedHeader($extendedHeader);
+
+            $size -= $extendedHeader->getSize();
+        }
+
+        if ($header->isFlagEnabled(Flag::FLAG_EXTENDED_HEADER)) {
+            // TODO: Read footer from stream
+
+            $size -= 10;
+        }
+
+        $longReader = new LongReader($stream);
+        $longReader->setByteOrder(ByteOrder::BIG_ENDIAN);
+
+        while ($size > 0) {
+            if (0 === ord($stream->read(1))) {
+                break;
+            }
+
+            $stream->seek(-1, SEEK_CUR);
+
+            $frameName = $stream->read(4);
+            //var_dump($frameName);
+
+            $frameSize = $longReader->read();
+            //var_dump($frameSize);
+
+            $size -= $frameSize;
+        }
 
         return $tag;
     }

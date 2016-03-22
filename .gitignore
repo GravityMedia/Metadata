@@ -1,5 +1,6 @@
+.idea/deployment.xml
 .idea/workspace.xml
-build/
 vendor/
 composer.phar
 coverage.clover
+phpunit.xml
