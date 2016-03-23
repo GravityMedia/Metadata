@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/GravityMedia/Stream.git",
-                "reference": "4a5c6203b90823e80298c252826882e0f085a7fa"
+                "reference": "dba28777b7dedf29db78ad924a3bea2ec3664fff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityMedia/Stream/zipball/4a5c6203b90823e80298c252826882e0f085a7fa",
-                "reference": "4a5c6203b90823e80298c252826882e0f085a7fa",
+                "url": "https://api.github.com/repos/GravityMedia/Stream/zipball/dba28777b7dedf29db78ad924a3bea2ec3664fff",
+                "reference": "dba28777b7dedf29db78ad924a3bea2ec3664fff",
                 "shasum": ""
             },
             "require": {
@@ -60,7 +60,7 @@
                 "gravitymedia",
                 "stream"
             ],
-            "time": "2016-03-22 13:19:42"
+            "time": "2016-03-23 11:14:14"
         }
     ],
     "packages-dev": [

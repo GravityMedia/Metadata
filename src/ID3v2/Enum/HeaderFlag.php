@@ -8,11 +8,11 @@
 namespace GravityMedia\Metadata\ID3v2\Enum;
 
 /**
- * Flag enum
+ * ID3v2 header flag enum
  *
  * @package GravityMedia\Metadata\ID3v2\Enum
  */
-class Flag
+class HeaderFlag
 {
     /**
      * Unsynchronisation flag
@@ -40,22 +40,7 @@ class Flag
     const FLAG_FOOTER_PRESENT = 4;
 
     /**
-     * CRC data present flag
-     */
-    const FLAG_CRC_DATA_PRESENT = 5;
-
-    /**
-     * Tag is an update flag
-     */
-    const FLAG_TAG_IS_AN_UPDATE = 6;
-
-    /**
-     * Tag restrictions flag
-     */
-    const FLAG_TAG_RESTRICTIONS = 7;
-
-    /**
-     * Valid versions
+     * Valid values
      *
      * @var int[]
      */
@@ -64,14 +49,11 @@ class Flag
         self::FLAG_COMPRESSION,
         self::FLAG_EXTENDED_HEADER,
         self::FLAG_EXPERIMENTAL_INDICATOR,
-        self::FLAG_FOOTER_PRESENT,
-        self::FLAG_CRC_DATA_PRESENT,
-        self::FLAG_TAG_IS_AN_UPDATE,
-        self::FLAG_TAG_RESTRICTIONS
+        self::FLAG_FOOTER_PRESENT
     ];
 
     /**
-     * Return valid versions
+     * Return valid values
      *
      * @return int[]
      */

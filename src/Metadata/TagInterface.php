@@ -73,7 +73,7 @@ interface TagInterface
     /**
      * Get frames
      *
-     * @return \ArrayObject
+     * @return FrameInterface[]
      */
     public function getFrames();
 }

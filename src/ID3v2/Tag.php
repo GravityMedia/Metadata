@@ -10,6 +10,7 @@ namespace GravityMedia\Metadata\ID3v2;
 use GravityMedia\Metadata\Exception\BadMethodCallException;
 use GravityMedia\Metadata\ID3v2\Enum\Version;
 use GravityMedia\Metadata\Metadata\ExtendedHeaderInterface;
+use GravityMedia\Metadata\Metadata\FrameInterface;
 use GravityMedia\Metadata\Metadata\HeaderInterface;
 use GravityMedia\Metadata\Metadata\TagInterface;
 
@@ -31,7 +32,7 @@ class Tag implements TagInterface
     protected $extendedHeader;
 
     /**
-     * @var \ArrayObject
+     * @var FrameInterface[]
      */
     protected $frames;
 
@@ -44,6 +45,26 @@ class Tag implements TagInterface
     {
         $this->header = $header;
         $this->frames = new \ArrayObject();
+    }
+
+    /**
+     * Get header
+     *
+     * @return HeaderInterface
+     */
+    public function getHeader()
+    {
+        return $this->header;
+    }
+
+    /**
+     * Get extended header
+     *
+     * @return ExtendedHeader
+     */
+    public function getExtendedHeader()
+    {
+        return $this->extendedHeader;
     }
 
     /**
@@ -136,5 +157,18 @@ class Tag implements TagInterface
     public function getFrames()
     {
         return $this->frames;
+    }
+
+    /**
+     * Add frame
+     *
+     * @param FrameInterface $frame
+     *
+     * @return $this
+     */
+    public function addFrame(FrameInterface $frame)
+    {
+        $this->frames->append($frame);
+        return $this;
     }
 }

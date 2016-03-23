@@ -8,7 +8,7 @@
 namespace GravityMedia\Metadata\ID3v1\Enum;
 
 /**
- * Genre enum
+ * ID3v1 genre enum
  *
  * @package GravityMedia\Metadata\ID3v1\Enum
  */
@@ -975,7 +975,7 @@ class Genre
     const GENRE_PSYBIENT = 191;
 
     /**
-     * Valid genres
+     * Valid values
      *
      * @var int[]
      */
@@ -1175,7 +1175,7 @@ class Genre
     ];
 
     /**
-     * Return valid genres
+     * Return valid values
      *
      * @return int[]
      */

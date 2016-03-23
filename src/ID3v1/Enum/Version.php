@@ -8,7 +8,7 @@
 namespace GravityMedia\Metadata\ID3v1\Enum;
 
 /**
- * Version enum
+ * ID3v1 version enum
  *
  * @package GravityMedia\Metadata\ID3v1\Enum
  */
@@ -25,7 +25,7 @@ class Version
     const VERSION_11 = 1;
 
     /**
-     * Valid versions
+     * Valid values
      *
      * @var int[]
      */
@@ -35,7 +35,7 @@ class Version
     ];
 
     /**
-     * Return valid versions
+     * Return valid values
      *
      * @return int[]
      */

@@ -8,26 +8,26 @@
 namespace GravityMedia\Metadata\ID3v2\Enum;
 
 /**
- * ID3v2 version enum
+ * ID3v2 extended header flag enum
  *
  * @package GravityMedia\Metadata\ID3v2\Enum
  */
-class Version
+class ExtendedHeaderFlag
 {
     /**
-     * Tag version 2.2
+     * Tag is an update flag
      */
-    const VERSION_22 = 2;
+    const FLAG_TAG_IS_AN_UPDATE = 0;
 
     /**
-     * Tag version 2.3
+     * CRC data present flag
      */
-    const VERSION_23 = 3;
+    const FLAG_CRC_DATA_PRESENT = 1;
 
     /**
-     * Tag version 2.4
+     * Tag restrictions flag
      */
-    const VERSION_24 = 4;
+    const FLAG_TAG_RESTRICTIONS = 2;
 
     /**
      * Valid values
@@ -35,9 +35,9 @@ class Version
      * @var int[]
      */
     protected static $values = [
-        self::VERSION_22,
-        self::VERSION_23,
-        self::VERSION_24
+        self::FLAG_TAG_IS_AN_UPDATE,
+        self::FLAG_CRC_DATA_PRESENT,
+        self::FLAG_TAG_RESTRICTIONS
     ];
 
     /**
