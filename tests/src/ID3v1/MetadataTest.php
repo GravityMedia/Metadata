@@ -23,18 +23,6 @@ use GravityMedia\Stream\Stream;
 class MetadataTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Create resource from empty file
-     *
-     * @return resource
-     */
-    public function createResourceFromEmptyFile()
-    {
-        $target = tempnam(sys_get_temp_dir(), 'php');
-
-        return fopen($target, 'r+b');
-    }
-
-    /**
      * Create resource from file copy
      *
      * @param string $source
@@ -54,7 +42,7 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      */
     public function testNonExistentMetadataDetection()
     {
-        $resource = $this->createResourceFromFileCopy(__DIR__ . '/../../resources/notags.mp3');
+        $resource = $this->createResourceFromFileCopy(__DIR__ . '/../../resources/no-tags.mp3');
         $stream = Stream::fromResource($resource);
         $metadata = new Metadata($stream);
 
@@ -84,133 +72,5 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
         $metadata->strip();
 
         $this->assertFalse($metadata->exists());
-    }
-
-    /**
-     * Test reading non-existing metadata
-     */
-    public function testReadingNonExistentMetadata()
-    {
-        $resource = $this->createResourceFromFileCopy(__DIR__ . '/../../resources/notags.mp3');
-        $stream = Stream::fromResource($resource);
-        $metadata = new Metadata($stream);
-
-        $this->assertNull($metadata->read());
-    }
-
-    /**
-     * Test reading existing ID3 v1.0 metadata tag
-     *
-     * @uses GravityMedia\Metadata\ID3v1\Tag
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Genre
-     */
-    public function testReadingExistentID3v10MetadataTag()
-    {
-        $resource = $this->createResourceFromFileCopy(__DIR__ . '/../../resources/id3v10.mp3');
-        $stream = Stream::fromResource($resource);
-        $metadata = new Metadata($stream);
-        $tag = $metadata->read();
-
-        $this->assertNotNull($tag);
-        $this->assertSame(Version::VERSION_10, $tag->getVersion());
-        $this->assertSame('Title', $tag->getTitle());
-        $this->assertSame('Artist', $tag->getArtist());
-        $this->assertSame('Album', $tag->getAlbum());
-        $this->assertSame(2003, $tag->getYear());
-        $this->assertSame('Comment', $tag->getComment());
-        $this->assertSame(Genre::GENRE_HIP_HOP, $tag->getGenre());
-    }
-
-    /**
-     * Test reading existing ID3 v1.1 metadata tag
-     *
-     * @uses GravityMedia\Metadata\ID3v1\Tag
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Genre
-     */
-    public function testReadingExistentID3v11MetadataTag()
-    {
-        $resource = $this->createResourceFromFileCopy(__DIR__ . '/../../resources/id3v11.mp3');
-        $stream = Stream::fromResource($resource);
-        $metadata = new Metadata($stream);
-        $tag = $metadata->read();
-
-        $this->assertNotNull($tag);
-        $this->assertSame(Version::VERSION_11, $tag->getVersion());
-        $this->assertSame('Title', $tag->getTitle());
-        $this->assertSame('Artist', $tag->getArtist());
-        $this->assertSame('Album', $tag->getAlbum());
-        $this->assertSame(2003, $tag->getYear());
-        $this->assertSame('Comment', $tag->getComment());
-        $this->assertSame(12, $tag->getTrack());
-        $this->assertSame(Genre::GENRE_HIP_HOP, $tag->getGenre());
-    }
-
-    /**
-     * Test overwriting existing metadata
-     *
-     * @uses GravityMedia\Metadata\ID3v1\Tag
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Genre
-     */
-    public function testOverwritingExistentMetadata()
-    {
-        $resource = $this->createResourceFromFileCopy(__DIR__ . '/../../resources/id3v10.mp3');
-        $stream = Stream::fromResource($resource);
-        $metadata = new Metadata($stream);
-        $tag = $metadata->read();
-
-        $this->assertNotNull($tag);
-        $this->assertInstanceOf('GravityMedia\Metadata\ID3v1\Metadata', $metadata->write($tag));
-    }
-
-    /**
-     * Test writing ID3 v1.0 metadata
-     *
-     * @uses GravityMedia\Metadata\ID3v1\Tag
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Genre
-     */
-    public function testWritingID3v10Metadata()
-    {
-        $resource = $this->createResourceFromEmptyFile();
-        $stream = Stream::fromResource($resource);
-        $metadata = new Metadata($stream);
-
-        $tag = new Tag(Version::VERSION_10);
-        $tag->setTitle('Title');
-        $tag->setArtist('Artist');
-        $tag->setAlbum('Album');
-        $tag->setYear(2003);
-        $tag->setComment('Comment');
-        $tag->setGenre(Genre::GENRE_HIP_HOP);
-
-        $this->assertInstanceOf('GravityMedia\Metadata\ID3v1\Metadata', $metadata->write($tag));
-    }
-
-    /**
-     * Test writing ID3 v1.1 metadata
-     *
-     * @uses GravityMedia\Metadata\ID3v1\Tag
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Genre
-     */
-    public function testWritingID3v11Metadata()
-    {
-        $resource = $this->createResourceFromEmptyFile();
-        $stream = Stream::fromResource($resource);
-        $metadata = new Metadata($stream);
-
-        $tag = new Tag(Version::VERSION_11);
-        $tag->setTitle('Title');
-        $tag->setArtist('Artist');
-        $tag->setAlbum('Album');
-        $tag->setYear(2003);
-        $tag->setComment('Comment');
-        $tag->setTrack(12);
-        $tag->setGenre(Genre::GENRE_HIP_HOP);
-
-        $this->assertInstanceOf('GravityMedia\Metadata\ID3v1\Metadata', $metadata->write($tag));
     }
 }

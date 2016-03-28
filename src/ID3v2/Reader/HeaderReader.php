@@ -5,7 +5,7 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v2\Metadata;
+namespace GravityMedia\Metadata\ID3v2\Reader;
 
 use GravityMedia\Metadata\Exception\RuntimeException;
 use GravityMedia\Metadata\ID3v2\Enum\HeaderFlag;
@@ -20,7 +20,7 @@ use GravityMedia\Stream\StreamInterface;
 /**
  * ID3v2 header reader
  *
- * @package GravityMedia\Metadata\ID3v2\StreamReader
+ * @package GravityMedia\Metadata\ID3v2\Reader
  */
 class HeaderReader
 {
@@ -87,6 +87,7 @@ class HeaderReader
      */
     protected function readVersion()
     {
+        $this->stream->seek(3);
         switch ($this->getInteger8Reader()->read()) {
             case 2:
                 return Version::VERSION_22;
@@ -106,6 +107,8 @@ class HeaderReader
      */
     protected function readRevision()
     {
+        $this->stream->seek(4);
+
         return $this->getInteger8Reader()->read();
     }
 
@@ -118,6 +121,7 @@ class HeaderReader
      */
     protected function readFlags($version)
     {
+        $this->stream->seek(5);
         $flags = $this->getInteger8Reader()->read();
 
         if ($version === Version::VERSION_22) {
@@ -150,6 +154,8 @@ class HeaderReader
      */
     public function readSize()
     {
+        $this->stream->seek(6);
+
         return $this->getSynchsafeInteger32Reader()->read();
     }
 

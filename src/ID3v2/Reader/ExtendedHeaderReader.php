@@ -5,7 +5,7 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v2\Metadata;
+namespace GravityMedia\Metadata\ID3v2\Reader;
 
 use GravityMedia\Metadata\ID3v2\Enum\ExtendedHeaderFlag;
 use GravityMedia\Metadata\ID3v2\Enum\Version;
@@ -22,7 +22,7 @@ use GravityMedia\Stream\StreamInterface;
 /**
  * ID3v2 extended header reader
  *
- * @package GravityMedia\Metadata\ID3v2\StreamReader
+ * @package GravityMedia\Metadata\ID3v2\Reader
  */
 class ExtendedHeaderReader
 {

@@ -38,7 +38,7 @@ interface MetadataInterface
     public function read();
 
     /**
-     * Write ID3 metadata tag.
+     * Write ID3 tag.
      *
      * @param TagInterface $tag The ID3 tag to write.
      *

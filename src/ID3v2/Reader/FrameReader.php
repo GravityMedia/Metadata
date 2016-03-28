@@ -5,9 +5,9 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v2\Metadata;
+namespace GravityMedia\Metadata\ID3v2\Reader;
 
-use GravityMedia\Metadata\ID3v2\Converter\Unsynchronisation;
+use GravityMedia\Metadata\ID3v2\Encoder\Unsynchronisation;
 use GravityMedia\Metadata\ID3v2\Enum\FrameFlag;
 use GravityMedia\Metadata\ID3v2\Enum\Version;
 use GravityMedia\Metadata\ID3v2\Frame;
@@ -23,7 +23,7 @@ use GravityMedia\Stream\StreamInterface;
 /**
  * ID3v2 Frame reader
  *
- * @package GravityMedia\Metadata\ID3v2\StreamReader
+ * @package GravityMedia\Metadata\ID3v2\Reader
  */
 class FrameReader
 {
