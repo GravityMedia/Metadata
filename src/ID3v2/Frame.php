@@ -7,7 +7,7 @@
 
 namespace GravityMedia\Metadata\ID3v2;
 
-use GravityMedia\Metadata\Metadata\FrameInterface;
+use GravityMedia\Metadata\ID3v2\FrameInterface;
 
 /**
  * ID3v2 frame

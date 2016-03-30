@@ -12,7 +12,7 @@ use GravityMedia\Metadata\ID3v2\Enum\HeaderFlag;
 use GravityMedia\Metadata\ID3v2\Enum\Version;
 use GravityMedia\Metadata\ID3v2\Header;
 use GravityMedia\Metadata\ID3v2\Stream\SynchsafeInteger32Reader;
-use GravityMedia\Metadata\Metadata\HeaderInterface;
+use GravityMedia\Metadata\ID3v2\HeaderInterface;
 use GravityMedia\Stream\Enum\ByteOrder;
 use GravityMedia\Stream\Reader\Integer8Reader;
 use GravityMedia\Stream\StreamInterface;

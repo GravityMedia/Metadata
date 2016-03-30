@@ -11,12 +11,11 @@ use GravityMedia\Metadata\Exception\BadMethodCallException;
 use GravityMedia\Metadata\Exception\InvalidArgumentException;
 use GravityMedia\Metadata\ID3v1\Enum\Genre;
 use GravityMedia\Metadata\ID3v1\Enum\Version;
-use GravityMedia\Metadata\Metadata\TagInterface;
 
 /**
  * ID3v1 tag
  *
- * @package GravityMedia\Metadata
+ * @package GravityMedia\Metadata\ID3v1
  */
 class Tag implements TagInterface
 {
@@ -285,13 +284,5 @@ class Tag implements TagInterface
         $this->genre = $genre;
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFrames()
-    {
-        return new \ArrayObject();
     }
 }

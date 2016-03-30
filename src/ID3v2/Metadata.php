@@ -9,7 +9,7 @@ namespace GravityMedia\Metadata\ID3v2;
 
 use GravityMedia\Metadata\ID3v2\Reader\TagReader;
 use GravityMedia\Metadata\Metadata\MetadataInterface;
-use GravityMedia\Metadata\Metadata\TagInterface;
+use GravityMedia\Metadata\ID3v1\TagInterface;
 use GravityMedia\Stream\StreamInterface;
 
 /**

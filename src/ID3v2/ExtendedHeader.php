@@ -7,7 +7,7 @@
 
 namespace GravityMedia\Metadata\ID3v2;
 
-use GravityMedia\Metadata\Metadata\ExtendedHeaderInterface;
+use GravityMedia\Metadata\ID3v2\ExtendedHeaderInterface;
 
 /**
  * ID3v2 extended header

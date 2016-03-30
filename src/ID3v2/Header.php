@@ -9,7 +9,7 @@ namespace GravityMedia\Metadata\ID3v2;
 
 use GravityMedia\Metadata\Exception\InvalidArgumentException;
 use GravityMedia\Metadata\ID3v2\Enum\Version;
-use GravityMedia\Metadata\Metadata\HeaderInterface;
+use GravityMedia\Metadata\ID3v2\HeaderInterface;
 
 /**
  * ID3v2 header

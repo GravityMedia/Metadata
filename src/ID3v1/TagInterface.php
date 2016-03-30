@@ -5,61 +5,68 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\Metadata;
+namespace GravityMedia\Metadata\ID3v1;
 
 /**
- * Metadata tag interface.
+ * ID3v1 tag interface
  *
  * @package GravityMedia\Metadata\Metadata
  */
 interface TagInterface
 {
     /**
-     * Get title.
+     * Get version
+     *
+     * @return int
+     */
+    public function getVersion();
+
+    /**
+     * Get title
      *
      * @return string
      */
     public function getTitle();
 
     /**
-     * Get artist.
+     * Get artist
      *
      * @return string
      */
     public function getArtist();
 
     /**
-     * Get album.
+     * Get album
      *
      * @return string
      */
     public function getAlbum();
 
     /**
-     * Get year.
+     * Get year
      *
      * @return int
      */
     public function getYear();
 
     /**
-     * Get comment.
+     * Get comment
      *
      * @return string
      */
     public function getComment();
 
     /**
-     * Get track.
+     * Get track
      *
      * @return int
      */
     public function getTrack();
 
     /**
-     * Get genre.
+     * Get genre
      *
-     * @return string
+     * @return int
      */
     public function getGenre();
 }

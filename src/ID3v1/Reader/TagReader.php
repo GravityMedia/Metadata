@@ -11,7 +11,7 @@ use GravityMedia\Metadata\ID3v1\Enum\Genre;
 use GravityMedia\Metadata\ID3v1\Enum\Version;
 use GravityMedia\Metadata\ID3v1\Tag;
 use GravityMedia\Metadata\Metadata\MetadataInterface;
-use GravityMedia\Metadata\Metadata\TagInterface;
+use GravityMedia\Metadata\ID3v1\TagInterface;
 use GravityMedia\Stream\Reader\Integer8Reader;
 use GravityMedia\Stream\StreamInterface;
 

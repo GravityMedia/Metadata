@@ -9,10 +9,6 @@ namespace GravityMedia\Metadata\ID3v2;
 
 use GravityMedia\Metadata\Exception\BadMethodCallException;
 use GravityMedia\Metadata\ID3v2\Enum\Version;
-use GravityMedia\Metadata\Metadata\ExtendedHeaderInterface;
-use GravityMedia\Metadata\Metadata\FrameInterface;
-use GravityMedia\Metadata\Metadata\HeaderInterface;
-use GravityMedia\Metadata\Metadata\TagInterface;
 
 /**
  * ID3v2 tag
@@ -93,62 +89,6 @@ class Tag implements TagInterface
     public function getVersion()
     {
         return $this->header->getVersion();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTitle()
-    {
-        // TODO: Implement getTitle() method.
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getArtist()
-    {
-        // TODO: Implement getArtist() method.
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlbum()
-    {
-        // TODO: Implement getAlbum() method.
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getYear()
-    {
-        // TODO: Implement getYear() method.
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getComment()
-    {
-        // TODO: Implement getComment() method.
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTrack()
-    {
-        // TODO: Implement getTrack() method.
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getGenre()
-    {
-        // TODO: Implement getGenre() method.
     }
 
     /**

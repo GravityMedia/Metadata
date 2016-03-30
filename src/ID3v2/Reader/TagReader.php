@@ -10,9 +10,9 @@ namespace GravityMedia\Metadata\ID3v2\Reader;
 use GravityMedia\Metadata\ID3v2\Encoder\Unsynchronisation;
 use GravityMedia\Metadata\ID3v2\Enum\HeaderFlag;
 use GravityMedia\Metadata\ID3v2\Tag;
-use GravityMedia\Metadata\Metadata\HeaderInterface;
+use GravityMedia\Metadata\ID3v2\HeaderInterface;
 use GravityMedia\Metadata\Metadata\MetadataInterface;
-use GravityMedia\Metadata\Metadata\TagInterface;
+use GravityMedia\Metadata\ID3v1\TagInterface;
 use GravityMedia\Stream\Stream;
 use GravityMedia\Stream\StreamInterface;
 

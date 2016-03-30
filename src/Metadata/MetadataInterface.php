@@ -7,42 +7,41 @@
 
 namespace GravityMedia\Metadata\Metadata;
 
-use GravityMedia\Metadata\Exception;
-
 /**
- * Metadata interface
+ * Metadata interface.
  *
- * @package GravityMedia\Metadata
+ * @package GravityMedia\Metadata\Metadata
  */
 interface MetadataInterface
 {
     /**
-     * Returns whether ID3 metadata exists.
+     * Returns whether metadata exists.
      *
      * @return bool
      */
     public function exists();
 
     /**
-     * Strip ID3 metadata.
+     * Strip metadata.
      *
      * @return $this
      */
     public function strip();
 
     /**
-     * Read ID3 tag.
+     * Read tag.
      *
      * @return null|TagInterface
      */
     public function read();
 
     /**
-     * Write ID3 tag.
+     * Write tag.
      *
-     * @param TagInterface $tag The ID3 tag to write.
+     * @param TagInterface $tag The tag to write.
+     * @param int $version The tag version to write.
      *
      * @return $this
      */
-    public function write(TagInterface $tag);
+    public function write(TagInterface $tag, $version);
 }

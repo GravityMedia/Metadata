@@ -7,9 +7,12 @@
 
 namespace GravityMedia\Metadata\ID3v1;
 
+use GravityMedia\Metadata\ID3v1\Enum\Version;
 use GravityMedia\Metadata\ID3v1\Reader\TagReader;
+use GravityMedia\Metadata\ID3v1\Tag as ID3Tag;
 use GravityMedia\Metadata\ID3v1\Writer\TagWriter;
 use GravityMedia\Metadata\Metadata\MetadataInterface;
+use GravityMedia\Metadata\Metadata\Tag;
 use GravityMedia\Metadata\Metadata\TagInterface;
 use GravityMedia\Stream\StreamInterface;
 
@@ -107,15 +110,38 @@ class Metadata implements MetadataInterface
      */
     public function read()
     {
-        return $this->getTagReader()->read();
+        $id3Tag = $this->getTagReader()->read();
+
+        $tag = new Tag();
+        $tag
+            ->setTitle($id3Tag->getArtist())
+            ->setArtist($id3Tag->getArtist())
+            ->setAlbum($id3Tag->getAlbum())
+            ->setYear($id3Tag->getYear())
+            ->setComment($id3Tag->getComment())
+            ->setTrack($id3Tag->getTrack())
+            ->setGenre($id3Tag->getGenre());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function write(TagInterface $tag)
+    public function write(TagInterface $tag, $version)
     {
-        $this->getTagWriter()->write($tag);
+        $id3Tag = new ID3Tag($version);
+        $id3Tag
+            ->setTitle($tag->getArtist())
+            ->setArtist($tag->getArtist())
+            ->setAlbum($tag->getAlbum())
+            ->setYear($tag->getYear())
+            ->setComment($tag->getComment())
+            ->setGenre($tag->getGenre());
+
+        if (Version::VERSION_11 === $version) {
+            $id3Tag->setTrack($tag->getTrack());
+        }
+
+        $this->getTagWriter()->write($id3Tag);
 
         return $this;
     }

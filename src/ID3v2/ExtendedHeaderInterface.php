@@ -5,12 +5,12 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\Metadata;
+namespace GravityMedia\Metadata\ID3v2;
 
 /**
  * Extended header interface
  *
- * @package GravityMedia\Metadata\Metadata
+ * @package GravityMedia\Metadata\ID3v2
  */
 interface ExtendedHeaderInterface
 {
@@ -20,7 +20,7 @@ interface ExtendedHeaderInterface
      * @return int
      */
     public function getSize();
-    
+
     /**
      * Whether the flag is enabled
      *

@@ -8,8 +8,8 @@
 namespace GravityMedia\Metadata\ID3v1\Writer;
 
 use GravityMedia\Metadata\ID3v1\Enum\Version;
+use GravityMedia\Metadata\ID3v1\TagInterface;
 use GravityMedia\Metadata\Metadata\MetadataInterface;
-use GravityMedia\Metadata\Metadata\TagInterface;
 use GravityMedia\Stream\StreamInterface;
 
 /**

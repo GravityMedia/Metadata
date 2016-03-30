@@ -5,12 +5,12 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\Metadata;
+namespace GravityMedia\Metadata\ID3v2;
 
 /**
  * Frame interface
  *
- * @package GravityMedia\Metadata\Metadata
+ * @package GravityMedia\Metadata\ID3v2
  */
 interface FrameInterface
 {
