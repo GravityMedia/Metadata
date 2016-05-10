@@ -5,12 +5,12 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v1\Enum;
+namespace GravityMedia\Metadata\ID3v1;
 
 /**
- * ID3v1 genre enum
+ * ID3v1 genre class.
  *
- * @package GravityMedia\Metadata\ID3v1\Enum
+ * @package GravityMedia\Metadata\ID3v1
  */
 class Genre
 {

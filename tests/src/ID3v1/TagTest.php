@@ -7,8 +7,8 @@
 
 namespace GravityMedia\MetadataTest\ID3v1;
 
-use GravityMedia\Metadata\ID3v1\Enum\Genre;
-use GravityMedia\Metadata\ID3v1\Enum\Version;
+use GravityMedia\Metadata\ID3v1\Genre;
+use GravityMedia\Metadata\ID3v1\Version;
 use GravityMedia\Metadata\ID3v1\Tag;
 
 /**
@@ -17,8 +17,8 @@ use GravityMedia\Metadata\ID3v1\Tag;
  * @package GravityMedia\MetadataTest
  *
  * @covers  GravityMedia\Metadata\ID3v1\Tag
- * @uses    GravityMedia\Metadata\ID3v1\Enum\Version
- * @uses    GravityMedia\Metadata\ID3v1\Enum\Genre
+ * @uses    GravityMedia\Metadata\ID3v1\Version
+ * @uses    GravityMedia\Metadata\ID3v1\Genre
  */
 class TagTest extends \PHPUnit_Framework_TestCase
 {

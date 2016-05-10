@@ -7,14 +7,12 @@
 
 namespace GravityMedia\Metadata\ID3v2;
 
-use GravityMedia\Metadata\ID3v2\ExtendedHeaderInterface;
-
 /**
- * ID3v2 extended header
+ * ID3v2 extended header class.
  *
  * @package GravityMedia\Metadata\ID3v2
  */
-class ExtendedHeader implements ExtendedHeaderInterface
+class ExtendedHeader
 {
     /**
      * @var int
@@ -42,7 +40,9 @@ class ExtendedHeader implements ExtendedHeaderInterface
     protected $restrictions;
 
     /**
-     * {@inheritdoc}
+     * Get size in bytes.
+     *
+     * @return int
      */
     public function getSize()
     {
@@ -50,7 +50,7 @@ class ExtendedHeader implements ExtendedHeaderInterface
     }
 
     /**
-     * Set size in bytes
+     * Set size in bytes.
      *
      * @param int $size
      *
@@ -63,7 +63,11 @@ class ExtendedHeader implements ExtendedHeaderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Whether the flag is enabled.
+     *
+     * @param int $flag
+     *
+     * @return bool
      */
     public function isFlagEnabled($flag)
     {
@@ -75,7 +79,7 @@ class ExtendedHeader implements ExtendedHeaderInterface
     }
 
     /**
-     * Set flags
+     * Set flags.
      *
      * @param array $flags
      *
@@ -88,7 +92,9 @@ class ExtendedHeader implements ExtendedHeaderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get padding.
+     *
+     * @return int
      */
     public function getPadding()
     {
@@ -96,7 +102,7 @@ class ExtendedHeader implements ExtendedHeaderInterface
     }
 
     /**
-     * Set padding
+     * Set padding.
      *
      * @param int $padding
      *
@@ -109,7 +115,9 @@ class ExtendedHeader implements ExtendedHeaderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get CRC-32.
+     *
+     * @return int
      */
     public function getCrc32()
     {
@@ -117,7 +125,7 @@ class ExtendedHeader implements ExtendedHeaderInterface
     }
 
     /**
-     * Set CRC-32
+     * Set CRC-32.
      *
      * @param int $crc32
      *
@@ -130,7 +138,9 @@ class ExtendedHeader implements ExtendedHeaderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get restrictions.
+     *
+     * @return int
      */
     public function getRestrictions()
     {

@@ -5,29 +5,24 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v2\Enum;
+namespace GravityMedia\Metadata\ID3v1;
 
 /**
- * ID3v2 version enum
+ * ID3v1 version class.
  *
- * @package GravityMedia\Metadata\ID3v2\Enum
+ * @package GravityMedia\Metadata\ID3v1
  */
 class Version
 {
     /**
-     * Tag version 2.2
+     * Tag version 1.0
      */
-    const VERSION_22 = 2;
+    const VERSION_10 = 0;
 
     /**
-     * Tag version 2.3
+     * Tag version 1.1
      */
-    const VERSION_23 = 3;
-
-    /**
-     * Tag version 2.4
-     */
-    const VERSION_24 = 4;
+    const VERSION_11 = 1;
 
     /**
      * Valid values
@@ -35,9 +30,8 @@ class Version
      * @var int[]
      */
     protected static $values = [
-        self::VERSION_22,
-        self::VERSION_23,
-        self::VERSION_24
+        self::VERSION_10,
+        self::VERSION_11
     ];
 
     /**

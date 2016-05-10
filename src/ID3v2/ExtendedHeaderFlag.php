@@ -5,12 +5,12 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v2\Enum;
+namespace GravityMedia\Metadata\ID3v2;
 
 /**
- * ID3v2 extended header flag enum
+ * ID3v2 extended header flag class.
  *
- * @package GravityMedia\Metadata\ID3v2\Enum
+ * @package GravityMedia\Metadata\ID3v2
  */
 class ExtendedHeaderFlag
 {

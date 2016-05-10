@@ -5,10 +5,10 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v2\Encoder;
+namespace GravityMedia\Metadata\ID3v2;
 
 /**
- * Unsynchronisation encoder
+ * Unsynchronisation class.
  *
  * @package GravityMedia\Metadata\ID3v2
  */

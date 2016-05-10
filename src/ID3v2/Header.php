@@ -8,15 +8,13 @@
 namespace GravityMedia\Metadata\ID3v2;
 
 use GravityMedia\Metadata\Exception\InvalidArgumentException;
-use GravityMedia\Metadata\ID3v2\Enum\Version;
-use GravityMedia\Metadata\ID3v2\HeaderInterface;
 
 /**
- * ID3v2 header
+ * ID3v2 header class.
  *
  * @package GravityMedia\Metadata
  */
-class Header implements HeaderInterface
+class Header
 {
     /**
      * @var int
@@ -39,7 +37,7 @@ class Header implements HeaderInterface
     protected $size;
 
     /**
-     * Create header object.
+     * Create ID3v2 header object.
      *
      * @param int $version The version (default is 3: v2.3)
      *
@@ -55,7 +53,9 @@ class Header implements HeaderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get version.
+     *
+     * @return int
      */
     public function getVersion()
     {
@@ -63,7 +63,9 @@ class Header implements HeaderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get revision.
+     *
+     * @return int
      */
     public function getRevision()
     {
@@ -71,7 +73,7 @@ class Header implements HeaderInterface
     }
 
     /**
-     * Set revision
+     * Set revision.
      *
      * @param int $revision
      *
@@ -84,7 +86,11 @@ class Header implements HeaderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Whether the flag is enabled.
+     *
+     * @param int $flag
+     *
+     * @return bool
      */
     public function isFlagEnabled($flag)
     {
@@ -96,7 +102,7 @@ class Header implements HeaderInterface
     }
 
     /**
-     * Set flags
+     * Set flags.
      *
      * @param array $flags
      *
@@ -109,7 +115,9 @@ class Header implements HeaderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get size in bytes.
+     *
+     * @return int
      */
     public function getSize()
     {
@@ -117,7 +125,7 @@ class Header implements HeaderInterface
     }
 
     /**
-     * Set size in bytes
+     * Set size in bytes.
      *
      * @param int $size
      *

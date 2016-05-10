@@ -8,17 +8,16 @@
 namespace GravityMedia\Metadata\ID3v2;
 
 use GravityMedia\Metadata\Exception\BadMethodCallException;
-use GravityMedia\Metadata\ID3v2\Enum\Version;
 
 /**
- * ID3v2 tag
+ * ID3v2 tag class.
  *
  * @package GravityMedia\Metadata\ID3v2
  */
-class Tag implements TagInterface
+class Tag
 {
     /**
-     * @var HeaderInterface
+     * @var Header
      */
     protected $header;
 
@@ -28,16 +27,16 @@ class Tag implements TagInterface
     protected $extendedHeader;
 
     /**
-     * @var FrameInterface[]
+     * @var Frame[]
      */
     protected $frames;
 
     /**
      * Create tag object.
      *
-     * @param HeaderInterface $header
+     * @param Header $header
      */
-    public function __construct(HeaderInterface $header)
+    public function __construct(Header $header)
     {
         $this->header = $header;
         $this->frames = new \ArrayObject();
@@ -46,7 +45,7 @@ class Tag implements TagInterface
     /**
      * Get header
      *
-     * @return HeaderInterface
+     * @return Header
      */
     public function getHeader()
     {
@@ -66,13 +65,13 @@ class Tag implements TagInterface
     /**
      * Set extended header
      *
-     * @param ExtendedHeaderInterface $extendedHeader
+     * @param ExtendedHeader $extendedHeader
      *
      * @throws BadMethodCallException An exception is thrown on ID3 v2.2 tag
      *
      * @return $this
      */
-    public function setExtendedHeader(ExtendedHeaderInterface $extendedHeader)
+    public function setExtendedHeader(ExtendedHeader $extendedHeader)
     {
         if (!in_array($this->getVersion(), [Version::VERSION_23, Version::VERSION_24])) {
             throw new BadMethodCallException('Extended header is not supported in this version.');
@@ -84,7 +83,9 @@ class Tag implements TagInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get version.
+     *
+     * @return int
      */
     public function getVersion()
     {
@@ -92,7 +93,9 @@ class Tag implements TagInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get frames
+     *
+     * @return Frame[]
      */
     public function getFrames()
     {
@@ -102,11 +105,11 @@ class Tag implements TagInterface
     /**
      * Add frame
      *
-     * @param FrameInterface $frame
+     * @param Frame $frame
      *
      * @return $this
      */
-    public function addFrame(FrameInterface $frame)
+    public function addFrame(Frame $frame)
     {
         $this->frames->append($frame);
         return $this;

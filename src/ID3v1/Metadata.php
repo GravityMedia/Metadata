@@ -7,8 +7,6 @@
 
 namespace GravityMedia\Metadata\ID3v1;
 
-use GravityMedia\Metadata\ID3v1\Enum\Genre;
-use GravityMedia\Metadata\ID3v1\Enum\Version;
 use GravityMedia\Stream\Stream;
 
 /**
@@ -24,7 +22,7 @@ class Metadata
     protected $stream;
 
     /**
-     * Create ID3v1 metadata.
+     * Create ID3v1 metadata object.
      *
      * @param Stream $stream
      */
@@ -117,12 +115,12 @@ class Metadata
         if (Version::VERSION_11 === $version) {
             $tag->setComment($this->trimData($this->stream->read(28)));
             $this->stream->seek(1, SEEK_CUR);
-            $tag->setTrack($this->stream->readInt8());
+            $tag->setTrack($this->stream->readUInt8());
         } else {
             $tag->setComment($this->trimData($this->stream->read(30)));
         }
 
-        $genre = $this->stream->readInt8();
+        $genre = $this->stream->readUInt8();
         if (in_array($genre, Genre::values())) {
             $tag->setGenre($genre);
         }

@@ -7,14 +7,12 @@
 
 namespace GravityMedia\Metadata\ID3v2;
 
-use GravityMedia\Metadata\ID3v2\FrameInterface;
-
 /**
- * ID3v2 frame
+ * ID3v2 frame class.
  *
  * @package GravityMedia\Metadata
  */
-class Frame implements FrameInterface
+class Frame
 {
     /**
      * @var string
@@ -42,7 +40,9 @@ class Frame implements FrameInterface
     protected $data;
 
     /**
-     * {@inheritdoc}
+     * Get name.
+     *
+     * @return string
      */
     public function getName()
     {
@@ -50,7 +50,7 @@ class Frame implements FrameInterface
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -63,7 +63,9 @@ class Frame implements FrameInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get size in bytes.
+     *
+     * @return int
      */
     public function getSize()
     {
@@ -71,7 +73,7 @@ class Frame implements FrameInterface
     }
 
     /**
-     * Set size in bytes
+     * Set size in bytes.
      *
      * @param int $size
      *
@@ -84,7 +86,11 @@ class Frame implements FrameInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Whether the flag is enabled.
+     *
+     * @param int $flag
+     *
+     * @return bool
      */
     public function isFlagEnabled($flag)
     {
@@ -96,7 +102,7 @@ class Frame implements FrameInterface
     }
 
     /**
-     * Set flags
+     * Set flags.
      *
      * @param array $flags
      *
@@ -109,7 +115,9 @@ class Frame implements FrameInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get data length.
+     *
+     * @return int
      */
     public function getDataLength()
     {
@@ -117,7 +125,7 @@ class Frame implements FrameInterface
     }
 
     /**
-     * Set data length
+     * Set data length.
      *
      * @param int $dataLength
      *
@@ -130,7 +138,9 @@ class Frame implements FrameInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get data.
+     *
+     * @return string
      */
     public function getData()
     {
@@ -138,7 +148,7 @@ class Frame implements FrameInterface
     }
 
     /**
-     * Set $data
+     * Set data.
      *
      * @param string $data
      *

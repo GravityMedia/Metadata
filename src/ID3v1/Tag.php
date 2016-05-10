@@ -9,8 +9,6 @@ namespace GravityMedia\Metadata\ID3v1;
 
 use GravityMedia\Metadata\Exception\BadMethodCallException;
 use GravityMedia\Metadata\Exception\InvalidArgumentException;
-use GravityMedia\Metadata\ID3v1\Enum\Genre;
-use GravityMedia\Metadata\ID3v1\Enum\Version;
 
 /**
  * ID3v1 tag class.
