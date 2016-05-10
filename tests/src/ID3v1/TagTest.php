@@ -15,7 +15,10 @@ use GravityMedia\Metadata\ID3v1\Tag;
  * ID3v1 tag test
  *
  * @package GravityMedia\MetadataTest
+ *
  * @covers  GravityMedia\Metadata\ID3v1\Tag
+ * @uses    GravityMedia\Metadata\ID3v1\Enum\Version
+ * @uses    GravityMedia\Metadata\ID3v1\Enum\Genre
  */
 class TagTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,9 +26,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
      * Test that creating a tag throws an exception on inalid version constructor argument
      *
      * @expectedException \GravityMedia\Metadata\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Invalid version.
-     *
-     * @uses                     GravityMedia\Metadata\ID3v1\Enum\Version
+     * @expectedExceptionMessage Invalid version
      */
     public function testCreatingTagThrowsExceptionOnInvalidVersionConstructorArgument()
     {
@@ -34,8 +35,6 @@ class TagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test that creating the default tag in default version
-     *
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
      */
     public function testCreatingDefaultTag()
     {
@@ -49,8 +48,6 @@ class TagTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException \GravityMedia\Metadata\Exception\InvalidArgumentException
      * @expectedExceptionMessage Title argument exceeds maximum number of characters
-     *
-     * @uses                     GravityMedia\Metadata\ID3v1\Enum\Version
      */
     public function testSettingTitleThrowsExceptionOnInvalidArtistArgument()
     {
@@ -61,8 +58,6 @@ class TagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test that setting a valid title can be retrieved afterwards
-     *
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
      */
     public function testSettingValidTitle()
     {
@@ -78,8 +73,6 @@ class TagTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException \GravityMedia\Metadata\Exception\InvalidArgumentException
      * @expectedExceptionMessage Artist argument exceeds maximum number of characters
-     *
-     * @uses                     GravityMedia\Metadata\ID3v1\Enum\Version
      */
     public function testSettingArtistThrowsExceptionOnInvalidArtistArgument()
     {
@@ -90,8 +83,6 @@ class TagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test that setting a valid artist can be retrieved afterwards
-     *
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
      */
     public function testSettingValidArtist()
     {
@@ -107,8 +98,6 @@ class TagTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException \GravityMedia\Metadata\Exception\InvalidArgumentException
      * @expectedExceptionMessage Album argument exceeds maximum number of characters
-     *
-     * @uses                     GravityMedia\Metadata\ID3v1\Enum\Version
      */
     public function testSettingAlbumThrowsExceptionOnInvalidAlbumArgument()
     {
@@ -119,8 +108,6 @@ class TagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test that setting a valid album can be retrieved afterwards
-     *
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
      */
     public function testSettingValidAlbum()
     {
@@ -136,8 +123,6 @@ class TagTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException \GravityMedia\Metadata\Exception\InvalidArgumentException
      * @expectedExceptionMessage Year argument must have exactly 4 digits
-     *
-     * @uses                     GravityMedia\Metadata\ID3v1\Enum\Version
      */
     public function testSettingYearThrowsExceptionOnInvalidYearArgument()
     {
@@ -148,8 +133,6 @@ class TagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test that setting a valid year can be retrieved afterwards
-     *
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
      */
     public function testSettingValidYear()
     {
@@ -176,13 +159,11 @@ class TagTest extends \PHPUnit_Framework_TestCase
     /**
      * Test that setting comment throws an exception on invalid comment arguments
      *
-     * @param $version
-     * @param $comment
+     * @param int    $version
+     * @param string $comment
      *
      * @expectedException \GravityMedia\Metadata\Exception\InvalidArgumentException
      * @expectedExceptionMessage Comment argument exceeds maximum number of characters
-     *
-     * @uses                     GravityMedia\Metadata\ID3v1\Enum\Version
      *
      * @dataProvider             invalidCommentDataProvider
      */
@@ -209,10 +190,8 @@ class TagTest extends \PHPUnit_Framework_TestCase
     /**
      * Test that setting a valid comment can be retrieved afterwards
      *
-     * @param $version
-     * @param $comment
-     *
-     * @uses         GravityMedia\Metadata\ID3v1\Enum\Version
+     * @param int    $version
+     * @param string $comment
      *
      * @dataProvider validCommentDataProvider
      */
@@ -229,8 +208,6 @@ class TagTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException \GravityMedia\Metadata\Exception\BadMethodCallException
      * @expectedExceptionMessage Track is not supported in this version
-     *
-     * @uses                     GravityMedia\Metadata\ID3v1\Enum\Version
      */
     public function testSettingTrackThrowsExceptionOnID3v10Tag()
     {
@@ -244,8 +221,6 @@ class TagTest extends \PHPUnit_Framework_TestCase
      *
      * @expectedException \GravityMedia\Metadata\Exception\InvalidArgumentException
      * @expectedExceptionMessage Track argument exceeds 2 digits
-     *
-     * @uses                     GravityMedia\Metadata\ID3v1\Enum\Version
      */
     public function testSettingTrackThrowsExceptionOnInvalidTrackArgument()
     {
@@ -256,8 +231,6 @@ class TagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test that setting a valid track can be retrieved afterwards
-     *
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
      */
     public function testSettingValidTrack()
     {
@@ -272,10 +245,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
      * Test that setting genre throws an exception on invalid genre arguments
      *
      * @expectedException \GravityMedia\Metadata\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Invalid genre.
-     *
-     * @uses                     GravityMedia\Metadata\ID3v1\Enum\Version
-     * @uses                     GravityMedia\Metadata\ID3v1\Enum\Genre
+     * @expectedExceptionMessage Invalid genre
      */
     public function testSettingGenreThrowsExceptionOnInvalidGenreArgument()
     {
@@ -286,9 +256,6 @@ class TagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test that setting a valid genre can be retrieved afterwards
-     *
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Version
-     * @uses GravityMedia\Metadata\ID3v1\Enum\Genre
      */
     public function testSettingValidGenre()
     {

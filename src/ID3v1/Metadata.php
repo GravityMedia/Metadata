@@ -7,77 +7,36 @@
 
 namespace GravityMedia\Metadata\ID3v1;
 
+use GravityMedia\Metadata\ID3v1\Enum\Genre;
 use GravityMedia\Metadata\ID3v1\Enum\Version;
-use GravityMedia\Metadata\ID3v1\Reader\TagReader;
-use GravityMedia\Metadata\ID3v1\Tag as ID3Tag;
-use GravityMedia\Metadata\ID3v1\Writer\TagWriter;
-use GravityMedia\Metadata\Metadata\MetadataInterface;
-use GravityMedia\Metadata\Metadata\Tag;
-use GravityMedia\Metadata\Metadata\TagInterface;
-use GravityMedia\Stream\StreamInterface;
+use GravityMedia\Stream\Stream;
 
 /**
- * ID3v1 metadata.
+ * ID3v1 metadata class.
  *
  * @package GravityMedia\Metadata\ID3v1
  */
-class Metadata implements MetadataInterface
+class Metadata
 {
     /**
-     * @var StreamInterface
+     * @var Stream
      */
     protected $stream;
 
     /**
-     * @var TagReader
-     */
-    protected $tagReader;
-
-    /**
-     * @var TagWriter
-     */
-    protected $tagWriter;
-
-    /**
      * Create ID3v1 metadata.
      *
-     * @param StreamInterface $stream
+     * @param Stream $stream
      */
-    public function __construct(StreamInterface $stream)
+    public function __construct(Stream $stream)
     {
         $this->stream = $stream;
     }
 
     /**
-     * Get tag reader.
+     * Returns whether ID3v1 metadata exists.
      *
-     * @return TagReader
-     */
-    public function getTagReader()
-    {
-        if (null === $this->tagReader) {
-            $this->tagReader = new TagReader($this, $this->stream);
-        }
-
-        return $this->tagReader;
-    }
-
-    /**
-     * Get tag writer.
-     *
-     * @return TagWriter
-     */
-    public function getTagWriter()
-    {
-        if (null === $this->tagWriter) {
-            $this->tagWriter = new TagWriter($this, $this->stream);
-        }
-
-        return $this->tagWriter;
-    }
-
-    /**
-     * {@inheritdoc}
+     * @return bool
      */
     public function exists()
     {
@@ -91,7 +50,9 @@ class Metadata implements MetadataInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Strip ID3v1 metadata.
+     *
+     * @return $this
      */
     public function strip()
     {
@@ -106,42 +67,116 @@ class Metadata implements MetadataInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Read ID3v1 tag version.
+     *
+     * @return int
      */
-    public function read()
+    protected function readVersion()
     {
-        $id3Tag = $this->getTagReader()->read();
+        $this->stream->seek(-3, SEEK_END);
+        if ("\x00" === $this->stream->read(1) && "\x00" !== $this->stream->read(1)) {
+            return Version::VERSION_11;
+        }
 
-        $tag = new Tag();
-        $tag
-            ->setTitle($id3Tag->getArtist())
-            ->setArtist($id3Tag->getArtist())
-            ->setAlbum($id3Tag->getAlbum())
-            ->setYear($id3Tag->getYear())
-            ->setComment($id3Tag->getComment())
-            ->setTrack($id3Tag->getTrack())
-            ->setGenre($id3Tag->getGenre());
+        return Version::VERSION_10;
     }
 
     /**
-     * {@inheritdoc}
+     * Trim data.
+     *
+     * @param string $data The data to trim
+     *
+     * @return string
      */
-    public function write(TagInterface $tag, $version)
+    protected function trimData($data)
     {
-        $id3Tag = new ID3Tag($version);
-        $id3Tag
-            ->setTitle($tag->getArtist())
-            ->setArtist($tag->getArtist())
-            ->setAlbum($tag->getAlbum())
-            ->setYear($tag->getYear())
-            ->setComment($tag->getComment())
-            ->setGenre($tag->getGenre());
+        return trim(substr($data, 0, strcspn($data, "\x00")));
+    }
 
-        if (Version::VERSION_11 === $version) {
-            $id3Tag->setTrack($tag->getTrack());
+    /**
+     * Read ID3v1 tag.
+     *
+     * @return null|Tag
+     */
+    public function read()
+    {
+        if (!$this->exists()) {
+            return null;
         }
 
-        $this->getTagWriter()->write($id3Tag);
+        $version = $this->readVersion();
+        $tag = new Tag($version);
+
+        $this->stream->seek(-125, SEEK_END);
+        $tag
+            ->setTitle($this->trimData($this->stream->read(30)))
+            ->setArtist($this->trimData($this->stream->read(30)))
+            ->setAlbum($this->trimData($this->stream->read(30)))
+            ->setYear(intval($this->trimData($this->stream->read(4)), 10));
+
+        if (Version::VERSION_11 === $version) {
+            $tag->setComment($this->trimData($this->stream->read(28)));
+            $this->stream->seek(1, SEEK_CUR);
+            $tag->setTrack($this->stream->readInt8());
+        } else {
+            $tag->setComment($this->trimData($this->stream->read(30)));
+        }
+
+        $genre = $this->stream->readInt8();
+        if (in_array($genre, Genre::values())) {
+            $tag->setGenre($genre);
+        }
+
+        return $tag;
+    }
+
+    /**
+     * Pad data.
+     *
+     * @param string $data   The data to pad
+     * @param int    $length The final length
+     * @param int    $type   The type of padding
+     *
+     * @return string
+     */
+    protected function padData($data, $length, $type)
+    {
+        return str_pad(trim(substr($data, 0, $length)), $length, "\x00", $type);
+    }
+
+    /**
+     * Write ID3v1 tag.
+     *
+     * @param Tag $tag The tag to write.
+     *
+     * @return $this
+     */
+    public function write(Tag $tag)
+    {
+        $offset = 0;
+        if ($this->exists()) {
+            $offset = -128;
+        }
+
+        $this->stream->seek($offset, SEEK_END);
+
+        $data = 'TAG';
+        $data .= $this->padData($tag->getTitle(), 30, STR_PAD_RIGHT);
+        $data .= $this->padData($tag->getArtist(), 30, STR_PAD_RIGHT);
+        $data .= $this->padData($tag->getAlbum(), 30, STR_PAD_RIGHT);
+        $data .= $this->padData($tag->getYear(), 4, STR_PAD_LEFT);
+
+        if (Version::VERSION_11 === $tag->getVersion()) {
+            $data .= $this->padData($tag->getComment(), 28, STR_PAD_RIGHT);
+            $data .= "\x00";
+            $data .= chr($tag->getTrack());
+        } else {
+            $data .= $this->padData($tag->getComment(), 30, STR_PAD_RIGHT);
+        }
+
+        $data .= chr($tag->getGenre());
+
+        $this->stream->write($data);
 
         return $this;
     }

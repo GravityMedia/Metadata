@@ -9,7 +9,6 @@ namespace GravityMedia\Metadata\ID3v2;
 
 use GravityMedia\Metadata\ID3v2\Reader\TagReader;
 use GravityMedia\Metadata\Metadata\MetadataInterface;
-use GravityMedia\Metadata\ID3v1\TagInterface;
 use GravityMedia\Stream\StreamInterface;
 
 /**
@@ -88,7 +87,7 @@ class Metadata implements MetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function write(TagInterface $tag)
+    public function write(Tag $tag)
     {
         // TODO: implement
 
