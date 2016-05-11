@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "174f496c8297e4aa3a2df955f278de22",
-    "content-hash": "b85c6eee191dd4402c7ab32aa4a6b323",
+    "hash": "5974cc2a57edfa5f8a9f388f7797b367",
+    "content-hash": "2e231eaa88e5d44b1232cfcd8d601c30",
     "packages": [
         {
             "name": "gravitymedia/stream",
@@ -2076,7 +2076,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^5.6 || ^7.0"
+        "php": "^5.6 || ^7.0",
+        "ext-iconv": "*"
     },
     "platform-dev": []
 }
