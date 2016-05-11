@@ -5,12 +5,12 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v2;
+namespace GravityMedia\Metadata\ID3v2\Flag;
 
 /**
  * ID3v2 header flag class.
  *
- * @package GravityMedia\Metadata\ID3v2
+ * @package GravityMedia\Metadata\ID3v2\Flag
  */
 class HeaderFlag
 {

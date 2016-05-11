@@ -40,6 +40,16 @@ class Frame
     protected $data;
 
     /**
+     * Create ID3v2 frame object.
+     */
+    public function __construct()
+    {
+        $this->size = 0;
+        $this->flags = [];
+        $this->dataLength = 0;
+    }
+
+    /**
      * Get name.
      *
      * @return string

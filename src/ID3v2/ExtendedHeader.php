@@ -25,19 +25,13 @@ class ExtendedHeader
     protected $flags;
 
     /**
-     * @var int
+     * Create ID3v2 extended header object.
      */
-    protected $padding;
-
-    /**
-     * @var int
-     */
-    protected $crc32;
-
-    /**
-     * @var int
-     */
-    protected $restrictions;
+    public function __construct()
+    {
+        $this->size = 0;
+        $this->flags = [];
+    }
 
     /**
      * Get size in bytes.
@@ -88,75 +82,6 @@ class ExtendedHeader
     public function setFlags(array $flags)
     {
         $this->flags = $flags;
-        return $this;
-    }
-
-    /**
-     * Get padding.
-     *
-     * @return int
-     */
-    public function getPadding()
-    {
-        return $this->padding;
-    }
-
-    /**
-     * Set padding.
-     *
-     * @param int $padding
-     *
-     * @return $this
-     */
-    public function setPadding($padding)
-    {
-        $this->padding = $padding;
-        return $this;
-    }
-
-    /**
-     * Get CRC-32.
-     *
-     * @return int
-     */
-    public function getCrc32()
-    {
-        return $this->crc32;
-    }
-
-    /**
-     * Set CRC-32.
-     *
-     * @param int $crc32
-     *
-     * @return $this
-     */
-    public function setCrc32($crc32)
-    {
-        $this->crc32 = $crc32;
-        return $this;
-    }
-
-    /**
-     * Get restrictions.
-     *
-     * @return int
-     */
-    public function getRestrictions()
-    {
-        return $this->restrictions;
-    }
-
-    /**
-     * Set restrictions
-     *
-     * @param int $restrictions
-     *
-     * @return $this
-     */
-    public function setRestrictions($restrictions)
-    {
-        $this->restrictions = $restrictions;
         return $this;
     }
 }

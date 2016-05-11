@@ -11,6 +11,7 @@ use GravityMedia\Metadata\ID3v1\Genre;
 use GravityMedia\Metadata\ID3v1\Metadata;
 use GravityMedia\Metadata\ID3v1\Tag;
 use GravityMedia\Metadata\ID3v1\Version;
+use GravityMedia\MetadataTest\Helper\ResourceHelper;
 use GravityMedia\Stream\Stream;
 
 /**
@@ -27,39 +28,12 @@ use GravityMedia\Stream\Stream;
 class MetadataTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Create resource from file copy
-     *
-     * @param string $source
-     *
-     * @return resource
-     */
-    public function createResourceFromFileCopy($source)
-    {
-        $target = tempnam(sys_get_temp_dir(), 'php');
-        copy($source, $target);
-
-        return fopen($target, 'r+b');
-    }
-
-    /**
-     * Create resource from empty file
-     *
-     * @return resource
-     */
-    public function createResourceFromEmptyFile()
-    {
-        $target = tempnam(sys_get_temp_dir(), 'php');
-
-        return fopen($target, 'r+b');
-    }
-
-    /**
      * Test that non-existent metadata is detected
      */
     public function testDetectingNonExistentMetadata()
     {
-        $resource = $this->createResourceFromFileCopy(__DIR__ . '/../../resources/no-tags.mp3');
-        $stream = Stream::fromResource($resource);
+        $resourceHelper = new ResourceHelper(__DIR__ . '/../../resources/no-tags.mp3');
+        $stream = Stream::fromResource($resourceHelper->getResource());
         $metadata = new Metadata($stream);
 
         $this->assertFalse($metadata->exists());
@@ -70,8 +44,8 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      */
     public function testDetectingExistentMetadata()
     {
-        $resource = $this->createResourceFromFileCopy(__DIR__ . '/../../resources/id3v10.mp3');
-        $stream = Stream::fromResource($resource);
+        $resourceHelper = new ResourceHelper(__DIR__ . '/../../resources/id3v10.mp3');
+        $stream = Stream::fromResource($resourceHelper->getResource());
         $metadata = new Metadata($stream);
 
         $this->assertTrue($metadata->exists());
@@ -82,8 +56,8 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      */
     public function testStrippingNonExistentMetadata()
     {
-        $resource = $this->createResourceFromFileCopy(__DIR__ . '/../../resources/no-tags.mp3');
-        $stream = Stream::fromResource($resource);
+        $resourceHelper = new ResourceHelper(__DIR__ . '/../../resources/no-tags.mp3');
+        $stream = Stream::fromResource($resourceHelper->getResource());
         $metadata = new Metadata($stream);
         $metadata->strip();
 
@@ -95,8 +69,8 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      */
     public function testStrippingExistentMetadata()
     {
-        $resource = $this->createResourceFromFileCopy(__DIR__ . '/../../resources/id3v10.mp3');
-        $stream = Stream::fromResource($resource);
+        $resourceHelper = new ResourceHelper(__DIR__ . '/../../resources/id3v10.mp3');
+        $stream = Stream::fromResource($resourceHelper->getResource());
         $metadata = new Metadata($stream);
         $metadata->strip();
 
@@ -108,8 +82,8 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      */
     public function testReadingNonExistentMetadata()
     {
-        $resource = $this->createResourceFromFileCopy(__DIR__ . '/../../resources/no-tags.mp3');
-        $stream = Stream::fromResource($resource);
+        $resourceHelper = new ResourceHelper(__DIR__ . '/../../resources/no-tags.mp3');
+        $stream = Stream::fromResource($resourceHelper->getResource());
         $metadata = new Metadata($stream);
 
         $this->assertNull($metadata->read());
@@ -120,8 +94,8 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      */
     public function testReadingExistentID3v10MetadataTag()
     {
-        $resource = $this->createResourceFromFileCopy(__DIR__ . '/../../resources/id3v10.mp3');
-        $stream = Stream::fromResource($resource);
+        $resourceHelper = new ResourceHelper(__DIR__ . '/../../resources/id3v10.mp3');
+        $stream = Stream::fromResource($resourceHelper->getResource());
         $metadata = new Metadata($stream);
 
         $tag = $metadata->read();
@@ -140,8 +114,8 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      */
     public function testReadingExistentID3v11MetadataTag()
     {
-        $resource = $this->createResourceFromFileCopy(__DIR__ . '/../../resources/id3v11.mp3');
-        $stream = Stream::fromResource($resource);
+        $resourceHelper = new ResourceHelper(__DIR__ . '/../../resources/id3v11.mp3');
+        $stream = Stream::fromResource($resourceHelper->getResource());
         $metadata = new Metadata($stream);
 
         $tag = $metadata->read();
@@ -161,8 +135,8 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      */
     public function testWritingID3v10Metadata()
     {
-        $resource = $this->createResourceFromEmptyFile();
-        $stream = Stream::fromResource($resource);
+        $resourceHelper = new ResourceHelper();
+        $stream = Stream::fromResource($resourceHelper->getResource());
         $metadata = new Metadata($stream);
 
         $tag = new Tag(Version::VERSION_10);
@@ -181,8 +155,8 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      */
     public function testOverwritingID3v10Metadata()
     {
-        $resource = $this->createResourceFromFileCopy(__DIR__ . '/../../resources/id3v10.mp3');
-        $stream = Stream::fromResource($resource);
+        $resourceHelper = new ResourceHelper(__DIR__ . '/../../resources/id3v10.mp3');
+        $stream = Stream::fromResource($resourceHelper->getResource());
         $metadata = new Metadata($stream);
 
         $tag = new Tag(Version::VERSION_10);
@@ -201,8 +175,8 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      */
     public function testWritingID3v11Metadata()
     {
-        $resource = $this->createResourceFromEmptyFile();
-        $stream = Stream::fromResource($resource);
+        $resourceHelper = new ResourceHelper();
+        $stream = Stream::fromResource($resourceHelper->getResource());
         $metadata = new Metadata($stream);
 
         $tag = new Tag(Version::VERSION_11);
@@ -222,8 +196,8 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
      */
     public function testOverwritingID3v11Metadata()
     {
-        $resource = $this->createResourceFromFileCopy(__DIR__ . '/../../resources/id3v11.mp3');
-        $stream = Stream::fromResource($resource);
+        $resourceHelper = new ResourceHelper(__DIR__ . '/../../resources/id3v11.mp3');
+        $stream = Stream::fromResource($resourceHelper->getResource());
         $metadata = new Metadata($stream);
 
         $tag = new Tag(Version::VERSION_11);

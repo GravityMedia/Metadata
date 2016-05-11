@@ -7,8 +7,6 @@
 
 namespace GravityMedia\Metadata\ID3v2;
 
-use GravityMedia\Metadata\Exception\InvalidArgumentException;
-
 /**
  * ID3v2 header class.
  *
@@ -19,12 +17,7 @@ class Header
     /**
      * @var int
      */
-    protected $version;
-
-    /**
-     * @var int
-     */
-    protected $revision;
+    protected $size;
 
     /**
      * @var array
@@ -32,56 +25,34 @@ class Header
     protected $flags;
 
     /**
-     * @var int
-     */
-    protected $size;
-
-    /**
      * Create ID3v2 header object.
-     *
-     * @param int $version The version (default is 3: v2.3)
-     *
-     * @throws InvalidArgumentException An exception is thrown on invalid version arguments
      */
-    public function __construct($version = Version::VERSION_23)
+    public function __construct()
     {
-        if (!in_array($version, Version::values())) {
-            throw new InvalidArgumentException('Invalid version.');
-        }
-
-        $this->version = $version;
+        $this->size = 0;
+        $this->flags = [];
     }
 
     /**
-     * Get version.
+     * Get size in bytes.
      *
      * @return int
      */
-    public function getVersion()
+    public function getSize()
     {
-        return $this->version;
+        return $this->size;
     }
 
     /**
-     * Get revision.
+     * Set size in bytes.
      *
-     * @return int
-     */
-    public function getRevision()
-    {
-        return $this->revision;
-    }
-
-    /**
-     * Set revision.
-     *
-     * @param int $revision
+     * @param int $size
      *
      * @return $this
      */
-    public function setRevision($revision)
+    public function setSize($size)
     {
-        $this->revision = $revision;
+        $this->size = $size;
         return $this;
     }
 
@@ -111,29 +82,6 @@ class Header
     public function setFlags(array $flags)
     {
         $this->flags = $flags;
-        return $this;
-    }
-
-    /**
-     * Get size in bytes.
-     *
-     * @return int
-     */
-    public function getSize()
-    {
-        return $this->size;
-    }
-
-    /**
-     * Set size in bytes.
-     *
-     * @param int $size
-     *
-     * @return $this
-     */
-    public function setSize($size)
-    {
-        $this->size = $size;
         return $this;
     }
 }

@@ -7,7 +7,7 @@
 
 namespace GravityMedia\Metadata\ID3v2;
 
-use GravityMedia\Metadata\Exception\BadMethodCallException;
+use GravityMedia\Metadata\Exception\InvalidArgumentException;
 
 /**
  * ID3v2 tag class.
@@ -17,14 +17,29 @@ use GravityMedia\Metadata\Exception\BadMethodCallException;
 class Tag
 {
     /**
-     * @var Header
+     * @var int
      */
-    protected $header;
+    protected $version;
 
     /**
-     * @var ExtendedHeader
+     * @var int
      */
-    protected $extendedHeader;
+    protected $revision;
+
+    /**
+     * @var int
+     */
+    protected $padding;
+
+    /**
+     * @var int
+     */
+    protected $crc32;
+
+    /**
+     * @var int
+     */
+    protected $restrictions;
 
     /**
      * @var Frame[]
@@ -32,54 +47,25 @@ class Tag
     protected $frames;
 
     /**
-     * Create tag object.
+     * Create ID3v2 tag object.
      *
-     * @param Header $header
+     * @param int $version  The version (default is 3: v2.3)
+     * @param int $revision The revision (default is 0)
+     *
+     * @throws InvalidArgumentException An exception is thrown on invalid version arguments
      */
-    public function __construct(Header $header)
+    public function __construct($version = Version::VERSION_23, $revision = 0)
     {
-        $this->header = $header;
-        $this->frames = new \ArrayObject();
-    }
-
-    /**
-     * Get header
-     *
-     * @return Header
-     */
-    public function getHeader()
-    {
-        return $this->header;
-    }
-
-    /**
-     * Get extended header
-     *
-     * @return ExtendedHeader
-     */
-    public function getExtendedHeader()
-    {
-        return $this->extendedHeader;
-    }
-
-    /**
-     * Set extended header
-     *
-     * @param ExtendedHeader $extendedHeader
-     *
-     * @throws BadMethodCallException An exception is thrown on ID3 v2.2 tag
-     *
-     * @return $this
-     */
-    public function setExtendedHeader(ExtendedHeader $extendedHeader)
-    {
-        if (!in_array($this->getVersion(), [Version::VERSION_23, Version::VERSION_24])) {
-            throw new BadMethodCallException('Extended header is not supported in this version.');
+        if (!in_array($version, Version::values(), true)) {
+            throw new InvalidArgumentException('Invalid version.');
         }
 
-        $this->extendedHeader = $extendedHeader;
-
-        return $this;
+        $this->version = $version;
+        $this->revision = $revision;
+        $this->padding = 0;
+        $this->crc32 = 0;
+        $this->restrictions = 0;
+        $this->frames = [];
     }
 
     /**
@@ -89,7 +75,89 @@ class Tag
      */
     public function getVersion()
     {
-        return $this->header->getVersion();
+        return $this->version;
+    }
+
+    /**
+     * Get revision.
+     *
+     * @return int
+     */
+    public function getRevision()
+    {
+        return $this->revision;
+    }
+
+    /**
+     * Get padding.
+     *
+     * @return int
+     */
+    public function getPadding()
+    {
+        return $this->padding;
+    }
+
+    /**
+     * Set padding.
+     *
+     * @param int $padding
+     *
+     * @return $this
+     */
+    public function setPadding($padding)
+    {
+        $this->padding = $padding;
+
+        return $this;
+    }
+
+    /**
+     * Get CRC-32.
+     *
+     * @return int
+     */
+    public function getCrc32()
+    {
+        return $this->crc32;
+    }
+
+    /**
+     * Set CRC-32.
+     *
+     * @param int $crc32
+     *
+     * @return $this
+     */
+    public function setCrc32($crc32)
+    {
+        $this->crc32 = $crc32;
+
+        return $this;
+    }
+
+    /**
+     * Get restrictions.
+     *
+     * @return int
+     */
+    public function getRestrictions()
+    {
+        return $this->restrictions;
+    }
+
+    /**
+     * Set restrictions
+     *
+     * @param int $restrictions
+     *
+     * @return $this
+     */
+    public function setRestrictions($restrictions)
+    {
+        $this->restrictions = $restrictions;
+
+        return $this;
     }
 
     /**
@@ -111,7 +179,8 @@ class Tag
      */
     public function addFrame(Frame $frame)
     {
-        $this->frames->append($frame);
+        $this->frames[] = $frame;
+
         return $this;
     }
 }
