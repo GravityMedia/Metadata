@@ -7,6 +7,7 @@
 
 namespace GravityMedia\Metadata\ID3v1;
 
+use GravityMedia\Metadata\Exception\InvalidArgumentException;
 use GravityMedia\Stream\Stream;
 
 /**
@@ -17,24 +18,41 @@ use GravityMedia\Stream\Stream;
 class Metadata
 {
     /**
+     * The stream.
+     *
      * @var Stream
      */
     protected $stream;
 
     /**
+     * The filter.
+     *
      * @var Filter
      */
     protected $filter;
 
     /**
-     * Create ID3v1 metadata object.
+     * Create ID3v1 metadata object from resource.
      *
-     * @param Stream $stream
+     * @param resource $resource
+     *
+     * @throws InvalidArgumentException An exception will be thrown for invalid resource arguments.
+     *
+     * @return static
      */
-    public function __construct(Stream $stream)
+    public static function fromResource($resource)
     {
-        $this->stream = $stream;
-        $this->filter = new Filter();
+        if (!is_resource($resource)) {
+            throw new InvalidArgumentException('Invalid resource');
+        }
+
+        $stream = Stream::fromResource($resource);
+
+        $metadata = new static();
+        $metadata->stream = $stream;
+        $metadata->filter = new Filter();
+
+        return $metadata;
     }
 
     /**
