@@ -15,17 +15,17 @@ namespace GravityMedia\Metadata\ID3v1;
 class Version
 {
     /**
-     * Tag version 1.0
+     * Tag version 1.0.
      */
     const VERSION_10 = 0;
 
     /**
-     * Tag version 1.1
+     * Tag version 1.1.
      */
     const VERSION_11 = 1;
 
     /**
-     * Valid values
+     * Valid values.
      *
      * @var int[]
      */
@@ -35,7 +35,7 @@ class Version
     ];
 
     /**
-     * Return valid values
+     * Return valid values.
      *
      * @return int[]
      */

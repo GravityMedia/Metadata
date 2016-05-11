@@ -15,967 +15,967 @@ namespace GravityMedia\Metadata\ID3v1;
 class Genre
 {
     /**
-     * Blues
+     * Blues.
      */
     const GENRE_BLUES = 0;
 
     /**
-     * Classic Rock
+     * Classic Rock.
      */
     const GENRE_CLASSIC_ROCK = 1;
 
     /**
-     * Country
+     * Country.
      */
     const GENRE_COUNTRY = 2;
 
     /**
-     * Dance
+     * Dance.
      */
     const GENRE_DANCE = 3;
 
     /**
-     * Disco
+     * Disco.
      */
     const GENRE_DISCO = 4;
 
     /**
-     * Funk
+     * Funk.
      */
     const GENRE_FUNK = 5;
 
     /**
-     * Grunge
+     * Grunge.
      */
     const GENRE_GRUNGE = 6;
 
     /**
-     * Hip-Hop
+     * Hip-Hop.
      */
     const GENRE_HIP_HOP = 7;
 
     /**
-     * Jazz
+     * Jazz.
      */
     const GENRE_JAZZ = 8;
 
     /**
-     * Metal
+     * Metal.
      */
     const GENRE_METAL = 9;
 
     /**
-     * New Age
+     * New Age.
      */
     const GENRE_NEW_AGE = 10;
 
     /**
-     * Oldies
+     * Oldies.
      */
     const GENRE_OLDIES = 11;
 
     /**
-     * Other
+     * Other.
      */
     const GENRE_OTHER = 12;
 
     /**
-     * Pop
+     * Pop.
      */
     const GENRE_POP = 13;
 
     /**
-     * R&B
+     * R&B.
      */
     const GENRE_R_AND_B = 14;
 
     /**
-     * Rap
+     * Rap.
      */
     const GENRE_RAP = 15;
 
     /**
-     * Reggae
+     * Reggae.
      */
     const GENRE_REGGAE = 16;
 
     /**
-     * Rock
+     * Rock.
      */
     const GENRE_ROCK = 17;
 
     /**
-     * Techno
+     * Techno.
      */
     const GENRE_TECHNO = 18;
 
     /**
-     * Industrial
+     * Industrial.
      */
     const GENRE_INDUSTRIAL = 19;
 
     /**
-     * Alternative
+     * Alternative.
      */
     const GENRE_ALTERNATIVE = 20;
 
     /**
-     * Ska
+     * Ska.
      */
     const GENRE_SKA = 21;
 
     /**
-     * Death Metal
+     * Death Metal.
      */
     const GENRE_DEATH_METAL = 22;
 
     /**
-     * Pranks
+     * Pranks.
      */
     const GENRE_PRANKS = 23;
 
     /**
-     * Soundtrack
+     * Soundtrack.
      */
     const GENRE_SOUNDTRACK = 24;
 
     /**
-     * Euro-Techno
+     * Euro-Techno.
      */
     const GENRE_EURO_TECHNO = 25;
 
     /**
-     * Ambient
+     * Ambient.
      */
     const GENRE_AMBIENT = 26;
 
     /**
-     * Trip-Hop
+     * Trip-Hop.
      */
     const GENRE_TRIP_HOP = 27;
 
     /**
-     * Vocal
+     * Vocal.
      */
     const GENRE_VOCAL = 28;
 
     /**
-     * Jazz+Funk
+     * Jazz+Funk.
      */
     const GENRE_JAZZ_AND_FUNK = 29;
 
     /**
-     * Fusion
+     * Fusion.
      */
     const GENRE_FUSION = 30;
 
     /**
-     * Trance
+     * Trance.
      */
     const GENRE_TRANCE = 31;
 
     /**
-     * Classical
+     * Classical.
      */
     const GENRE_CLASSICAL = 32;
 
     /**
-     * Instrumental
+     * Instrumental.
      */
     const GENRE_INSTRUMENTAL = 33;
 
     /**
-     * Acid
+     * Acid.
      */
     const GENRE_ACID = 34;
 
     /**
-     * House
+     * House.
      */
     const GENRE_HOUSE = 35;
 
     /**
-     * Game
+     * Game.
      */
     const GENRE_GAME = 36;
 
     /**
-     * Sound Clip
+     * Sound Clip.
      */
     const GENRE_SOUND_CLIP = 37;
 
     /**
-     * Gospel
+     * Gospel.
      */
     const GENRE_GOSPEL = 38;
 
     /**
-     * Noise
+     * Noise.
      */
     const GENRE_NOISE = 39;
 
     /**
-     * Alt. Rock
+     * Alt. Rock.
      */
     const GENRE_ALTERNATIVE_ROCK = 40;
 
     /**
-     * Bass
+     * Bass.
      */
     const GENRE_BASS = 41;
 
     /**
-     * Soul
+     * Soul.
      */
     const GENRE_SOUL = 42;
 
     /**
-     * Punk
+     * Punk.
      */
     const GENRE_PUNK = 43;
 
     /**
-     * Space
+     * Space.
      */
     const GENRE_SPACE = 44;
 
     /**
-     * Meditative
+     * Meditative.
      */
     const GENRE_MEDITATIVE = 45;
 
     /**
-     * Instrumental Pop
+     * Instrumental Pop.
      */
     const GENRE_INSTRUMENTAL_POP = 46;
 
     /**
-     * Instrumental Rock
+     * Instrumental Rock.
      */
     const GENRE_INSTRUMENTAL_ROCK = 47;
 
     /**
-     * Ethnic
+     * Ethnic.
      */
     const GENRE_ETHNIC = 48;
 
     /**
-     * Gothic
+     * Gothic.
      */
     const GENRE_GOTHIC = 49;
 
     /**
-     * Darkwave
+     * Darkwave.
      */
     const GENRE_DARKWAVE = 50;
 
     /**
-     * Techno-Industrial
+     * Techno-Industrial.
      */
     const GENRE_TECHNO_INDUSTRIAL = 51;
 
     /**
-     * Electronic
+     * Electronic.
      */
     const GENRE_ELECTRONIC = 52;
 
     /**
-     * Pop-Folk
+     * Pop-Folk.
      */
     const GENRE_POP_FOLK = 53;
 
     /**
-     * Eurodance
+     * Eurodance.
      */
     const GENRE_EURODANCE = 54;
 
     /**
-     * Dream
+     * Dream.
      */
     const GENRE_DREAM = 55;
 
     /**
-     * Southern Rock
+     * Southern Rock.
      */
     const GENRE_SOUTHERN_ROCK = 56;
 
     /**
-     * Comedy
+     * Comedy.
      */
     const GENRE_COMEDY = 57;
 
     /**
-     * Cult
+     * Cult.
      */
     const GENRE_CULT = 58;
 
     /**
-     * Gangsta Rap
+     * Gangsta Rap.
      */
     const GENRE_GANGSTA_RAP = 59;
 
     /**
-     * Top 40
+     * Top 40.
      */
     const GENRE_TOP_40 = 60;
 
     /**
-     * Christian Rap
+     * Christian Rap.
      */
     const GENRE_CHRISTIAN_RAP = 61;
 
     /**
-     * Pop/Funk
+     * Pop/Funk.
      */
     const GENRE_POP_OR_FUNK = 62;
 
     /**
-     * Jungle
+     * Jungle.
      */
     const GENRE_JUNGLE = 63;
 
     /**
-     * Native American
+     * Native American.
      */
     const GENRE_NATIVE_AMERICAN = 64;
 
     /**
-     * Cabaret
+     * Cabaret.
      */
     const GENRE_CABARET = 65;
 
     /**
-     * New Wave
+     * New Wave.
      */
     const GENRE_NEW_WAVE = 66;
 
     /**
-     * Psychedelic
+     * Psychedelic.
      */
     const GENRE_PSYCHEDELIC = 67;
 
     /**
-     * Rave
+     * Rave.
      */
     const GENRE_RAVE = 68;
 
     /**
-     * Showtunes
+     * Showtunes.
      */
     const GENRE_SHOWTUNES = 69;
 
     /**
-     * Trailer
+     * Trailer.
      */
     const GENRE_TRAILER = 70;
 
     /**
-     * Lo-Fi
+     * Lo-Fi.
      */
     const GENRE_LO_FI = 71;
 
     /**
-     * Tribal
+     * Tribal.
      */
     const GENRE_TRIBAL = 72;
 
     /**
-     * Acid Punk
+     * Acid Punk.
      */
     const GENRE_ACID_PUNK = 73;
 
     /**
-     * Acid Jazz
+     * Acid Jazz.
      */
     const GENRE_ACID_JAZZ = 74;
 
     /**
-     * Polka
+     * Polka.
      */
     const GENRE_POLKA = 75;
 
     /**
-     * Retro
+     * Retro.
      */
     const GENRE_RETRO = 76;
 
     /**
-     * Musical
+     * Musical.
      */
     const GENRE_MUSICAL = 77;
 
     /**
-     * Rock & Roll
+     * Rock & Roll.
      */
     const GENRE_ROCK_AND_ROLL = 78;
 
     /**
-     * Hard Rock
+     * Hard Rock.
      */
     const GENRE_HARD_ROCK = 79;
 
     /**
-     * Folk
+     * Folk.
      */
     const GENRE_FOLK = 80;
 
     /**
-     * Folk/Rock
+     * Folk/Rock.
      */
     const GENRE_FOLK_OR_ROCK = 81;
 
     /**
-     * National Folk
+     * National Folk.
      */
     const GENRE_NATIONAL_FOLK = 82;
 
     /**
-     * Swing
+     * Swing.
      */
     const GENRE_SWING = 83;
 
     /**
-     * Fast-Fusion
+     * Fast-Fusion.
      */
     const GENRE_FAST_FUSION = 84;
 
     /**
-     * Bebob
+     * Bebob.
      */
     const GENRE_BEBOB = 85;
 
     /**
-     * Latin
+     * Latin.
      */
     const GENRE_LATIN = 86;
 
     /**
-     * Revival
+     * Revival.
      */
     const GENRE_REVIVAL = 87;
 
     /**
-     * Celtic
+     * Celtic.
      */
     const GENRE_CELTIC = 88;
 
     /**
-     * Bluegrass
+     * Bluegrass.
      */
     const GENRE_BLUEGRASS = 89;
 
     /**
-     * Avantgarde
+     * Avantgarde.
      */
     const GENRE_AVANTGARDE = 90;
 
     /**
-     * Gothic Rock
+     * Gothic Rock.
      */
     const GENRE_GOTHIC_ROCK = 91;
 
     /**
-     * Progressive Rock
+     * Progressive Rock.
      */
     const GENRE_PROGRESSIVE_ROCK = 92;
 
     /**
-     * Psychedelic Rock
+     * Psychedelic Rock.
      */
     const GENRE_PSYCHEDELIC_ROCK = 93;
 
     /**
-     * Symphonic Rock
+     * Symphonic Rock.
      */
     const GENRE_SYMPHONIC_ROCK = 94;
 
     /**
-     * Slow Rock
+     * Slow Rock.
      */
     const GENRE_SLOW_ROCK = 95;
 
     /**
-     * Big Band
+     * Big Band.
      */
     const GENRE_BIG_BAND = 96;
 
     /**
-     * Chorus
+     * Chorus.
      */
     const GENRE_CHORUS = 97;
 
     /**
-     * Easy Listening
+     * Easy Listening.
      */
     const GENRE_EASY_LISTENING = 98;
 
     /**
-     * Acoustic
+     * Acoustic.
      */
     const GENRE_ACOUSTIC = 99;
 
     /**
-     * Humour
+     * Humour.
      */
     const GENRE_HUMOUR = 100;
 
     /**
-     * Speech
+     * Speech.
      */
     const GENRE_SPEECH = 101;
 
     /**
-     * Chanson
+     * Chanson.
      */
     const GENRE_CHANSON = 102;
 
     /**
-     * Opera
+     * Opera.
      */
     const GENRE_OPERA = 103;
 
     /**
-     * Chamber Music
+     * Chamber Music.
      */
     const GENRE_CHAMBER_MUSIC = 104;
 
     /**
-     * Sonata
+     * Sonata.
      */
     const GENRE_SONATA = 105;
 
     /**
-     * Symphony
+     * Symphony.
      */
     const GENRE_SYMPHONY = 106;
 
     /**
-     * Booty Bass
+     * Booty Bass.
      */
     const GENRE_BOOTY_BASS = 107;
 
     /**
-     * Primus
+     * Primus.
      */
     const GENRE_PRIMUS = 108;
 
     /**
-     * Porn Groove
+     * Porn Groove.
      */
     const GENRE_PORN_GROOVE = 109;
 
     /**
-     * Satire
+     * Satire.
      */
     const GENRE_SATIRE = 110;
 
     /**
-     * Slow Jam
+     * Slow Jam.
      */
     const GENRE_SLOW_JAM = 111;
 
     /**
-     * Club
+     * Club.
      */
     const GENRE_CLUB = 112;
 
     /**
-     * Tango
+     * Tango.
      */
     const GENRE_TANGO = 113;
 
     /**
-     * Samba
+     * Samba.
      */
     const GENRE_SAMBA = 114;
 
     /**
-     * Folklore
+     * Folklore.
      */
     const GENRE_FOLKLORE = 115;
 
     /**
-     * Ballad
+     * Ballad.
      */
     const GENRE_BALLAD = 116;
 
     /**
-     * Power Ballad
+     * Power Ballad.
      */
     const GENRE_POWER_BALLAD = 117;
 
     /**
-     * Rhythmic Soul
+     * Rhythmic Soul.
      */
     const GENRE_RHYTHMIC_SOUL = 118;
 
     /**
-     * Freestyle
+     * Freestyle.
      */
     const GENRE_FREESTYLE = 119;
 
     /**
-     * Duet
+     * Duet.
      */
     const GENRE_DUET = 120;
 
     /**
-     * Punk Rock
+     * Punk Rock.
      */
     const GENRE_PUNK_ROCK = 121;
 
     /**
-     * Drum Solo
+     * Drum Solo.
      */
     const GENRE_DRUM_SOLO = 122;
 
     /**
-     * A Cappella
+     * A Cappella.
      */
     const GENRE_A_CAPPELLA = 123;
 
     /**
-     * Euro-House
+     * Euro-House.
      */
     const GENRE_EURO_HOUSE = 124;
 
     /**
-     * Dance Hall
+     * Dance Hall.
      */
     const GENRE_DANCE_HALL = 125;
 
     /**
-     * Goa
+     * Goa.
      */
     const GENRE_GOA = 126;
 
     /**
-     * Drum & Bass
+     * Drum & Bass.
      */
     const GENRE_DRUM_AND_BASS = 127;
 
     /**
-     * Club-House
+     * Club-House.
      */
     const GENRE_CLUB_HOUSE = 128;
 
     /**
-     * Hardcore
+     * Hardcore.
      */
     const GENRE_HARDCORE = 129;
 
     /**
-     * Terror
+     * Terror.
      */
     const GENRE_TERROR = 130;
 
     /**
-     * Indie
+     * Indie.
      */
     const GENRE_INDIE = 131;
 
     /**
-     * BritPop
+     * BritPop.
      */
     const GENRE_BRITPOP = 132;
 
     /**
-     * Negerpunk
+     * Negerpunk.
      */
     const GENRE_NEGERPUNK = 133;
 
     /**
-     * Polsk Punk
+     * Polsk Punk.
      */
     const GENRE_POLSK_PUNK = 134;
 
     /**
-     * Beat
+     * Beat.
      */
     const GENRE_BEAT = 135;
 
     /**
-     * Christian Gangsta Rap
+     * Christian Gangsta Rap.
      */
     const GENRE_CHRISTIAN_GANGSTA_RAP = 136;
 
     /**
-     * Heavy Metal
+     * Heavy Metal.
      */
     const GENRE_HEAVY_METAL = 137;
 
     /**
-     * Black Metal
+     * Black Metal.
      */
     const GENRE_BLACK_METAL = 138;
 
     /**
-     * Crossover
+     * Crossover.
      */
     const GENRE_CROSSOVER = 139;
 
     /**
-     * Contemporary Christian
+     * Contemporary Christian.
      */
     const GENRE_CONTEMPORARY_CHRISTIAN = 140;
 
     /**
-     * Christian Rock
+     * Christian Rock.
      */
     const GENRE_CHRISTIAN_ROCK = 141;
 
     /**
-     * Merengue
+     * Merengue.
      */
     const GENRE_MERENGUE = 142;
 
     /**
-     * Salsa
+     * Salsa.
      */
     const GENRE_SALSA = 143;
 
     /**
-     * Thrash Metal
+     * Thrash Metal.
      */
     const GENRE_THRASH_METAL = 144;
 
     /**
-     * Anime
+     * Anime.
      */
     const GENRE_ANIME = 145;
 
     /**
-     * JPop
+     * JPop.
      */
     const GENRE_JPOP = 146;
 
     /**
-     * Synthpop
+     * Synthpop.
      */
     const GENRE_SYNTHPOP = 147;
 
     /**
-     * Abstract
+     * Abstract.
      */
     const GENRE_ABSTRACT = 148;
 
     /**
-     * Art Rock
+     * Art Rock.
      */
     const GENRE_ART_ROCK = 149;
 
     /**
-     * Baroque
+     * Baroque.
      */
     const GENRE_BAROQUE = 150;
 
     /**
-     * Bhangra
+     * Bhangra.
      */
     const GENRE_BHANGRA = 151;
 
     /**
-     * Big Beat
+     * Big Beat.
      */
     const GENRE_BIG_BEAT = 152;
 
     /**
-     * Breakbeat
+     * Breakbeat.
      */
     const GENRE_BREAKBEAT = 153;
 
     /**
-     * Chillout
+     * Chillout.
      */
     const GENRE_CHILLOUT = 154;
 
     /**
-     * Downtempo
+     * Downtempo.
      */
     const GENRE_DOWNTEMPO = 155;
 
     /**
-     * Dub
+     * Dub.
      */
     const GENRE_DUB = 156;
 
     /**
-     * EBM
+     * EBM.
      */
     const GENRE_EBM = 157;
 
     /**
-     * Eclectic
+     * Eclectic.
      */
     const GENRE_ECLECTIC = 158;
 
     /**
-     * Electro
+     * Electro.
      */
     const GENRE_ELECTRO = 159;
 
     /**
-     * Electroclash
+     * Electroclash.
      */
     const GENRE_ELECTROCLASH = 160;
 
     /**
-     * Emo
+     * Emo.
      */
     const GENRE_EMO = 161;
 
     /**
-     * Experimental
+     * Experimental.
      */
     const GENRE_EXPERIMENTAL = 162;
 
     /**
-     * Garage
+     * Garage.
      */
     const GENRE_GARAGE = 163;
 
     /**
-     * Global
+     * Global.
      */
     const GENRE_GLOBAL = 164;
 
     /**
-     * IDM
+     * IDM.
      */
     const GENRE_IDM = 165;
 
     /**
-     * Illbient
+     * Illbient.
      */
     const GENRE_ILLBIENT = 166;
 
     /**
-     * Industro-Goth
+     * Industro-Goth.
      */
     const GENRE_INDUSTRO_GOTH = 167;
 
     /**
-     * Jam Band
+     * Jam Band.
      */
     const GENRE_JAM_BAND = 168;
 
     /**
-     * Krautrock
+     * Krautrock.
      */
     const GENRE_KRAUTROCK = 169;
 
     /**
-     * Leftfield
+     * Leftfield.
      */
     const GENRE_LEFTFIELD = 170;
 
     /**
-     * Lounge
+     * Lounge.
      */
     const GENRE_LOUNGE = 171;
 
     /**
-     * Math Rock
+     * Math Rock.
      */
     const GENRE_MATH_ROCK = 172;
 
     /**
-     * New Romantic
+     * New Romantic.
      */
     const GENRE_NEW_ROMANTIC = 173;
 
     /**
-     * Nu-Breakz
+     * Nu-Breakz.
      */
     const GENRE_NU_BREAKZ = 174;
 
     /**
-     * Post-Punk
+     * Post-Punk.
      */
     const GENRE_POST_PUNK = 175;
 
     /**
-     * Post-Rock
+     * Post-Rock.
      */
     const GENRE_POST_ROCK = 176;
 
     /**
-     * Psytrance
+     * Psytrance.
      */
     const GENRE_PSYTRANCE = 177;
 
     /**
-     * Shoegaze
+     * Shoegaze.
      */
     const GENRE_SHOEGAZE = 178;
 
     /**
-     * Space Rock
+     * Space Rock.
      */
     const GENRE_SPACE_ROCK = 179;
 
     /**
-     * Trop Rock
+     * Trop Rock.
      */
     const GENRE_TROP_ROCK = 180;
 
     /**
-     * World Music
+     * World Music.
      */
     const GENRE_WORLD_MUSIC = 181;
 
     /**
-     * Neoclassical
+     * Neoclassical.
      */
     const GENRE_NEOCLASSICAL = 182;
 
     /**
-     * Audiobook
+     * Audiobook.
      */
     const GENRE_AUDIOBOOK = 183;
 
     /**
-     * Audio Theatre
+     * Audio Theatre.
      */
     const GENRE_AUDIO_THEATRE = 184;
 
     /**
-     * Neue Deutsche Welle
+     * Neue Deutsche Welle.
      */
     const GENRE_NEUE_DEUTSCHE_WELLE = 185;
 
     /**
-     * Podcast
+     * Podcast.
      */
     const GENRE_PODCAST = 186;
 
     /**
-     * Indie Rock
+     * Indie Rock.
      */
     const GENRE_INDIE_ROCK = 187;
 
     /**
-     * G-Funk
+     * G-Funk.
      */
     const GENRE_G_FUNK = 188;
 
     /**
-     * Dubstep
+     * Dubstep.
      */
     const GENRE_DUBSTEP = 189;
 
     /**
-     * Garage Rock
+     * Garage Rock.
      */
     const GENRE_GARAGE_ROCK = 190;
 
     /**
-     * Psybient
+     * Psybient.
      */
     const GENRE_PSYBIENT = 191;
 
     /**
-     * Valid values
+     * Valid values.
      *
      * @var int[]
      */
@@ -1175,7 +1175,7 @@ class Genre
     ];
 
     /**
-     * Return valid values
+     * Return valid values.
      *
      * @return int[]
      */

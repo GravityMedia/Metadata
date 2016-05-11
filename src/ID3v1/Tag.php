@@ -18,7 +18,7 @@ use GravityMedia\Metadata\Exception\InvalidArgumentException;
 class Tag
 {
     /**
-     * String representations of genres
+     * String representations of genres.
      *
      * @var string[]
      */
