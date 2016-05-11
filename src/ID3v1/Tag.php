@@ -238,7 +238,7 @@ class Tag
     protected $album;
 
     /**
-     * @var int
+     * @var string
      */
     protected $year;
 
@@ -266,7 +266,7 @@ class Tag
      */
     public function __construct($version = Version::VERSION_11)
     {
-        if (!in_array($version, Version::values())) {
+        if (!in_array($version, Version::values(), true)) {
             throw new InvalidArgumentException('Invalid version');
         }
 
@@ -376,7 +376,7 @@ class Tag
     /**
      * Get year.
      *
-     * @return int
+     * @return string
      */
     public function getYear()
     {
@@ -386,7 +386,7 @@ class Tag
     /**
      * Set year.
      *
-     * @param int $year The year.
+     * @param string $year The year.
      *
      * @throws InvalidArgumentException An exception is thrown when the year does not have exactly 4 digits.
      *
@@ -491,7 +491,7 @@ class Tag
      */
     public function setGenre($genre)
     {
-        if (!in_array($genre, Genre::values())) {
+        if (!in_array($genre, Genre::values(), true)) {
             throw new InvalidArgumentException('Invalid genre');
         }
 
