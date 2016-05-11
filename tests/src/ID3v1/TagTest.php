@@ -8,13 +8,13 @@
 namespace GravityMedia\MetadataTest\ID3v1;
 
 use GravityMedia\Metadata\ID3v1\Genre;
-use GravityMedia\Metadata\ID3v1\Version;
 use GravityMedia\Metadata\ID3v1\Tag;
+use GravityMedia\Metadata\ID3v1\Version;
 
 /**
- * ID3v1 tag test
+ * ID3v1 tag test class.
  *
- * @package GravityMedia\MetadataTest
+ * @package GravityMedia\MetadataTest\ID3v1
  *
  * @covers  GravityMedia\Metadata\ID3v1\Tag
  * @uses    GravityMedia\Metadata\ID3v1\Version
@@ -264,5 +264,30 @@ class TagTest extends \PHPUnit_Framework_TestCase
         $tag->setGenre($genre);
 
         $this->assertEquals($genre, $tag->getGenre());
+    }
+
+    /**
+     * Test that setting genre string throws an exception on invalid genre arguments
+     *
+     * @expectedException \GravityMedia\Metadata\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Invalid genre
+     */
+    public function testSettingGenreStringThrowsExceptionOnInvalidGenreArgument()
+    {
+        $tag = new Tag();
+
+        $tag->setGenreFromString('PHPUnit');
+    }
+
+    /**
+     * Test that setting a valid genre string can be retrieved afterwards
+     */
+    public function testSettingValidGenreString()
+    {
+        $genre = 'Hip-Hop';
+        $tag = new Tag();
+        $tag->setGenreFromString($genre);
+
+        $this->assertEquals($genre, $tag->getGenreAsString());
     }
 }
