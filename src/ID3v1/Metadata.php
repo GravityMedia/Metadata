@@ -22,6 +22,11 @@ class Metadata
     protected $stream;
 
     /**
+     * @var Filter
+     */
+    protected $filter;
+
+    /**
      * Create ID3v1 metadata object.
      *
      * @param Stream $stream
@@ -29,6 +34,7 @@ class Metadata
     public function __construct(Stream $stream)
     {
         $this->stream = $stream;
+        $this->filter = new Filter();
     }
 
     /**
@@ -72,23 +78,12 @@ class Metadata
     protected function readVersion()
     {
         $this->stream->seek(-3, SEEK_END);
+
         if ("\x00" === $this->stream->read(1) && "\x00" !== $this->stream->read(1)) {
             return Version::VERSION_11;
         }
 
         return Version::VERSION_10;
-    }
-
-    /**
-     * Trim data.
-     *
-     * @param string $data The data to trim
-     *
-     * @return string
-     */
-    protected function trimData($data)
-    {
-        return trim(substr($data, 0, strcspn($data, "\x00")));
     }
 
     /**
@@ -106,18 +101,17 @@ class Metadata
         $tag = new Tag($version);
 
         $this->stream->seek(-125, SEEK_END);
-        $tag
-            ->setTitle($this->trimData($this->stream->read(30)))
-            ->setArtist($this->trimData($this->stream->read(30)))
-            ->setAlbum($this->trimData($this->stream->read(30)))
-            ->setYear(intval($this->trimData($this->stream->read(4)), 10));
+        $tag->setTitle($this->filter->decode($this->stream->read(30)));
+        $tag->setArtist($this->filter->decode($this->stream->read(30)));
+        $tag->setAlbum($this->filter->decode($this->stream->read(30)));
+        $tag->setYear($this->filter->decode($this->stream->read(4)));
 
         if (Version::VERSION_11 === $version) {
-            $tag->setComment($this->trimData($this->stream->read(28)));
+            $tag->setComment($this->filter->decode($this->stream->read(28)));
             $this->stream->seek(1, SEEK_CUR);
             $tag->setTrack($this->stream->readUInt8());
         } else {
-            $tag->setComment($this->trimData($this->stream->read(30)));
+            $tag->setComment($this->filter->decode($this->stream->read(30)));
         }
 
         $genre = $this->stream->readUInt8();
@@ -126,20 +120,6 @@ class Metadata
         }
 
         return $tag;
-    }
-
-    /**
-     * Pad data.
-     *
-     * @param string $data   The data to pad
-     * @param int    $length The final length
-     * @param int    $type   The type of padding
-     *
-     * @return string
-     */
-    protected function padData($data, $length, $type)
-    {
-        return str_pad(trim(substr($data, 0, $length)), $length, "\x00", $type);
     }
 
     /**
@@ -159,20 +139,20 @@ class Metadata
         $this->stream->seek($offset, SEEK_END);
 
         $data = 'TAG';
-        $data .= $this->padData($tag->getTitle(), 30, STR_PAD_RIGHT);
-        $data .= $this->padData($tag->getArtist(), 30, STR_PAD_RIGHT);
-        $data .= $this->padData($tag->getAlbum(), 30, STR_PAD_RIGHT);
-        $data .= $this->padData($tag->getYear(), 4, STR_PAD_LEFT);
+        $data .= $this->filter->encode($tag->getTitle(), 30);
+        $data .= $this->filter->encode($tag->getArtist(), 30);
+        $data .= $this->filter->encode($tag->getAlbum(), 30);
+        $data .= $this->filter->encode($tag->getYear(), 4);
 
         if (Version::VERSION_11 === $tag->getVersion()) {
-            $data .= $this->padData($tag->getComment(), 28, STR_PAD_RIGHT);
+            $data .= $this->filter->encode($tag->getComment(), 28);
             $data .= "\x00";
-            $data .= chr($tag->getTrack());
+            $data .= $this->stream->writeUInt8($tag->getTrack());
         } else {
-            $data .= $this->padData($tag->getComment(), 30, STR_PAD_RIGHT);
+            $data .= $this->filter->encode($tag->getComment(), 30);
         }
 
-        $data .= chr($tag->getGenre());
+        $data .= $this->stream->writeUInt8($tag->getGenre());
 
         $this->stream->write($data);
 
