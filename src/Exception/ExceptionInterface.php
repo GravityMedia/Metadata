@@ -8,7 +8,7 @@
 namespace GravityMedia\Metadata\Exception;
 
 /**
- * Exception interface
+ * Exception interface.
  *
  * @package GravityMedia\Metadata\Exception
  */

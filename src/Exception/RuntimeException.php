@@ -8,7 +8,7 @@
 namespace GravityMedia\Metadata\Exception;
 
 /**
- * Runtime exception
+ * Runtime exception class.
  *
  * @package GravityMedia\Metadata\Exception
  */

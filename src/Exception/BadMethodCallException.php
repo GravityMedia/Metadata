@@ -8,7 +8,7 @@
 namespace GravityMedia\Metadata\Exception;
 
 /**
- * Bad method call exception
+ * Bad method call exception class.
  *
  * @package GravityMedia\Metadata\Exception
  */

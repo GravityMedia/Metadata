@@ -8,7 +8,7 @@
 namespace GravityMedia\Metadata\Exception;
 
 /**
- * Invalid argument exception
+ * Invalid argument exception class.
  *
  * @package GravityMedia\Metadata\Exception
  */
