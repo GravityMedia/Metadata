@@ -38,7 +38,7 @@ class FrameMetadata
      * Create ID3v2 frame metadata object.
      *
      * @param Stream $stream
-     * @param int    $version
+     * @param int $version
      */
     public function __construct(Stream $stream, $version)
     {
@@ -86,6 +86,10 @@ class FrameMetadata
      */
     public function readFlags()
     {
+        if (Version::VERSION_22 === $this->version) {
+            return [];
+        }
+
         $flags = $this->stream->readUInt16();
 
         if (Version::VERSION_23 === $this->version) {

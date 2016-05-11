@@ -38,7 +38,7 @@ class ExtendedHeaderMetadata
      * Create ID3v2 extended header metadata object.
      *
      * @param Stream $stream
-     * @param int    $version
+     * @param int $version
      */
     public function __construct(Stream $stream, $version)
     {
@@ -54,6 +54,8 @@ class ExtendedHeaderMetadata
      */
     public function readSize()
     {
+        $this->stream->seek(0);
+
         if (Version::VERSION_23 === $this->version) {
             return $this->stream->readUInt32();
         }
@@ -68,6 +70,8 @@ class ExtendedHeaderMetadata
      */
     public function readFlags()
     {
+        $this->stream->seek(8);
+
         if (Version::VERSION_23 === $this->version) {
             $flags = $this->stream->readUInt16();
 
@@ -94,7 +98,11 @@ class ExtendedHeaderMetadata
      */
     public function readPadding()
     {
-        return $this->stream->readUInt32();
+        if (Version::VERSION_23 === $this->version) {
+            return $this->stream->readUInt32();
+        }
+
+        return 0;
     }
 
     /**

@@ -22,16 +22,6 @@ class Frame
     /**
      * @var int
      */
-    protected $size;
-
-    /**
-     * @var array
-     */
-    protected $flags;
-
-    /**
-     * @var int
-     */
     protected $dataLength;
 
     /**
@@ -44,8 +34,6 @@ class Frame
      */
     public function __construct()
     {
-        $this->size = 0;
-        $this->flags = [];
         $this->dataLength = 0;
     }
 
@@ -69,58 +57,6 @@ class Frame
     public function setName($name)
     {
         $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * Get size in bytes.
-     *
-     * @return int
-     */
-    public function getSize()
-    {
-        return $this->size;
-    }
-
-    /**
-     * Set size in bytes.
-     *
-     * @param int $size
-     *
-     * @return $this
-     */
-    public function setSize($size)
-    {
-        $this->size = $size;
-        return $this;
-    }
-
-    /**
-     * Whether the flag is enabled.
-     *
-     * @param int $flag
-     *
-     * @return bool
-     */
-    public function isFlagEnabled($flag)
-    {
-        if (isset($this->flags[$flag])) {
-            return $this->flags[$flag];
-        }
-
-        return false;
-    }
-
-    /**
-     * Set flags.
-     *
-     * @param array $flags
-     *
-     * @return $this
-     */
-    public function setFlags(array $flags)
-    {
-        $this->flags = $flags;
         return $this;
     }
 

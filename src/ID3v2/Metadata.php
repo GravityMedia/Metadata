@@ -104,7 +104,7 @@ class Metadata
      *
      * @return int
      */
-    public function readVersion()
+    protected function readVersion()
     {
         $this->stream->seek(3);
 
@@ -125,11 +125,29 @@ class Metadata
      *
      * @return int
      */
-    public function readRevision()
+    protected function readRevision()
     {
         $this->stream->seek(4);
 
         return $this->stream->readUInt8();
+    }
+
+    /**
+     * Create readable stream from data.
+     *
+     * @param string $data
+     *
+     * @return Stream
+     */
+    protected function createReadableStreamFromData($data)
+    {
+        $filename = tempnam(sys_get_temp_dir(), 'php');
+        file_put_contents($filename, $data);
+
+        $stream = Stream::fromResource(fopen($filename, 'r'));
+        $stream->setByteOrder(ByteOrder::BIG_ENDIAN);
+
+        return $stream;
     }
 
     /**
@@ -148,55 +166,45 @@ class Metadata
         $tag = new Tag($version, $revision);
 
         $headerMetadata = new HeaderMetadata($this->stream, $version);
-        $header = new Header();
-        $header->setSize($headerMetadata->readSize());
-        $header->setFlags($headerMetadata->readFlags());
+        $size = $headerMetadata->readSize();
+        $headerFlags = new Flags($headerMetadata->readFlags());
 
         $this->stream->seek(10);
-        $data = $this->stream->read($header->getSize());
+        $data = $this->stream->read($size);
 
-        if ($header->isFlagEnabled(HeaderFlag::FLAG_COMPRESSION)) {
+        if ($headerFlags->isEnabled(HeaderFlag::FLAG_COMPRESSION)) {
             $data = $this->compressionFilter->decode($data);
         }
 
-        if ($header->isFlagEnabled(HeaderFlag::FLAG_UNSYNCHRONISATION)) {
+        if ($headerFlags->isEnabled(HeaderFlag::FLAG_UNSYNCHRONISATION)) {
             $data = $this->unsynchronisationFilter->decode($data);
         }
 
-        $tagStream = Stream::fromResource(fopen('php://temp', 'r+'));
-        $tagStream->setByteOrder(ByteOrder::BIG_ENDIAN);
-        $tagStream->write($data);
-        $tagStream->rewind();
-
+        $tagStream = $this->createReadableStreamFromData($data);
         $tagSize = $tagStream->getSize();
 
-        if ($header->isFlagEnabled(HeaderFlag::FLAG_EXTENDED_HEADER)) {
+        if ($headerFlags->isEnabled(HeaderFlag::FLAG_EXTENDED_HEADER)) {
             $extendedHeaderMetadata = new ExtendedHeaderMetadata($tagStream, $version);
-            $extendedHeader = new ExtendedHeader();
-            $extendedHeader->setSize($extendedHeaderMetadata->readSize());
-            $extendedHeader->setFlags($extendedHeaderMetadata->readFlags());
+            $tagSize -= $extendedHeaderMetadata->readSize();
+            $extendedHeaderFlags = new Flags($extendedHeaderMetadata->readFlags());
 
-            if (Version::VERSION_23 === $version) {
-                $tag->setPadding($extendedHeaderMetadata->readPadding());
-            }
+            $tag->setPadding($extendedHeaderMetadata->readPadding());
 
-            if ($extendedHeader->isFlagEnabled(ExtendedHeaderFlag::FLAG_TAG_IS_AN_UPDATE)) {
+            if ($extendedHeaderFlags->isEnabled(ExtendedHeaderFlag::FLAG_TAG_IS_AN_UPDATE)) {
                 $tagStream->seek(1, SEEK_CUR);
             }
 
-            if ($extendedHeader->isFlagEnabled(ExtendedHeaderFlag::FLAG_CRC_DATA_PRESENT)) {
+            if ($extendedHeaderFlags->isEnabled(ExtendedHeaderFlag::FLAG_CRC_DATA_PRESENT)) {
                 $tag->setCrc32($extendedHeaderMetadata->readCrc32());
             }
 
-            if ($extendedHeader->isFlagEnabled(ExtendedHeaderFlag::FLAG_TAG_RESTRICTIONS)) {
+            if ($extendedHeaderFlags->isEnabled(ExtendedHeaderFlag::FLAG_TAG_RESTRICTIONS)) {
                 $tag->setRestrictions($extendedHeaderMetadata->readRestrictions());
             }
-
-            $tagSize -= $extendedHeader->getSize();
         }
 
-        if ($header->isFlagEnabled(HeaderFlag::FLAG_FOOTER_PRESENT)) {
-            // TODO: Read footer metadata
+        if ($headerFlags->isEnabled(HeaderFlag::FLAG_FOOTER_PRESENT)) {
+            // TODO: Read footer metadata.
 
             $tagSize -= 10;
         }
@@ -206,6 +214,7 @@ class Metadata
         while ($tagSize > 0) {
             $frameName = $frameMetadata->readName();
             $frameSize = $frameMetadata->readSize();
+            $tagSize -= $frameSize;
 
             if (0 === $frameSize) {
                 break;
@@ -213,13 +222,10 @@ class Metadata
 
             $frame = new Frame();
             $frame->setName($frameName);
-            $frame->setSize($frameSize);
 
-            if (Version::VERSION_22 !== $version) {
-                $frame->setFlags($frameMetadata->readFlags());
-            }
+            $frameFlags = new Flags($frameMetadata->readFlags());
 
-            if ($frame->isFlagEnabled(FrameFlag::FLAG_DATA_LENGT_INDICATOR)) {
+            if ($frameFlags->isEnabled(FrameFlag::FLAG_DATA_LENGT_INDICATOR)) {
                 $frame->setDataLength($frameMetadata->readDataLength());
 
                 $frameSize -= 4;
@@ -227,11 +233,11 @@ class Metadata
 
             $data = $tagStream->read($frameSize);
 
-            if ($frame->isFlagEnabled(FrameFlag::FLAG_COMPRESSION)) {
+            if ($frameFlags->isEnabled(FrameFlag::FLAG_COMPRESSION)) {
                 $data = $this->compressionFilter->decode($data);
             }
 
-            if ($frame->isFlagEnabled(FrameFlag::FLAG_UNSYNCHRONISATION)) {
+            if ($frameFlags->isEnabled(FrameFlag::FLAG_UNSYNCHRONISATION)) {
                 $data = $this->unsynchronisationFilter->decode($data);
             }
 
@@ -239,10 +245,7 @@ class Metadata
 
             $tag->addFrame($frame);
 
-            $frameStream = Stream::fromResource(fopen('php://temp', 'r+'));
-            $frameStream->setByteOrder(ByteOrder::BIG_ENDIAN);
-            $frameStream->write($data);
-            $frameStream->rewind();
+            $frameStream = $this->createReadableStreamFromData($data);
 
             if ('T' === substr($frameName, 0, 1)) {
                 $textInformationFrame = new TextInformationFrame($frameStream, $version);
@@ -251,8 +254,6 @@ class Metadata
                 //var_dump($textEncoding);
                 //var_dump($textInformationFrame->readInformation($textEncoding));
             }
-
-            $tagSize -= $frame->getSize();
         }
 
         return $tag;
