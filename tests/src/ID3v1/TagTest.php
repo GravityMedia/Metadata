@@ -40,7 +40,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
     {
         $tag = new Tag();
 
-        $this->assertEquals(Version::VERSION_11, $tag->getVersion());
+        $this->assertSame(Version::VERSION_11, $tag->getVersion());
     }
 
     /**
@@ -65,7 +65,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
         $tag = new Tag();
         $tag->setTitle($title);
 
-        $this->assertEquals($title, $tag->getTitle());
+        $this->assertSame($title, $tag->getTitle());
     }
 
     /**
@@ -90,7 +90,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
         $tag = new Tag();
         $tag->setArtist($artist);
 
-        $this->assertEquals($artist, $tag->getArtist());
+        $this->assertSame($artist, $tag->getArtist());
     }
 
     /**
@@ -115,7 +115,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
         $tag = new Tag();
         $tag->setAlbum($album);
 
-        $this->assertEquals($album, $tag->getAlbum());
+        $this->assertSame($album, $tag->getAlbum());
     }
 
     /**
@@ -140,7 +140,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
         $tag = new Tag();
         $tag->setYear($year);
 
-        $this->assertEquals($year, $tag->getYear());
+        $this->assertSame($year, $tag->getYear());
     }
 
     /**
@@ -200,7 +200,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
         $tag = new Tag($version);
         $tag->setComment($comment);
 
-        $this->assertEquals($comment, $tag->getComment());
+        $this->assertSame($comment, $tag->getComment());
     }
 
     /**
@@ -238,7 +238,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
         $tag = new Tag();
         $tag->setTrack($track);
 
-        $this->assertEquals($track, $tag->getTrack());
+        $this->assertSame($track, $tag->getTrack());
     }
 
     /**
@@ -263,7 +263,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
         $tag = new Tag();
         $tag->setGenre($genre);
 
-        $this->assertEquals($genre, $tag->getGenre());
+        $this->assertSame($genre, $tag->getGenre());
     }
 
     /**
@@ -288,6 +288,6 @@ class TagTest extends \PHPUnit_Framework_TestCase
         $tag = new Tag();
         $tag->setGenreFromString($genre);
 
-        $this->assertEquals($genre, $tag->getGenreAsString());
+        $this->assertSame($genre, $tag->getGenreAsString());
     }
 }
