@@ -20,6 +20,11 @@ class Encoding
     const ISO_8859_1 = 0;
 
     /**
+     * The UTF-8 Unicode encoding.
+     */
+    const UTF_8 = 3;
+
+    /**
      * The UTF-16 Unicode encoding with BOM.
      * */
     const UTF_16 = 1;
@@ -28,11 +33,6 @@ class Encoding
      * The UTF-16BE Unicode encoding without BOM.
      */
     const UTF_16BE = 2;
-
-    /**
-     * The UTF-8 Unicode encoding.
-     */
-    const UTF_8 = 3;
 
     /**
      * The UTF-16LE Unicode encoding without BOM.
