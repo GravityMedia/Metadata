@@ -37,7 +37,7 @@ class Tag
     protected $crc32;
 
     /**
-     * @var int
+     * @var int[]
      */
     protected $restrictions;
 
@@ -64,7 +64,7 @@ class Tag
         $this->revision = $revision;
         $this->padding = 0;
         $this->crc32 = 0;
-        $this->restrictions = 0;
+        $this->restrictions = [];
         $this->frames = [];
     }
 
@@ -137,23 +137,29 @@ class Tag
     }
 
     /**
-     * Get restrictions.
+     * Get restriction.
+     *
+     * @param int $restriction
      *
      * @return int
      */
-    public function getRestrictions()
+    public function getRestriction($restriction)
     {
-        return $this->restrictions;
+        if (isset($this->restrictions[$restriction])) {
+            return $this->restrictions[$restriction];
+        }
+
+        return -1;
     }
 
     /**
      * Set restrictions
      *
-     * @param int $restrictions
+     * @param int[] $restrictions
      *
      * @return $this
      */
-    public function setRestrictions($restrictions)
+    public function setRestrictions(array $restrictions)
     {
         $this->restrictions = $restrictions;
 
