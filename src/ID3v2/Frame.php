@@ -20,22 +20,9 @@ class Frame
     protected $name;
 
     /**
-     * @var int
-     */
-    protected $dataLength;
-
-    /**
      * @var string
      */
-    protected $data;
-
-    /**
-     * Create ID3v2 frame object.
-     */
-    public function __construct()
-    {
-        $this->dataLength = 0;
-    }
+    protected $content;
 
     /**
      * Get name.
@@ -57,52 +44,31 @@ class Frame
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
     /**
-     * Get data length.
-     *
-     * @return int
-     */
-    public function getDataLength()
-    {
-        return $this->dataLength;
-    }
-
-    /**
-     * Set data length.
-     *
-     * @param int $dataLength
-     *
-     * @return $this
-     */
-    public function setDataLength($dataLength)
-    {
-        $this->dataLength = $dataLength;
-        return $this;
-    }
-
-    /**
-     * Get data.
+     * Get content.
      *
      * @return string
      */
-    public function getData()
+    public function getContent()
     {
-        return $this->data;
+        return $this->content;
     }
 
     /**
-     * Set data.
+     * Set content.
      *
-     * @param string $data
+     * @param string $content
      *
      * @return $this
      */
-    public function setData($data)
+    public function setContent($content)
     {
-        $this->data = $data;
+        $this->content = $content;
+
         return $this;
     }
 }
