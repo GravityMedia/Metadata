@@ -11,13 +11,13 @@ use GravityMedia\Metadata\Exception\InvalidArgumentException;
 use GravityMedia\Metadata\Exception\RuntimeException;
 use GravityMedia\Metadata\ID3v2\Filter\CompressionFilter;
 use GravityMedia\Metadata\ID3v2\Filter\UnsynchronisationFilter;
-use GravityMedia\Metadata\ID3v2\Flag\ExtendedHeaderFlag;
 use GravityMedia\Metadata\ID3v2\Flag\FrameFlag;
 use GravityMedia\Metadata\ID3v2\Flag\HeaderFlag;
-use GravityMedia\Metadata\ID3v2\Metadata\ExtendedHeaderMetadata;
-use GravityMedia\Metadata\ID3v2\Metadata\Frame\TextInformationFrame;
-use GravityMedia\Metadata\ID3v2\Metadata\FrameMetadata;
-use GravityMedia\Metadata\ID3v2\Metadata\HeaderMetadata;
+use GravityMedia\Metadata\ID3v2\Metadata\ExtendedHeaderHandler;
+use GravityMedia\Metadata\ID3v2\Metadata\Frame\CommentFrame;
+use GravityMedia\Metadata\ID3v2\Metadata\Frame\TextFrame;
+use GravityMedia\Metadata\ID3v2\Metadata\FrameHandler;
+use GravityMedia\Metadata\ID3v2\Metadata\HeaderHandler;
 use GravityMedia\Stream\ByteOrder;
 use GravityMedia\Stream\Stream;
 
@@ -31,17 +31,17 @@ class Metadata
     /**
      * @var Stream
      */
-    protected $stream;
+    private $stream;
 
     /**
      * @var CompressionFilter
      */
-    protected $compressionFilter;
+    private $compressionFilter;
 
     /**
      * @var UnsynchronisationFilter
      */
-    protected $unsynchronisationFilter;
+    private $unsynchronisationFilter;
 
     /**
      * Create ID3v2 metadata object from resource.
@@ -162,98 +162,75 @@ class Metadata
         }
 
         $version = $this->readVersion();
-        $revision = $this->readRevision();
-        $tag = new Tag($version, $revision);
+        $tag = new Tag($version, $this->readRevision());
 
-        $headerMetadata = new HeaderMetadata($this->stream, $version);
-        $size = $headerMetadata->readSize();
-        $headerFlags = new Flags($headerMetadata->readFlags());
+        $headerHandler = new HeaderHandler($this->stream, $version);
+        $length = $headerHandler->getSize();
 
         $this->stream->seek(10);
-        $data = $this->stream->read($size);
-
-        if ($headerFlags->isEnabled(HeaderFlag::FLAG_COMPRESSION)) {
+        $data = $this->stream->read($length);
+        if ($headerHandler->isFlagEnabled(HeaderFlag::FLAG_COMPRESSION)) {
             $data = $this->compressionFilter->decode($data);
         }
-
-        if ($headerFlags->isEnabled(HeaderFlag::FLAG_UNSYNCHRONISATION)) {
+        if ($headerHandler->isFlagEnabled(HeaderFlag::FLAG_UNSYNCHRONISATION)) {
             $data = $this->unsynchronisationFilter->decode($data);
         }
 
         $tagStream = $this->createReadableStreamFromData($data);
-        $tagSize = $tagStream->getSize();
+        $tagLength = $tagStream->getSize();
 
-        if ($headerFlags->isEnabled(HeaderFlag::FLAG_EXTENDED_HEADER)) {
-            $extendedHeaderMetadata = new ExtendedHeaderMetadata($tagStream, $version);
-            $tagSize -= $extendedHeaderMetadata->readSize();
-            $extendedHeaderFlags = new Flags($extendedHeaderMetadata->readFlags());
+        if ($headerHandler->isFlagEnabled(HeaderFlag::FLAG_EXTENDED_HEADER)) {
+            $extendedHeaderHandler = new ExtendedHeaderHandler($tagStream, $version);
+            $tagLength -= $extendedHeaderHandler->getSize();
 
-            $tag->setPadding($extendedHeaderMetadata->readPadding());
-
-            if ($extendedHeaderFlags->isEnabled(ExtendedHeaderFlag::FLAG_TAG_IS_AN_UPDATE)) {
-                $tagStream->seek(1, SEEK_CUR);
-            }
-
-            if ($extendedHeaderFlags->isEnabled(ExtendedHeaderFlag::FLAG_CRC_DATA_PRESENT)) {
-                $tag->setCrc32($extendedHeaderMetadata->readCrc32());
-            }
-
-            if ($extendedHeaderFlags->isEnabled(ExtendedHeaderFlag::FLAG_TAG_RESTRICTIONS)) {
-                $tag->setRestrictions($extendedHeaderMetadata->readRestrictions());
-            }
+            $tag->setPadding($extendedHeaderHandler->getPadding());
+            $tag->setCrc32($extendedHeaderHandler->getCrc32());
+            $tag->setRestrictions($extendedHeaderHandler->getRestrictions());
         }
 
-        if ($headerFlags->isEnabled(HeaderFlag::FLAG_FOOTER_PRESENT)) {
+        if ($headerHandler->isFlagEnabled(HeaderFlag::FLAG_FOOTER_PRESENT)) {
             // TODO: Read footer metadata.
 
-            $tagSize -= 10;
+            $tagLength -= 10;
         }
 
-        $frameMetadata = new FrameMetadata($tagStream, $version);
+        while ($tagLength > 0) {
+            $frameHandler = new FrameHandler($tagStream, $version);
 
-        while ($tagSize > 0) {
-            $frameName = $frameMetadata->readName();
-            $frameSize = $frameMetadata->readSize();
-            $tagSize -= $frameSize;
+            $frameName = $frameHandler->getName();
+            $frameLength = $frameHandler->getSize();
+            $tagLength -= $frameLength;
 
-            if (0 === $frameSize) {
+            if (0 === $frameLength) {
                 break;
             }
 
-            $frame = new Frame();
-            $frame->setName($frameName);
-
-            $frameFlags = new Flags($frameMetadata->readFlags());
-
-            if ($frameFlags->isEnabled(FrameFlag::FLAG_DATA_LENGT_INDICATOR)) {
-                $frame->setDataLength($frameMetadata->readDataLength());
-
-                $frameSize -= 4;
-            }
-
-            $data = $tagStream->read($frameSize);
-
-            if ($frameFlags->isEnabled(FrameFlag::FLAG_COMPRESSION)) {
+            $data = $tagStream->read($frameHandler->getDataLength());
+            if ($frameHandler->isFlagEnabled(FrameFlag::FLAG_COMPRESSION)) {
                 $data = $this->compressionFilter->decode($data);
             }
-
-            if ($frameFlags->isEnabled(FrameFlag::FLAG_UNSYNCHRONISATION)) {
+            if ($frameHandler->isFlagEnabled(FrameFlag::FLAG_UNSYNCHRONISATION)) {
                 $data = $this->unsynchronisationFilter->decode($data);
             }
 
-            $frame->setData($data);
-
-            $tag->addFrame($frame);
-
             $frameStream = $this->createReadableStreamFromData($data);
 
-            if ('T' === substr($frameName, 0, 1)) {
-                $textInformationFrame = new TextInformationFrame($frameStream, $version);
-                $textEncoding = $textInformationFrame->readTextEncoding();
+            $frame = new Frame();
+            $frame->setName($frameName);
+            if ('COMM' === $frameName) {
+                $commentFrame = new CommentFrame($frameStream);
+                $frame->setContent($commentFrame->getText());
 
-                //var_dump($textEncoding);
-                //var_dump($textInformationFrame->readInformation($textEncoding));
+            } elseif ('T' === substr($frameName, 0, 1)) {
+                $textFrame = new TextFrame($frameStream);
+                $frame->setContent($textFrame->getText());
+
+                if ('TXXX' === $frameName) {
+                    // TODO: Read user defined text frame.
+                }
             }
+
+            $tag->addFrame($frame);
         }
 
         return $tag;
@@ -268,7 +245,23 @@ class Metadata
      */
     public function write(Tag $tag)
     {
-        // TODO: implement
+        $stream = Stream::fromResource(fopen('php://temp', 'w'));
+        $stream->setByteOrder(ByteOrder::BIG_ENDIAN);
+
+        $stream->write('ID3');
+        $stream->writeUInt8($tag->getVersion());
+        $stream->writeUInt8($tag->getRevision());
+
+        //$headerHandler = new HeaderHandler($stream, $tag->getVersion());
+
+        $tagStream = Stream::fromResource(fopen('php://temp', 'w'));
+        $tagStream->setByteOrder(ByteOrder::BIG_ENDIAN);
+        
+        foreach ($tag->getFrames() as $frame) {
+            $frameHandler = new FrameHandler($tagStream, $tag->getVersion());
+            $frameHandler->setName($frame->getName());
+
+        }
 
         return $this;
     }
