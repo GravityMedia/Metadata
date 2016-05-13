@@ -14,7 +14,7 @@ use GravityMedia\Stream\Stream;
 /**
  * ID3v2 text frame reader class.
  *
- * @package GravityMedia\Metadata\ID3v2\Metadata\Frame
+ * @package GravityMedia\Metadata\ID3v2\Reader\Frame
  */
 class TextFrameReader extends StreamContainer
 {

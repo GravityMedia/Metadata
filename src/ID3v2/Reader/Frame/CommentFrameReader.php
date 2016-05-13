@@ -12,7 +12,7 @@ use GravityMedia\Stream\Stream;
 /**
  * ID3v2 comment frame reader class.
  *
- * @package GravityMedia\Metadata\ID3v2\Metadata\Frame
+ * @package GravityMedia\Metadata\ID3v2\Reader\Frame
  */
 class CommentFrameReader extends TextFrameReader
 {
