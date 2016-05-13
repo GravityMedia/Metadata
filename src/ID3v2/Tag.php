@@ -49,19 +49,18 @@ class Tag
     /**
      * Create ID3v2 tag object.
      *
-     * @param int $version  The version (default is 3: v2.3)
-     * @param int $revision The revision (default is 0)
+     * @param int $version The version (default is 3: v2.3)
      *
      * @throws InvalidArgumentException An exception is thrown on invalid version arguments
      */
-    public function __construct($version = Version::VERSION_23, $revision = 0)
+    public function __construct($version = Version::VERSION_23)
     {
         if (!in_array($version, Version::values(), true)) {
             throw new InvalidArgumentException('Invalid version.');
         }
 
         $this->version = $version;
-        $this->revision = $revision;
+        $this->revision = 0;
         $this->padding = 0;
         $this->crc32 = 0;
         $this->restrictions = [];
@@ -86,6 +85,20 @@ class Tag
     public function getRevision()
     {
         return $this->revision;
+    }
+
+    /**
+     * Set revision.
+     *
+     * @param int $revision
+     *
+     * @return $this
+     */
+    public function setRevision($revision)
+    {
+        $this->revision = $revision;
+
+        return $this;
     }
 
     /**

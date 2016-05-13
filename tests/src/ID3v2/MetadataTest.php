@@ -8,6 +8,7 @@
 namespace GravityMedia\MetadataTest\ID3v2;
 
 use GravityMedia\Metadata\ID3v2\Metadata;
+use GravityMedia\Metadata\ID3v2\Reader;
 use GravityMedia\Metadata\ID3v2\Restriction;
 use GravityMedia\Metadata\ID3v2\Version;
 use GravityMedia\MetadataTest\Helper\ResourceHelper;

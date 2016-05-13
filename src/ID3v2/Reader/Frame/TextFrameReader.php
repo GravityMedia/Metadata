@@ -5,18 +5,18 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v2\Metadata\Frame;
+namespace GravityMedia\Metadata\ID3v2\Reader\Frame;
 
 use GravityMedia\Metadata\ID3v2\Encoding;
-use GravityMedia\Metadata\ID3v2\Metadata\StreamContainer;
+use GravityMedia\Metadata\ID3v2\StreamContainer;
 use GravityMedia\Stream\Stream;
 
 /**
- * ID3v2 text frame class.
+ * ID3v2 text frame reader class.
  *
  * @package GravityMedia\Metadata\ID3v2\Metadata\Frame
  */
-class TextFrame extends StreamContainer
+class TextFrameReader extends StreamContainer
 {
     /**
      * String representations of encodings.
@@ -47,7 +47,7 @@ class TextFrame extends StreamContainer
     private $texts;
 
     /**
-     * Create ID3v2 text frame object.
+     * Create ID3v2 text frame reader object.
      *
      * @param Stream $stream
      * @param int    $textOffset

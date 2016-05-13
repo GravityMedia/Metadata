@@ -5,14 +5,14 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v2\Metadata;
+namespace GravityMedia\Metadata\ID3v2;
 
 use GravityMedia\Stream\Stream;
 
 /**
  * ID3v2 stream container class.
  *
- * @package GravityMedia\Metadata\ID3v2\Metadata
+ * @package GravityMedia\Metadata\ID3v2
  */
 class StreamContainer
 {

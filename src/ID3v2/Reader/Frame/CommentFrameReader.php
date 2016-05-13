@@ -5,16 +5,16 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v2\Metadata\Frame;
+namespace GravityMedia\Metadata\ID3v2\Reader\Frame;
 
 use GravityMedia\Stream\Stream;
 
 /**
- * ID3v2 comment frame class.
+ * ID3v2 comment frame reader class.
  *
  * @package GravityMedia\Metadata\ID3v2\Metadata\Frame
  */
-class CommentFrame extends TextFrame
+class CommentFrameReader extends TextFrameReader
 {
     /**
      * @var string
@@ -22,7 +22,7 @@ class CommentFrame extends TextFrame
     private $language;
 
     /**
-     * Create ID3v2 comment frame object.
+     * Create ID3v2 comment frame reader object.
      *
      * @param Stream $stream
      */

@@ -5,18 +5,18 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v2\Metadata;
+namespace GravityMedia\Metadata\ID3v2\Reader;
 
 use GravityMedia\Metadata\ID3v2\Flag\ExtendedHeaderFlag;
 use GravityMedia\Metadata\ID3v2\Restriction;
 use GravityMedia\Metadata\ID3v2\Version;
 
 /**
- * ID3v2 extended header handler class.
+ * ID3v2 extended header reader class.
  *
- * @package GravityMedia\Metadata\ID3v2\Metadata
+ * @package GravityMedia\Metadata\ID3v2\Reader
  */
-class ExtendedHeaderHandler extends AbstractHandler
+class ExtendedHeaderReader extends AbstractReader
 {
     /**
      * @var int

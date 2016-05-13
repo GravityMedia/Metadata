@@ -5,17 +5,17 @@
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
 
-namespace GravityMedia\Metadata\ID3v2\Metadata;
+namespace GravityMedia\Metadata\ID3v2\Reader;
 
 use GravityMedia\Metadata\ID3v2\Flag\FrameFlag;
 use GravityMedia\Metadata\ID3v2\Version;
 
 /**
- * ID3v2 frame handler class.
+ * ID3v2 frame reader class.
  *
  * @package GravityMedia\Metadata\ID3v2\Metadata
  */
-class FrameHandler extends AbstractHandler
+class FrameReader extends AbstractReader
 {
     /**
      * @var string

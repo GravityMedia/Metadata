@@ -13,11 +13,11 @@ use GravityMedia\Metadata\ID3v2\Filter\CompressionFilter;
 use GravityMedia\Metadata\ID3v2\Filter\UnsynchronisationFilter;
 use GravityMedia\Metadata\ID3v2\Flag\FrameFlag;
 use GravityMedia\Metadata\ID3v2\Flag\HeaderFlag;
-use GravityMedia\Metadata\ID3v2\Metadata\ExtendedHeaderHandler;
-use GravityMedia\Metadata\ID3v2\Metadata\Frame\CommentFrame;
-use GravityMedia\Metadata\ID3v2\Metadata\Frame\TextFrame;
-use GravityMedia\Metadata\ID3v2\Metadata\FrameHandler;
-use GravityMedia\Metadata\ID3v2\Metadata\HeaderHandler;
+use GravityMedia\Metadata\ID3v2\Reader\ExtendedHeaderReader;
+use GravityMedia\Metadata\ID3v2\Reader\Frame\CommentFrameReader;
+use GravityMedia\Metadata\ID3v2\Reader\Frame\TextFrameReader;
+use GravityMedia\Metadata\ID3v2\Reader\FrameReader;
+use GravityMedia\Metadata\ID3v2\Reader\HeaderReader;
 use GravityMedia\Stream\ByteOrder;
 use GravityMedia\Stream\Stream;
 
@@ -121,18 +121,6 @@ class Metadata
     }
 
     /**
-     * Read ID3v2 revision.
-     *
-     * @return int
-     */
-    protected function readRevision()
-    {
-        $this->stream->seek(4);
-
-        return $this->stream->readUInt8();
-    }
-
-    /**
      * Create readable stream from data.
      *
      * @param string $data
@@ -162,54 +150,57 @@ class Metadata
         }
 
         $version = $this->readVersion();
-        $tag = new Tag($version, $this->readRevision());
+        $tag = new Tag($version);
 
-        $headerHandler = new HeaderHandler($this->stream, $version);
-        $length = $headerHandler->getSize();
+        $this->stream->seek(4);
+        $headerReader = new HeaderReader($this->stream, $version);
+
+        $tag->setRevision($headerReader->getRevision());
+        $length = $headerReader->getSize();
 
         $this->stream->seek(10);
         $data = $this->stream->read($length);
-        if ($headerHandler->isFlagEnabled(HeaderFlag::FLAG_COMPRESSION)) {
+        if ($headerReader->isFlagEnabled(HeaderFlag::FLAG_COMPRESSION)) {
             $data = $this->compressionFilter->decode($data);
         }
-        if ($headerHandler->isFlagEnabled(HeaderFlag::FLAG_UNSYNCHRONISATION)) {
+        if ($headerReader->isFlagEnabled(HeaderFlag::FLAG_UNSYNCHRONISATION)) {
             $data = $this->unsynchronisationFilter->decode($data);
         }
 
         $tagStream = $this->createReadableStreamFromData($data);
         $tagLength = $tagStream->getSize();
 
-        if ($headerHandler->isFlagEnabled(HeaderFlag::FLAG_EXTENDED_HEADER)) {
-            $extendedHeaderHandler = new ExtendedHeaderHandler($tagStream, $version);
-            $tagLength -= $extendedHeaderHandler->getSize();
+        if ($headerReader->isFlagEnabled(HeaderFlag::FLAG_EXTENDED_HEADER)) {
+            $extendedHeaderReader = new ExtendedHeaderReader($tagStream, $version);
+            $tagLength -= $extendedHeaderReader->getSize();
 
-            $tag->setPadding($extendedHeaderHandler->getPadding());
-            $tag->setCrc32($extendedHeaderHandler->getCrc32());
-            $tag->setRestrictions($extendedHeaderHandler->getRestrictions());
+            $tag->setPadding($extendedHeaderReader->getPadding());
+            $tag->setCrc32($extendedHeaderReader->getCrc32());
+            $tag->setRestrictions($extendedHeaderReader->getRestrictions());
         }
 
-        if ($headerHandler->isFlagEnabled(HeaderFlag::FLAG_FOOTER_PRESENT)) {
+        if ($headerReader->isFlagEnabled(HeaderFlag::FLAG_FOOTER_PRESENT)) {
             // TODO: Read footer metadata.
 
             $tagLength -= 10;
         }
 
         while ($tagLength > 0) {
-            $frameHandler = new FrameHandler($tagStream, $version);
+            $frameReader = new FrameReader($tagStream, $version);
 
-            $frameName = $frameHandler->getName();
-            $frameLength = $frameHandler->getSize();
+            $frameName = $frameReader->getName();
+            $frameLength = $frameReader->getSize();
             $tagLength -= $frameLength;
 
             if (0 === $frameLength) {
                 break;
             }
 
-            $data = $tagStream->read($frameHandler->getDataLength());
-            if ($frameHandler->isFlagEnabled(FrameFlag::FLAG_COMPRESSION)) {
+            $data = $tagStream->read($frameReader->getDataLength());
+            if ($frameReader->isFlagEnabled(FrameFlag::FLAG_COMPRESSION)) {
                 $data = $this->compressionFilter->decode($data);
             }
-            if ($frameHandler->isFlagEnabled(FrameFlag::FLAG_UNSYNCHRONISATION)) {
+            if ($frameReader->isFlagEnabled(FrameFlag::FLAG_UNSYNCHRONISATION)) {
                 $data = $this->unsynchronisationFilter->decode($data);
             }
 
@@ -218,12 +209,12 @@ class Metadata
             $frame = new Frame();
             $frame->setName($frameName);
             if ('COMM' === $frameName) {
-                $commentFrame = new CommentFrame($frameStream);
-                $frame->setContent($commentFrame->getText());
+                $commentFrameReader = new CommentFrameReader($frameStream);
+                $frame->setContent($commentFrameReader->getText());
 
             } elseif ('T' === substr($frameName, 0, 1)) {
-                $textFrame = new TextFrame($frameStream);
-                $frame->setContent($textFrame->getText());
+                $textFrameReader = new TextFrameReader($frameStream);
+                $frame->setContent($textFrameReader->getText());
 
                 if ('TXXX' === $frameName) {
                     // TODO: Read user defined text frame.
@@ -256,9 +247,9 @@ class Metadata
 
         $tagStream = Stream::fromResource(fopen('php://temp', 'w'));
         $tagStream->setByteOrder(ByteOrder::BIG_ENDIAN);
-        
+
         foreach ($tag->getFrames() as $frame) {
-            $frameHandler = new FrameHandler($tagStream, $tag->getVersion());
+            $frameHandler = new FrameReader($tagStream, $tag->getVersion());
             $frameHandler->setName($frame->getName());
 
         }
