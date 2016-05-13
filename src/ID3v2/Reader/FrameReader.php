@@ -13,7 +13,7 @@ use GravityMedia\Metadata\ID3v2\Version;
 /**
  * ID3v2 frame reader class.
  *
- * @package GravityMedia\Metadata\ID3v2\Metadata
+ * @package GravityMedia\Metadata\ID3v2\Reader
  */
 class FrameReader extends AbstractReader
 {
@@ -55,20 +55,6 @@ class FrameReader extends AbstractReader
         }
 
         return $this->name;
-    }
-
-    /**
-     * Set ID3v2 frame name.
-     *
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     /**
@@ -161,19 +147,5 @@ class FrameReader extends AbstractReader
         }
 
         return $this->dataLength;
-    }
-
-    /**
-     * Write ID3v2 frame data data.
-     *
-     * @return $this
-     */
-    public function write()
-    {
-        $this->getStream()->seek($this->getOffset());
-
-        $this->getStream()->write($this->name);
-
-        return $this;
     }
 }
