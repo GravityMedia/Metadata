@@ -18,6 +18,7 @@ use GravityMedia\Metadata\ID3v2\Reader\Frame\CommentFrameReader;
 use GravityMedia\Metadata\ID3v2\Reader\Frame\TextFrameReader;
 use GravityMedia\Metadata\ID3v2\Reader\FrameReader;
 use GravityMedia\Metadata\ID3v2\Reader\HeaderReader;
+use GravityMedia\Metadata\ID3v2\Writer\FrameWriter;
 use GravityMedia\Stream\ByteOrder;
 use GravityMedia\Stream\Stream;
 
@@ -243,14 +244,12 @@ class Metadata
         $stream->writeUInt8($tag->getVersion());
         $stream->writeUInt8($tag->getRevision());
 
-        //$headerHandler = new HeaderHandler($stream, $tag->getVersion());
-
         $tagStream = Stream::fromResource(fopen('php://temp', 'w'));
         $tagStream->setByteOrder(ByteOrder::BIG_ENDIAN);
 
         foreach ($tag->getFrames() as $frame) {
-            $frameHandler = new FrameReader($tagStream, $tag->getVersion());
-            $frameHandler->setName($frame->getName());
+            $frameWriter = new FrameWriter($tagStream, $tag->getVersion());
+            $frameWriter->setName($frame->getName());
 
         }
 
