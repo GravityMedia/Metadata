@@ -11,11 +11,11 @@ use GravityMedia\Metadata\ID3v2\Flag\FrameFlag;
 use GravityMedia\Metadata\ID3v2\Version;
 
 /**
- * ID3v2 frame reader class.
+ * ID3v2 frame header reader class.
  *
  * @package GravityMedia\Metadata\ID3v2\Reader
  */
-class FrameReader extends AbstractReader
+class FrameHeaderReader extends AbstractReader
 {
     /**
      * @var string

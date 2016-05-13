@@ -16,9 +16,9 @@ use GravityMedia\Metadata\ID3v2\Flag\HeaderFlag;
 use GravityMedia\Metadata\ID3v2\Reader\ExtendedHeaderReader;
 use GravityMedia\Metadata\ID3v2\Reader\Frame\CommentFrameReader;
 use GravityMedia\Metadata\ID3v2\Reader\Frame\TextFrameReader;
-use GravityMedia\Metadata\ID3v2\Reader\FrameReader;
+use GravityMedia\Metadata\ID3v2\Reader\FrameHeaderReader;
 use GravityMedia\Metadata\ID3v2\Reader\HeaderReader;
-use GravityMedia\Metadata\ID3v2\Writer\FrameWriter;
+use GravityMedia\Metadata\ID3v2\Writer\FrameHeaderWriter;
 use GravityMedia\Stream\ByteOrder;
 use GravityMedia\Stream\Stream;
 
@@ -187,21 +187,21 @@ class Metadata
         }
 
         while ($tagLength > 0) {
-            $frameReader = new FrameReader($tagStream, $version);
+            $frameHeaderReader = new FrameHeaderReader($tagStream, $version);
 
-            $frameName = $frameReader->getName();
-            $frameLength = $frameReader->getSize();
+            $frameName = $frameHeaderReader->getName();
+            $frameLength = $frameHeaderReader->getSize();
             $tagLength -= $frameLength;
 
             if (0 === $frameLength) {
                 break;
             }
 
-            $data = $tagStream->read($frameReader->getDataLength());
-            if ($frameReader->isFlagEnabled(FrameFlag::FLAG_COMPRESSION)) {
+            $data = $tagStream->read($frameHeaderReader->getDataLength());
+            if ($frameHeaderReader->isFlagEnabled(FrameFlag::FLAG_COMPRESSION)) {
                 $data = $this->compressionFilter->decode($data);
             }
-            if ($frameReader->isFlagEnabled(FrameFlag::FLAG_UNSYNCHRONISATION)) {
+            if ($frameHeaderReader->isFlagEnabled(FrameFlag::FLAG_UNSYNCHRONISATION)) {
                 $data = $this->unsynchronisationFilter->decode($data);
             }
 
@@ -209,17 +209,22 @@ class Metadata
 
             $frame = new Frame();
             $frame->setName($frameName);
-            if ('COMM' === $frameName) {
-                $commentFrameReader = new CommentFrameReader($frameStream);
-                $frame->setContent($commentFrameReader->getText());
-
+            if ('UFID' === $frameName) {
+                // TODO: Read unique file identifier.
             } elseif ('T' === substr($frameName, 0, 1)) {
                 $textFrameReader = new TextFrameReader($frameStream);
                 $frame->setContent($textFrameReader->getText());
-
                 if ('TXXX' === $frameName) {
                     // TODO: Read user defined text frame.
                 }
+            } elseif ('W' === substr($frameName, 0, 1)) {
+                // TODO: Read URL link frame.
+                if ('WXXX' === $frameName) {
+                    // TODO: Read user defined URL link frame.
+                }
+            } elseif ('COMM' === $frameName) {
+                $commentFrameReader = new CommentFrameReader($frameStream);
+                $frame->setContent($commentFrameReader->getText());
             }
 
             $tag->addFrame($frame);
@@ -248,8 +253,8 @@ class Metadata
         $tagStream->setByteOrder(ByteOrder::BIG_ENDIAN);
 
         foreach ($tag->getFrames() as $frame) {
-            $frameWriter = new FrameWriter($tagStream, $tag->getVersion());
-            $frameWriter->setName($frame->getName());
+            $frameHeaderWriter = new FrameHeaderWriter($tagStream, $tag->getVersion());
+            $frameHeaderWriter->setName($frame->getName());
 
         }
 

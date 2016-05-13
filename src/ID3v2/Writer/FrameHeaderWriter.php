@@ -10,11 +10,11 @@ namespace GravityMedia\Metadata\ID3v2\Writer;
 use GravityMedia\Metadata\ID3v2\StreamContainer;
 
 /**
- * ID3v2 frame writer class.
+ * ID3v2 frame header writer class.
  *
  * @package GravityMedia\Metadata\ID3v2\Writer
  */
-class FrameWriter extends StreamContainer
+class FrameHeaderWriter extends StreamContainer
 {
     /**
      * @var string
