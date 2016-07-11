@@ -15,7 +15,7 @@ use GravityMedia\Metadata\ID3v2\Version;
  *
  * @package GravityMedia\Metadata\ID3v2\Reader
  */
-class FrameHeaderReader extends AbstractReader
+class FrameHeaderReader extends AbstractHeaderReader
 {
     /**
      * @var string

@@ -13,11 +13,15 @@ use GravityMedia\Metadata\ID3v2\Filter\CompressionFilter;
 use GravityMedia\Metadata\ID3v2\Filter\UnsynchronisationFilter;
 use GravityMedia\Metadata\ID3v2\Flag\FrameFlag;
 use GravityMedia\Metadata\ID3v2\Flag\HeaderFlag;
+use GravityMedia\Metadata\ID3v2\Frame\CommentFrame;
+use GravityMedia\Metadata\ID3v2\Frame\PictureFrame;
+use GravityMedia\Metadata\ID3v2\Frame\TextFrame;
 use GravityMedia\Metadata\ID3v2\Reader\ExtendedHeaderReader;
-use GravityMedia\Metadata\ID3v2\Reader\Frame\CommentFrameReader;
-use GravityMedia\Metadata\ID3v2\Reader\Frame\TextFrameReader;
 use GravityMedia\Metadata\ID3v2\Reader\FrameHeaderReader;
 use GravityMedia\Metadata\ID3v2\Reader\HeaderReader;
+use GravityMedia\Metadata\ID3v2\Reader\LanguageTextFrameReader;
+use GravityMedia\Metadata\ID3v2\Reader\PictureFrameReader;
+use GravityMedia\Metadata\ID3v2\Reader\TextFrameReader;
 use GravityMedia\Metadata\ID3v2\Writer\FrameHeaderWriter;
 use GravityMedia\Stream\ByteOrder;
 use GravityMedia\Stream\Stream;
@@ -109,13 +113,18 @@ class Metadata
     {
         $this->stream->seek(3);
 
-        switch ($this->stream->readUInt8()) {
-            case 2:
-                return Version::VERSION_22;
-            case 3:
-                return Version::VERSION_23;
-            case 4:
-                return Version::VERSION_24;
+        $version = $this->stream->readUInt8();
+
+        if (2 === $version) {
+            return Version::VERSION_22;
+        }
+
+        if (3 === $version) {
+            return Version::VERSION_23;
+        }
+
+        if (4 === $version) {
+            return Version::VERSION_24;
         }
 
         throw new RuntimeException('Invalid version.');
@@ -207,24 +216,49 @@ class Metadata
 
             $frameStream = $this->createReadableStreamFromData($data);
 
-            $frame = new Frame();
-            $frame->setName($frameName);
             if ('UFID' === $frameName) {
+                $frame = new Frame();
+                $frame->setName($frameName);
                 // TODO: Read unique file identifier.
             } elseif ('T' === substr($frameName, 0, 1)) {
-                $textFrameReader = new TextFrameReader($frameStream);
-                $frame->setContent($textFrameReader->getText());
+                $frameReader = new TextFrameReader($frameStream);
+
+                $frame = new TextFrame();
+                $frame->setName($frameName);
+                $frame->setText($frameReader->getText());
+
                 if ('TXXX' === $frameName) {
                     // TODO: Read user defined text frame.
                 }
             } elseif ('W' === substr($frameName, 0, 1)) {
+                $frame = new Frame();
+                $frame->setName($frameName);
                 // TODO: Read URL link frame.
                 if ('WXXX' === $frameName) {
                     // TODO: Read user defined URL link frame.
                 }
+            } elseif ('APIC' === $frameName) {
+                $frameReader = new PictureFrameReader($frameStream);
+
+                $frame = new PictureFrame();
+                $frame->setName($frameName);
+                $frame->setMimeType($frameReader->getMimeType());
+                $frame->setType($frameReader->getType());
+                $frame->setDescription($frameReader->getDescription());
+                $frame->setData($frameReader->getData());
             } elseif ('COMM' === $frameName) {
-                $commentFrameReader = new CommentFrameReader($frameStream);
-                $frame->setContent($commentFrameReader->getText());
+                $frameReader = new LanguageTextFrameReader($frameStream);
+                $text = $frameReader->getText();
+                $description = array_shift($text);
+
+                $frame = new CommentFrame();
+                $frame->setName($frameName);
+                $frame->setLanguage($frameReader->getLanguage());
+                $frame->setDescription($description);
+                $frame->setText($text);
+            } else {
+                $frame = new Frame();
+                $frame->setName($frameName);
             }
 
             $tag->addFrame($frame);

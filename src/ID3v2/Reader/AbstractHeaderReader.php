@@ -12,11 +12,11 @@ use GravityMedia\Metadata\ID3v2\StreamContainer;
 use GravityMedia\Stream\Stream;
 
 /**
- * ID3v2 abstract reader class.
+ * ID3v2 abstract header reader class.
  *
  * @package GravityMedia\Metadata\ID3v2\Reader
  */
-abstract class AbstractReader extends StreamContainer
+abstract class AbstractHeaderReader extends StreamContainer
 {
     /**
      * @var int
@@ -39,7 +39,7 @@ abstract class AbstractReader extends StreamContainer
     private $flags;
 
     /**
-     * Create ID3v2 abstract reader object.
+     * Create ID3v2 abstract header reader object.
      *
      * @param Stream $stream
      * @param int    $version

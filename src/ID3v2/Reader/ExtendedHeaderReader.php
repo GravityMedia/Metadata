@@ -16,7 +16,7 @@ use GravityMedia\Metadata\ID3v2\Version;
  *
  * @package GravityMedia\Metadata\ID3v2\Reader
  */
-class ExtendedHeaderReader extends AbstractReader
+class ExtendedHeaderReader extends AbstractHeaderReader
 {
     /**
      * @var int

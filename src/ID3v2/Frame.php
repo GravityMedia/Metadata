@@ -20,11 +20,6 @@ class Frame
     protected $name;
 
     /**
-     * @var string
-     */
-    protected $content;
-
-    /**
      * Get name.
      *
      * @return string
@@ -44,30 +39,6 @@ class Frame
     public function setName($name)
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get content.
-     *
-     * @return string
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
-     * Set content.
-     *
-     * @param string $content
-     *
-     * @return $this
-     */
-    public function setContent($content)
-    {
-        $this->content = $content;
 
         return $this;
     }
