@@ -24,11 +24,12 @@
         "gravitymedia/stream": "^1.0@dev"
     },
     "require-dev": {
+        "phpunit/phpunit": "^5.3",
+        "scrutinizer/ocular": "^1.3",
         "debach/zend-mp3": "@dev",
         "james-heinrich/getid3": "^1.9",
         "mdurrant/php-binary-reader": "^1.0",
-        "phpunit/phpunit": "^5.3",
-        "scrutinizer/ocular": "^1.3"
+        "symfony/finder": "^3.1"
     },
     "autoload": {
         "psr-4": {

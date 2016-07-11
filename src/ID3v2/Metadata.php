@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the Metadata package.
+ * This file is part of the Metadata project.
  *
  * @author Daniel Schröder <daniel.schroeder@gravitymedia.de>
  */
@@ -202,7 +202,7 @@ class Metadata
             $frameLength = $frameHeaderReader->getSize();
             $tagLength -= $frameLength;
 
-            if (0 === $frameLength) {
+            if ('' === $frameName || 0 === $frameLength) {
                 break;
             }
 
