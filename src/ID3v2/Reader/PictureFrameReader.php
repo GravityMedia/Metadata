@@ -7,19 +7,25 @@
 
 namespace GravityMedia\Metadata\ID3v2\Reader;
 
-use GravityMedia\Metadata\ID3v2\StreamContainer;
+use GravityMedia\Metadata\ID3v2\Reader;
+use GravityMedia\Metadata\ID3v2\Version;
 
 /**
  * ID3v2 picture frame reader class.
  *
  * @package GravityMedia\Metadata\ID3v2\Reader
  */
-class PictureFrameReader extends StreamContainer
+class PictureFrameReader extends Reader
 {
     /**
      * @var int
      */
     private $encoding;
+
+    /**
+     * @var string
+     */
+    private $imageFormat;
 
     /**
      * @var string
@@ -68,12 +74,46 @@ class PictureFrameReader extends StreamContainer
     }
 
     /**
+     * Read image format.
+     *
+     * @return string
+     */
+    protected function readImageFormat()
+    {
+        if (Version::VERSION_22 !== $this->getVersion()) {
+            return '';
+        }
+
+        $this->getStream()->seek($this->getOffset() + 1);
+
+        return $this->getStream()->read(3);
+    }
+
+    /**
+     * Get image format.
+     *
+     * @return string
+     */
+    public function getImageFormat()
+    {
+        if (null === $this->imageFormat) {
+            $this->imageFormat = $this->readImageFormat();
+        }
+
+        return $this->imageFormat;
+    }
+
+    /**
      * Read mime type.
      *
      * @return string
      */
     protected function readMimeType()
     {
+        if (Version::VERSION_22 === $this->getVersion()) {
+            return '';
+        }
+
         $this->getStream()->seek($this->getOffset() + 1);
 
         $mimeType = '';
@@ -110,7 +150,10 @@ class PictureFrameReader extends StreamContainer
      */
     protected function readType()
     {
-        $offset = strlen($this->getMimeType()) + 2;
+        $offset = 4;
+        if (Version::VERSION_22 !== $this->getVersion()) {
+            $offset = 2 + strlen($this->getMimeType());
+        }
 
         $this->getStream()->seek($this->getOffset() + $offset);
 
@@ -138,7 +181,10 @@ class PictureFrameReader extends StreamContainer
      */
     protected function readDescription()
     {
-        $offset = strlen($this->getMimeType()) + 3;
+        $offset = 5;
+        if (Version::VERSION_22 !== $this->getVersion()) {
+            $offset = 3 + strlen($this->getMimeType());
+        }
 
         $this->getStream()->seek($this->getOffset() + $offset);
 
@@ -176,7 +222,11 @@ class PictureFrameReader extends StreamContainer
      */
     protected function readData()
     {
-        $offset = strlen($this->getMimeType()) + strlen($this->getDescription()) + 4;
+        $offset = 6 + strlen($this->getDescription());
+        if (Version::VERSION_22 !== $this->getVersion()) {
+            $offset = 4 + strlen($this->getMimeType()) + strlen($this->getDescription());
+        }
+
         $length = $this->getStream()->getSize() - $offset;
         if ($length < 1) {
             return '';

@@ -64,13 +64,16 @@ class FrameHeaderReader extends AbstractHeaderReader
      */
     protected function readSize()
     {
-        if (Version::VERSION_22 === $this->getVersion()) {
-            $this->getStream()->seek($this->getOffset() + 3);
-
-            return $this->getStream()->readUInt24();
+        $offset = 3;
+        if (Version::VERSION_22 !== $this->getVersion()) {
+            $offset += 1;
         }
 
-        $this->getStream()->seek($this->getOffset() + 4);
+        $this->getStream()->seek($this->getOffset() + $offset);
+
+        if (Version::VERSION_22 === $this->getVersion()) {
+            return $this->getStream()->readUInt24();
+        }
 
         $value = $this->getStream()->readUInt32();
 

@@ -8,7 +8,7 @@
 namespace GravityMedia\Metadata\ID3v2\Reader;
 
 use GravityMedia\Metadata\ID3v2\Filter\SynchsafeIntegerFilter;
-use GravityMedia\Metadata\ID3v2\StreamContainer;
+use GravityMedia\Metadata\ID3v2\Reader;
 use GravityMedia\Stream\Stream;
 
 /**
@@ -16,13 +16,8 @@ use GravityMedia\Stream\Stream;
  *
  * @package GravityMedia\Metadata\ID3v2\Reader
  */
-abstract class AbstractHeaderReader extends StreamContainer
+abstract class AbstractHeaderReader extends Reader
 {
-    /**
-     * @var int
-     */
-    private $version;
-
     /**
      * @var SynchsafeIntegerFilter
      */
@@ -46,20 +41,9 @@ abstract class AbstractHeaderReader extends StreamContainer
      */
     public function __construct(Stream $stream, $version)
     {
-        parent::__construct($stream);
+        parent::__construct($stream, $version);
 
-        $this->version = $version;
         $this->synchsafeIntegerFilter = new SynchsafeIntegerFilter();
-    }
-
-    /**
-     * Get version.
-     *
-     * @return int
-     */
-    protected function getVersion()
-    {
-        return $this->version;
     }
 
     /**

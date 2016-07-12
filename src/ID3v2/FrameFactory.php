@@ -40,11 +40,12 @@ class FrameFactory
      * Create frame.
      *
      * @param Stream $stream
+     * @param int    $version
      * @param string $name
      *
      * @return Frame
      */
-    public function createFrame(Stream $stream, $name)
+    public function createFrame(Stream $stream, $version, $name)
     {
         if ('UFID' === $name) {
             $frame = new Frame();
@@ -56,7 +57,7 @@ class FrameFactory
         }
 
         if ('T' === substr($name, 0, 1)) {
-            $frame = $this->createTextFrame($stream, $name);
+            $frame = $this->createTextFrame($stream, $version, $name);
 
             if ('TXXX' === $name) {
                 // TODO: Read user defined text frame.
@@ -78,12 +79,12 @@ class FrameFactory
             return $frame;
         }
 
-        if ('APIC' === $name) {
-            return $this->createPictureFrame($stream, $name);
+        if ('PIC' === $name || 'APIC' === $name) {
+            return $this->createPictureFrame($stream, $version, $name);
         }
 
-        if ('COMM' === $name) {
-            return $this->createCommentFrame($stream, $name);
+        if ('COM' === $name || 'COMM' === $name) {
+            return $this->createCommentFrame($stream, $version, $name);
         }
 
         $frame = new Frame();
@@ -96,13 +97,14 @@ class FrameFactory
      * Create text frame.
      *
      * @param Stream $stream
+     * @param int    $version
      * @param string $name
      *
      * @return TextFrame
      */
-    public function createTextFrame(Stream $stream, $name)
+    public function createTextFrame(Stream $stream, $version, $name)
     {
-        $reader = new TextFrameReader($stream);
+        $reader = new TextFrameReader($stream, $version);
 
         $text = $this->charsetFilter->decode($reader->getText(), $reader->getEncoding());
 
@@ -117,17 +119,26 @@ class FrameFactory
      * Create picture frame.
      *
      * @param Stream $stream
+     * @param int    $version
      * @param string $name
      *
      * @return PictureFrame
      */
-    public function createPictureFrame(Stream $stream, $name)
+    public function createPictureFrame(Stream $stream, $version, $name)
     {
-        $reader = new PictureFrameReader($stream);
+        $reader = new PictureFrameReader($stream, $version);
+
+        $mimeType = $reader->getImageFormat();
+        if ('' === $mimeType) {
+            $mimeType = $reader->getMimeType();
+        }
+        if ('image/' !== substr($mimeType, 0, 6)) {
+            $mimeType = 'image/' . strtolower($mimeType);
+        }
 
         $frame = new PictureFrame();
         $frame->setName($name);
-        $frame->setMimeType($reader->getMimeType());
+        $frame->setMimeType($mimeType);
         $frame->setType($reader->getType());
         $frame->setDescription($this->charsetFilter->decode($reader->getDescription(), $reader->getEncoding()));
         $frame->setData($reader->getData());
@@ -139,13 +150,14 @@ class FrameFactory
      * Create comment frame
      *
      * @param Stream $stream
+     * @param int    $version
      * @param string $name
      *
      * @return CommentFrame
      */
-    public function createCommentFrame(Stream $stream, $name)
+    public function createCommentFrame(Stream $stream, $version, $name)
     {
-        $reader = new LanguageTextFrameReader($stream);
+        $reader = new LanguageTextFrameReader($stream, $version);
 
         $text = $this->charsetFilter->decode($reader->getText(), $reader->getEncoding());
         $texts = explode("\x00", rtrim($text, "\x00"));

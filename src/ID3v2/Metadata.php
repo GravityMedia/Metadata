@@ -219,7 +219,7 @@ class Metadata
             }
 
             $frameStream = $this->createReadableStreamFromData($data);
-            $frame = $this->frameFactory->createFrame($frameStream, $frameName);
+            $frame = $this->frameFactory->createFrame($frameStream, $version, $frameName);
 
             $tag->addFrame($frame);
 

@@ -7,14 +7,14 @@
 
 namespace GravityMedia\Metadata\ID3v2\Reader;
 
-use GravityMedia\Metadata\ID3v2\StreamContainer;
+use GravityMedia\Metadata\ID3v2\Reader;
 
 /**
  * ID3v2 text frame reader class.
  *
  * @package GravityMedia\Metadata\ID3v2\Reader
  */
-class TextFrameReader extends StreamContainer
+class TextFrameReader extends Reader
 {
     /**
      * @var int
