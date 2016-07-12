@@ -86,7 +86,7 @@ class ExtendedHeaderReader extends AbstractHeaderReader
      */
     protected function readPadding()
     {
-        if (Version::VERSION_24 === $this->getVersion()) {
+        if (Version::VERSION_24 !== $this->getVersion()) {
             return 0;
         }
 

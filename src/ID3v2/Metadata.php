@@ -13,15 +13,9 @@ use GravityMedia\Metadata\ID3v2\Filter\CompressionFilter;
 use GravityMedia\Metadata\ID3v2\Filter\UnsynchronisationFilter;
 use GravityMedia\Metadata\ID3v2\Flag\FrameFlag;
 use GravityMedia\Metadata\ID3v2\Flag\HeaderFlag;
-use GravityMedia\Metadata\ID3v2\Frame\CommentFrame;
-use GravityMedia\Metadata\ID3v2\Frame\PictureFrame;
-use GravityMedia\Metadata\ID3v2\Frame\TextFrame;
 use GravityMedia\Metadata\ID3v2\Reader\ExtendedHeaderReader;
 use GravityMedia\Metadata\ID3v2\Reader\FrameHeaderReader;
 use GravityMedia\Metadata\ID3v2\Reader\HeaderReader;
-use GravityMedia\Metadata\ID3v2\Reader\LanguageTextFrameReader;
-use GravityMedia\Metadata\ID3v2\Reader\PictureFrameReader;
-use GravityMedia\Metadata\ID3v2\Reader\TextFrameReader;
 use GravityMedia\Metadata\ID3v2\Writer\FrameHeaderWriter;
 use GravityMedia\Stream\ByteOrder;
 use GravityMedia\Stream\Stream;
@@ -49,6 +43,11 @@ class Metadata
     private $unsynchronisationFilter;
 
     /**
+     * @var FrameFactory
+     */
+    private $frameFactory;
+
+    /**
      * Create ID3v2 metadata object from resource.
      *
      * @param resource $resource
@@ -70,6 +69,7 @@ class Metadata
         $metadata->stream = $stream;
         $metadata->compressionFilter = new CompressionFilter();
         $metadata->unsynchronisationFilter = new UnsynchronisationFilter();
+        $metadata->frameFactory = new FrameFactory();
 
         return $metadata;
     }
@@ -139,11 +139,10 @@ class Metadata
      */
     protected function createReadableStreamFromData($data)
     {
-        $filename = tempnam(sys_get_temp_dir(), 'php');
-        file_put_contents($filename, $data);
-
-        $stream = Stream::fromResource(fopen($filename, 'r'));
+        $stream = Stream::fromResource(fopen('php://temp', 'r+'));
         $stream->setByteOrder(ByteOrder::BIG_ENDIAN);
+        $stream->write($data);
+        $stream->rewind();
 
         return $stream;
     }
@@ -183,6 +182,7 @@ class Metadata
         if ($headerReader->isFlagEnabled(HeaderFlag::FLAG_EXTENDED_HEADER)) {
             $extendedHeaderReader = new ExtendedHeaderReader($tagStream, $version);
             $tagLength -= $extendedHeaderReader->getSize();
+            $tagLength -= $extendedHeaderReader->getPadding();
 
             $tag->setPadding($extendedHeaderReader->getPadding());
             $tag->setCrc32($extendedHeaderReader->getCrc32());
@@ -190,7 +190,7 @@ class Metadata
         }
 
         if ($headerReader->isFlagEnabled(HeaderFlag::FLAG_FOOTER_PRESENT)) {
-            // TODO: Read footer metadata.
+            // TODO: Eventually read footer metadata.
 
             $tagLength -= 10;
         }
@@ -199,12 +199,16 @@ class Metadata
             $frameHeaderReader = new FrameHeaderReader($tagStream, $version);
 
             $frameName = $frameHeaderReader->getName();
-            $frameLength = $frameHeaderReader->getSize();
-            $tagLength -= $frameLength;
-
-            if ('' === $frameName || 0 === $frameLength) {
+            if ('' === $frameName) {
                 break;
             }
+
+            $frameLength = $frameHeaderReader->getSize();
+            if (0 === $frameLength) {
+                break;
+            }
+
+            $tagLength -= $frameLength;
 
             $data = $tagStream->read($frameHeaderReader->getDataLength());
             if ($frameHeaderReader->isFlagEnabled(FrameFlag::FLAG_COMPRESSION)) {
@@ -215,54 +219,14 @@ class Metadata
             }
 
             $frameStream = $this->createReadableStreamFromData($data);
-
-            if ('UFID' === $frameName) {
-                $frame = new Frame();
-                $frame->setName($frameName);
-                // TODO: Read unique file identifier.
-            } elseif ('T' === substr($frameName, 0, 1)) {
-                $frameReader = new TextFrameReader($frameStream);
-
-                $frame = new TextFrame();
-                $frame->setName($frameName);
-                $frame->setText($frameReader->getText());
-
-                if ('TXXX' === $frameName) {
-                    // TODO: Read user defined text frame.
-                }
-            } elseif ('W' === substr($frameName, 0, 1)) {
-                $frame = new Frame();
-                $frame->setName($frameName);
-                // TODO: Read URL link frame.
-                if ('WXXX' === $frameName) {
-                    // TODO: Read user defined URL link frame.
-                }
-            } elseif ('APIC' === $frameName) {
-                $frameReader = new PictureFrameReader($frameStream);
-
-                $frame = new PictureFrame();
-                $frame->setName($frameName);
-                $frame->setMimeType($frameReader->getMimeType());
-                $frame->setType($frameReader->getType());
-                $frame->setDescription($frameReader->getDescription());
-                $frame->setData($frameReader->getData());
-            } elseif ('COMM' === $frameName) {
-                $frameReader = new LanguageTextFrameReader($frameStream);
-                $text = $frameReader->getText();
-                $description = array_shift($text);
-
-                $frame = new CommentFrame();
-                $frame->setName($frameName);
-                $frame->setLanguage($frameReader->getLanguage());
-                $frame->setDescription($description);
-                $frame->setText($text);
-            } else {
-                $frame = new Frame();
-                $frame->setName($frameName);
-            }
+            $frame = $this->frameFactory->createFrame($frameStream, $frameName);
 
             $tag->addFrame($frame);
+
+            $frameStream->close();
         }
+
+        $tagStream->close();
 
         return $tag;
     }
@@ -276,14 +240,14 @@ class Metadata
      */
     public function write(Tag $tag)
     {
-        $stream = Stream::fromResource(fopen('php://temp', 'w'));
+        $stream = Stream::fromResource(fopen('php://temp', 'w+'));
         $stream->setByteOrder(ByteOrder::BIG_ENDIAN);
 
         $stream->write('ID3');
         $stream->writeUInt8($tag->getVersion());
         $stream->writeUInt8($tag->getRevision());
 
-        $tagStream = Stream::fromResource(fopen('php://temp', 'w'));
+        $tagStream = Stream::fromResource(fopen('php://temp', 'w+'));
         $tagStream->setByteOrder(ByteOrder::BIG_ENDIAN);
 
         foreach ($tag->getFrames() as $frame) {

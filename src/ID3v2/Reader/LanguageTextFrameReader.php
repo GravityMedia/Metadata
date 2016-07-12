@@ -7,9 +7,7 @@
 
 namespace GravityMedia\Metadata\ID3v2\Reader;
 
-use GravityMedia\Metadata\ID3v2\Filter\CharsetFilter;
 use GravityMedia\Metadata\ID3v2\StreamContainer;
-use GravityMedia\Stream\Stream;
 
 /**
  * ID3v2 language text frame reader class.
@@ -18,11 +16,6 @@ use GravityMedia\Stream\Stream;
  */
 class LanguageTextFrameReader extends StreamContainer
 {
-    /**
-     * @var CharsetFilter
-     */
-    private $charsetFilter;
-
     /**
      * @var int
      */
@@ -34,19 +27,9 @@ class LanguageTextFrameReader extends StreamContainer
     private $language;
 
     /**
-     * @var string[]
+     * @var string
      */
     private $text;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct(Stream $stream)
-    {
-        parent::__construct($stream);
-
-        $this->charsetFilter = new CharsetFilter();
-    }
 
     /**
      * Read encoding.
@@ -108,20 +91,25 @@ class LanguageTextFrameReader extends StreamContainer
     /**
      * Read text.
      *
-     * @return string[]
+     * @return string
      */
     protected function readText()
     {
-        $this->getStream()->seek($this->getOffset() + 4);
-        $text = $this->getStream()->read($this->getStream()->getSize() - 4);
+        $offset = 4;
+        $length = $this->getStream()->getSize() - $offset;
+        if ($length < 1) {
+            return '';
+        }
 
-        return explode("\x00", $this->charsetFilter->decode($text, $this->getEncoding()));
+        $this->getStream()->seek($this->getOffset() + $offset);
+
+        return $this->getStream()->read($length);
     }
 
     /**
      * Get text.
      *
-     * @return string[]
+     * @return string
      */
     public function getText()
     {

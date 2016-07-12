@@ -21,6 +21,20 @@ use GravityMedia\MetadataTest\Helper\ResourceHelper;
  * @package GravityMedia\MetadataTest\ID3v2
  *
  * @covers  GravityMedia\Metadata\ID3v2\Metadata
+ * @uses    GravityMedia\Metadata\ID3v2\Filter\CharsetFilter
+ * @uses    GravityMedia\Metadata\ID3v2\Filter\SynchsafeIntegerFilter
+ * @uses    GravityMedia\Metadata\ID3v2\Frame
+ * @uses    GravityMedia\Metadata\ID3v2\FrameFactory
+ * @uses    GravityMedia\Metadata\ID3v2\Frame\CommentFrame
+ * @uses    GravityMedia\Metadata\ID3v2\Frame\TextFrame
+ * @uses    GravityMedia\Metadata\ID3v2\Reader\AbstractHeaderReader
+ * @uses    GravityMedia\Metadata\ID3v2\Reader\FrameHeaderReader
+ * @uses    GravityMedia\Metadata\ID3v2\Reader\HeaderReader
+ * @uses    GravityMedia\Metadata\ID3v2\Reader\LanguageTextFrameReader
+ * @uses    GravityMedia\Metadata\ID3v2\Reader\TextFrameReader
+ * @uses    GravityMedia\Metadata\ID3v2\StreamContainer
+ * @uses    GravityMedia\Metadata\ID3v2\Tag
+ * @uses    GravityMedia\Metadata\ID3v2\Version
  */
 class MetadataTest extends \PHPUnit_Framework_TestCase
 {
@@ -50,32 +64,32 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
         /** @var TextFrame $frame */
         $frame = $frames[1];
         $this->assertEquals('TORY', $frame->getName());
-        $this->assertContains('2003', $frame->getText());
+        $this->assertContains('2003', $frame->getTexts());
 
         /** @var TextFrame $frame */
         $frame = $frames[2];
         $this->assertEquals('TIT2', $frame->getName());
-        $this->assertContains('Title', $frame->getText());
+        $this->assertContains('Title', $frame->getTexts());
 
         /** @var TextFrame $frame */
         $frame = $frames[3];
         $this->assertEquals('TPE1', $frame->getName());
-        $this->assertContains('Artist', $frame->getText());
+        $this->assertContains('Artist', $frame->getTexts());
 
         /** @var TextFrame $frame */
         $frame = $frames[4];
         $this->assertEquals('TALB', $frame->getName());
-        $this->assertContains('Album', $frame->getText());
+        $this->assertContains('Album', $frame->getTexts());
 
         /** @var TextFrame $frame */
         $frame = $frames[5];
         $this->assertEquals('TRCK', $frame->getName());
-        $this->assertContains('12', $frame->getText());
+        $this->assertContains('12', $frame->getTexts());
 
         /** @var TextFrame $frame */
         $frame = $frames[6];
         $this->assertEquals('TCON', $frame->getName());
-        $this->assertContains('(7)Hip-Hop', $frame->getText());
+        $this->assertContains('(7)Hip-Hop', $frame->getTexts());
 
         //var_dump($tag->getFrames());
     }
@@ -112,37 +126,37 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
         $frame = $frames[1];
         $this->assertEquals('TIT2', $frame->getName());
         $this->assertInstanceOf(TextFrame::class, $frame);
-        $this->assertContains('Title', $frame->getText());
+        $this->assertContains('Title', $frame->getTexts());
 
         /** @var TextFrame $frame */
         $frame = $frames[2];
         $this->assertEquals('TPE1', $frame->getName());
         $this->assertInstanceOf(TextFrame::class, $frame);
-        $this->assertContains('Artist', $frame->getText());
+        $this->assertContains('Artist', $frame->getTexts());
 
         /** @var TextFrame $frame */
         $frame = $frames[3];
         $this->assertEquals('TALB', $frame->getName());
         $this->assertInstanceOf(TextFrame::class, $frame);
-        $this->assertContains('Album', $frame->getText());
+        $this->assertContains('Album', $frame->getTexts());
 
         /** @var TextFrame $frame */
         $frame = $frames[4];
         $this->assertEquals('TRCK', $frame->getName());
         $this->assertInstanceOf(TextFrame::class, $frame);
-        $this->assertContains('12', $frame->getText());
+        $this->assertContains('12', $frame->getTexts());
 
         /** @var TextFrame $frame */
         $frame = $frames[5];
         $this->assertEquals('TCON', $frame->getName());
         $this->assertInstanceOf(TextFrame::class, $frame);
-        $this->assertContains('(7)Hip-Hop', $frame->getText());
+        $this->assertContains('(7)Hip-Hop', $frame->getTexts());
 
         /** @var TextFrame $frame */
         $frame = $frames[6];
         $this->assertEquals('TDOR', $frame->getName());
         $this->assertInstanceOf(TextFrame::class, $frame);
-        $this->assertContains('2003', $frame->getText());
+        $this->assertContains('2003', $frame->getTexts());
 
         //var_dump($tag->getFrames());
     }

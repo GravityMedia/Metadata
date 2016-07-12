@@ -19,28 +19,28 @@ class TextFrame extends Frame
     /**
      * @var string[]
      */
-    protected $text;
+    protected $texts;
 
     /**
-     * Get text.
+     * Get texts.
      *
      * @return string[]
      */
-    public function getText()
+    public function getTexts()
     {
-        return $this->text;
+        return $this->texts;
     }
 
     /**
-     * Set text.
+     * Set texts.
      *
-     * @param string[] $text
+     * @param string[] $texts
      *
      * @return $this
      */
-    public function setText(array $text)
+    public function setTexts(array $texts)
     {
-        $this->text = $text;
+        $this->texts = $texts;
 
         return $this;
     }

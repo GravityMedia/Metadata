@@ -26,12 +26,13 @@ class ResourceHelper
      */
     public function __construct($source = null)
     {
-        $target = tempnam(sys_get_temp_dir(), 'php');
+        $resource = fopen('php://temp', 'r+');
         if (null !== $source) {
-            copy($source, $target);
+            fwrite($resource, file_get_contents($source));
+            fseek($resource, 0);
         }
 
-        $this->resource = fopen($target, 'r+');
+        $this->resource = $resource;
     }
 
     /**

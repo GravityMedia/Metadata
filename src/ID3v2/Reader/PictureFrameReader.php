@@ -7,9 +7,7 @@
 
 namespace GravityMedia\Metadata\ID3v2\Reader;
 
-use GravityMedia\Metadata\ID3v2\Filter\CharsetFilter;
 use GravityMedia\Metadata\ID3v2\StreamContainer;
-use GravityMedia\Stream\Stream;
 
 /**
  * ID3v2 picture frame reader class.
@@ -18,11 +16,6 @@ use GravityMedia\Stream\Stream;
  */
 class PictureFrameReader extends StreamContainer
 {
-    /**
-     * @var CharsetFilter
-     */
-    private $charsetFilter;
-
     /**
      * @var int
      */
@@ -47,16 +40,6 @@ class PictureFrameReader extends StreamContainer
      * @var string
      */
     private $data;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct(Stream $stream)
-    {
-        parent::__construct($stream);
-
-        $this->charsetFilter = new CharsetFilter();
-    }
 
     /**
      * Read encoding.
@@ -127,7 +110,9 @@ class PictureFrameReader extends StreamContainer
      */
     protected function readType()
     {
-        $this->getStream()->seek($this->getOffset() + strlen($this->getMimeType()) + 2);
+        $offset = strlen($this->getMimeType()) + 2;
+
+        $this->getStream()->seek($this->getOffset() + $offset);
 
         return $this->getStream()->readUInt8();
     }
@@ -153,7 +138,9 @@ class PictureFrameReader extends StreamContainer
      */
     protected function readDescription()
     {
-        $this->getStream()->seek($this->getOffset() + strlen($this->getMimeType()) + 3);
+        $offset = strlen($this->getMimeType()) + 3;
+
+        $this->getStream()->seek($this->getOffset() + $offset);
 
         $description = '';
         while (!$this->getStream()->eof()) {
@@ -165,7 +152,7 @@ class PictureFrameReader extends StreamContainer
             $description .= $char;
         }
 
-        return $this->charsetFilter->decode($description, $this->getEncoding());
+        return $description;
     }
 
     /**
@@ -190,9 +177,14 @@ class PictureFrameReader extends StreamContainer
     protected function readData()
     {
         $offset = strlen($this->getMimeType()) + strlen($this->getDescription()) + 4;
+        $length = $this->getStream()->getSize() - $offset;
+        if ($length < 1) {
+            return '';
+        }
+
         $this->getStream()->seek($this->getOffset() + $offset);
 
-        return $this->getStream()->read($this->getStream()->getSize() - $offset);
+        return $this->getStream()->read($length);
     }
 
     /**
