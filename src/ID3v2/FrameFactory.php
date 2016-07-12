@@ -108,6 +108,7 @@ class FrameFactory
 
         $frame = new TextFrame();
         $frame->setName($name);
+        $frame->setTexts(explode("\x00", rtrim($text, "\x00")));
 
         return $frame;
     }
@@ -146,6 +147,8 @@ class FrameFactory
     {
         $reader = new LanguageTextFrameReader($stream);
 
+        $text = $this->charsetFilter->decode($reader->getText(), $reader->getEncoding());
+        $texts = explode("\x00", rtrim($text, "\x00"));
         $description = array_shift($texts);
 
         $frame = new CommentFrame();

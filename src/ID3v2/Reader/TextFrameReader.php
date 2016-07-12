@@ -67,6 +67,7 @@ class TextFrameReader extends StreamContainer
 
         $this->getStream()->seek($this->getOffset() + $offset);
 
+        return $this->getStream()->read($length);
     }
 
     /**
